@@ -271,8 +271,9 @@
 
   .heatmap-year-label {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
     text-align: center;
     display: flex;
     align-items: flex-end;
@@ -312,6 +313,43 @@
 
   .heatmap-cell[data-count="0"] {
     color: rgba(240,237,230,0.25);
+  }
+
+  .heatmap-cell.no-data {
+    color: rgba(240,237,230,0.2);
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding-left: 92px;
+  }
+
+  .heatmap-legend-gradient {
+    width: 80px;
+    height: 8px;
+    background: linear-gradient(to right, #0d1a19, #00c2b8);
+    flex-shrink: 0;
+  }
+
+  .heatmap-legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .heatmap-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 10px;
+    padding-left: 92px;
+    letter-spacing: 0.03em;
   }
 
   /* ── SECTION 4: GENRE DNA ── */
@@ -514,9 +552,17 @@
 <section class="section" id="section-seasons">
   <div class="section-rule"></div>
   <h2 class="section-heading">Seasonal Fingerprint</h2>
+  <p class="section-caption">Which seasons pack the most songs — and which years were the most active.</p>
   <div class="heatmap-wrapper">
     <div class="heatmap-grid" id="heatmap-grid"></div>
   </div>
+  <div class="heatmap-legend">
+    <span class="heatmap-legend-label">fewer</span>
+    <div class="heatmap-legend-gradient"></div>
+    <span class="heatmap-legend-label">more</span>
+    <span class="heatmap-legend-label" style="margin-left:8px;">= songs that season</span>
+  </div>
+  <p class="heatmap-note">* 2016 partial year — archive began Summer 2016</p>
 </section>
 
 <!-- SECTION 4: GENRE DNA -->
@@ -751,12 +797,13 @@ const DEEP_CUTS = [
 
     years.forEach((year, colIdx) => {
       const count = grid[rowIdx][colIdx];
+      const noData = count === 0 && year === 2016 && (season === 'Winter' || season === 'Spring');
       const cell = document.createElement('div');
-      cell.className = 'heatmap-cell';
+      cell.className = 'heatmap-cell' + (noData ? ' no-data' : '');
       cell.dataset.count = count;
       cell.dataset.delay = rowIdx * 80 + colIdx * 30;
-      cell.style.background = countToColor(count);
-      cell.textContent = count > 0 ? count : '';
+      cell.style.background = noData ? '#0a0a0a' : countToColor(count);
+      cell.textContent = noData ? '—' : (count > 0 ? count : '');
       gridEl.appendChild(cell);
     });
   });
