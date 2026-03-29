@@ -185,27 +185,28 @@
 
   .bestof-toggle {
     width: 100%;
-    background: none;
+    background: #111;
     border: none;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--white);
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    padding: 12px 20px;
+    padding: 16px 20px;
+    min-height: 52px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0 -20px;
     -webkit-tap-highlight-color: transparent;
-    transition: color 0.15s;
+    transition: background 0.15s, color 0.15s;
   }
 
-  .bestof-toggle:hover { color: var(--white); }
-  .bestof-toggle .arrow { transition: transform 0.25s; }
+  .bestof-toggle:hover { background: #181818; color: var(--white); }
+  .bestof-toggle .arrow { font-size: 18px; transition: transform 0.25s; }
   .bestof-toggle.open .arrow { transform: rotate(180deg); }
 
   .bestof-tracks {
