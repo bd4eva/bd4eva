@@ -306,63 +306,72 @@
   }
 
   /* ── SECTION 4: GENRE DNA ── */
-  .genre-bar-container {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .genre-bar-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .genre-bar {
+  .genre-list {
     display: flex;
-    height: 48px;
-    overflow: hidden;
-    margin-bottom: 16px;
+    flex-direction: column;
   }
 
-  .genre-segment {
-    height: 100%;
-    width: 0;
-    transition: width 0.7s ease;
+  .genre-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1c1c1c;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .genre-row:last-child {
+    border-bottom: none;
+  }
+
+  .genre-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .genre-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
     flex-shrink: 0;
   }
 
-  .genre-labels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 20px;
-    margin-top: 4px;
-  }
-
-  .genre-label-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .genre-label-swatch {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 1px;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
-
-  .genre-label-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
+  .genre-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
     color: var(--white);
+    flex-shrink: 0;
+    width: 120px;
   }
 
-  .genre-label-pct {
+  .genre-bar-track {
+    flex: 1;
+    height: 6px;
+    background: #1c1c1c;
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .genre-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .genre-pct {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    padding-left: 13px;
+    font-size: 11px;
+    color: #aaa;
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 40px;
   }
 
   /* ── SECTION 5: DEEP CUTS ── */
@@ -504,10 +513,7 @@
 <section class="section" id="section-genre">
   <div class="section-rule"></div>
   <h2 class="section-heading">Genre DNA</h2>
-  <div class="genre-bar-container" id="genre-container">
-    <div class="genre-bar" id="genre-bar"></div>
-    <div class="genre-labels" id="genre-labels"></div>
-  </div>
+  <div class="genre-list" id="genre-list"></div>
 </section>
 
 <!-- SECTION 5: DEEP CUTS -->
@@ -749,35 +755,41 @@ const DEEP_CUTS = [
 // RENDER: GENRE DNA
 // ─────────────────────────────────────────────
 (function renderGenreDna() {
-  const barEl = document.getElementById('genre-bar');
-  const labelsEl = document.getElementById('genre-labels');
-  const colors = ['#00c2b8', '#009e96', '#007a74', '#005a55', '#1a3a38', '#2a4a48', '#3a5a58', '#4a6a68'];
+  const listEl = document.getElementById('genre-list');
+  const colors = ['#00c2b8', '#00aaa1', '#00918a', '#007a74', '#00625d', '#1a4a47', '#2a3a38', '#3a4a48'];
+  const maxPct = GENRE_DNA[0].pct;
 
   GENRE_DNA.forEach((item, idx) => {
-    const seg = document.createElement('div');
-    seg.className = 'genre-segment';
-    seg.style.background = colors[idx];
-    seg.dataset.pct = item.pct;
-    barEl.appendChild(seg);
+    const row = document.createElement('div');
+    row.className = 'genre-row';
+    row.dataset.delay = idx * 60;
 
-    const labelItem = document.createElement('div');
-    labelItem.className = 'genre-label-item';
+    const dot = document.createElement('div');
+    dot.className = 'genre-dot';
+    dot.style.background = colors[idx];
 
-    const nameLine = document.createElement('div');
-    nameLine.className = 'genre-label-name';
-    const swatch = document.createElement('span');
-    swatch.className = 'genre-label-swatch';
-    swatch.style.background = colors[idx];
-    nameLine.appendChild(swatch);
-    nameLine.appendChild(document.createTextNode(item.genre));
+    const name = document.createElement('div');
+    name.className = 'genre-name';
+    name.textContent = item.genre;
 
-    const pctLine = document.createElement('div');
-    pctLine.className = 'genre-label-pct';
-    pctLine.textContent = item.pct.toFixed(1) + '%';
+    const track = document.createElement('div');
+    track.className = 'genre-bar-track';
 
-    labelItem.appendChild(nameLine);
-    labelItem.appendChild(pctLine);
-    labelsEl.appendChild(labelItem);
+    const fill = document.createElement('div');
+    fill.className = 'genre-bar-fill';
+    fill.style.background = colors[idx];
+    fill.dataset.width = (item.pct / maxPct * 100).toFixed(1);
+    track.appendChild(fill);
+
+    const pct = document.createElement('div');
+    pct.className = 'genre-pct';
+    pct.textContent = item.pct.toFixed(1) + '%';
+
+    row.appendChild(dot);
+    row.appendChild(name);
+    row.appendChild(track);
+    row.appendChild(pct);
+    listEl.appendChild(row);
   });
 })();
 
@@ -908,21 +920,22 @@ function initObservers() {
   const genreObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const container = entry.target;
-        container.classList.add('visible');
-        const segments = container.querySelectorAll('.genre-segment');
-        segments.forEach((seg, idx) => {
+        const rows = entry.target.querySelectorAll('.genre-row');
+        rows.forEach(row => {
+          const delay = parseInt(row.dataset.delay || 0);
           setTimeout(() => {
-            seg.style.width = seg.dataset.pct + '%';
-          }, idx * 80);
+            row.classList.add('visible');
+            const fill = row.querySelector('.genre-bar-fill');
+            if (fill) fill.style.width = fill.dataset.width + '%';
+          }, delay);
         });
         genreObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.05 });
 
-  const genreContainer = document.getElementById('genre-container');
-  if (genreContainer) genreObserver.observe(genreContainer);
+  const genreList = document.getElementById('genre-list');
+  if (genreList) genreObserver.observe(genreList);
 
   // Deep cuts observer
   const deepObserver = new IntersectionObserver((entries) => {
