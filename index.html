@@ -341,6 +341,39 @@
     color: var(--black);
   }
 
+  /* ── YEAR NAV ── */
+  .year-nav {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .year-nav::-webkit-scrollbar { display: none; }
+
+  .year-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .year-nav-btn:hover,
+  .year-nav-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   /* ── GRID ── */
   .grid-section { padding: 20px 20px 60px; }
 
@@ -642,6 +675,9 @@
   <button class="filter-btn" data-filter="Winter" data-umami-event="filter-winter">Winter</button>
 </div>
 
+<!-- YEAR NAV -->
+<div class="year-nav" id="yearNav"></div>
+
 <!-- GRID -->
 <div class="grid-section" id="grid"></div>
 
@@ -876,6 +912,37 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
   });
 });
+
+// Year nav
+const yearNav = document.getElementById('yearNav');
+const years = Object.keys(byYear).sort((a, b) => b - a);
+years.forEach(year => {
+  const btn = document.createElement('button');
+  btn.className = 'year-nav-btn';
+  btn.textContent = year;
+  btn.addEventListener('click', () => {
+    const target = document.querySelector(`.year-group[data-year="${year}"]`);
+    if (target) {
+      const offset = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  });
+  yearNav.appendChild(btn);
+});
+
+// Highlight active year in nav on scroll
+const yearGroups = document.querySelectorAll('.year-group');
+const yearObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const year = entry.target.dataset.year;
+      document.querySelectorAll('.year-nav-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent === year);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+yearGroups.forEach(g => yearObserver.observe(g));
 
 // Scroll indicator
 const scrollIndicator = document.getElementById('scrollIndicator');
