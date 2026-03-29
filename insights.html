@@ -101,6 +101,45 @@
     line-height: 1;
   }
 
+  /* ── HERO STATS ── */
+  .hero-stats {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  .hero-stats .stats-row {
+    display: flex;
+    border: 1px solid var(--border);
+  }
+
+  .hero-stats .stat {
+    flex: 1;
+    padding: 14px 0;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .hero-stats .stat:last-child { border-right: none; }
+
+  .hero-stats .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 8vw, 42px);
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .hero-stats .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.4;
+    padding: 0 4px;
+  }
+
   /* ── SECTION 1: ENDURING ARTISTS DOT MATRIX ── */
   .dot-matrix-wrapper {
     display: flex;
@@ -553,6 +592,24 @@
   <a href="index.html" class="back-link">← BD4EVA</a>
   <h1 class="page-title">10 YEARS<br>OF SOUND</h1>
   <p class="page-subhead">A decade of listening, visualized.</p>
+</div>
+
+<!-- HERO STATS -->
+<div class="hero-stats">
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-number">2,151</div>
+      <div class="stat-label">Listening Hours</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">90</div>
+      <div class="stat-label">Days of Music</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">436h</div>
+      <div class="stat-label">King Gizzard Alone</div>
+    </div>
+  </div>
 </div>
 
 <!-- SECTION 1: ENDURING ARTISTS -->
