@@ -676,7 +676,7 @@ playlists.forEach(p => {
 
 const grid = document.getElementById('grid');
 
-Object.keys(byYear).sort((a,b) => a - b).forEach(year => {
+Object.keys(byYear).sort((a,b) => b - a).forEach(year => {
   const group = document.createElement('div');
   group.className = 'year-group';
   group.dataset.year = year;
