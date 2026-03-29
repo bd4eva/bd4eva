@@ -322,18 +322,26 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 4px;
+    align-items: start;
   }
 
   .playlist-card {
-    position: relative;
-    aspect-ratio: 1;
-    overflow: hidden;
     background: #111;
+    display: flex;
+    flex-direction: column;
   }
 
   .playlist-card.empty {
+    aspect-ratio: 1;
     background: #0d0d0d;
     pointer-events: none;
+  }
+
+  .card-image-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 
   .playlist-card img {
@@ -341,6 +349,30 @@
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .card-caption {
+    padding: 4px 3px 2px;
+    background: var(--black);
+  }
+
+  .card-caption-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-caption-tracks {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 1px;
   }
 
   .playlist-card-overlay {
@@ -704,13 +736,19 @@ Object.keys(byYear).sort((a,b) => b - a).forEach(year => {
     const dotClass = 'dot-' + p.season.replace(' ', '');
 
     card.innerHTML = `
-      <div class="season-dot ${dotClass}"></div>
-      <img src="covers/${p.img}" alt="${p.label}" loading="lazy">
-      ${p.inProgress ? '<div class="in-progress-badge">Soon</div>' : ''}
-      <div class="playlist-card-overlay">
-        <div class="card-label">${p.label}</div>
-        <div class="card-tracks">${p.tracks} tracks</div>
-        <a href="${p.link}" target="_blank" class="card-link-btn" data-umami-event="playlist-click" data-umami-event-name="${p.label}">Open ↗</a>
+      <div class="card-image-wrap">
+        <div class="season-dot ${dotClass}"></div>
+        <img src="covers/${p.img}" alt="${p.label}" loading="lazy">
+        ${p.inProgress ? '<div class="in-progress-badge">Soon</div>' : ''}
+        <div class="playlist-card-overlay">
+          <div class="card-label">${p.label}</div>
+          <div class="card-tracks">${p.tracks} tracks</div>
+          <a href="${p.link}" target="_blank" class="card-link-btn" data-umami-event="playlist-click" data-umami-event-name="${p.label}">Open ↗</a>
+        </div>
+      </div>
+      <div class="card-caption">
+        <div class="card-caption-label">${p.label}</div>
+        <div class="card-caption-tracks">${p.tracks} tracks</div>
       </div>
     `;
 
