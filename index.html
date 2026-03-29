@@ -108,6 +108,7 @@
     padding: 10px 0 4px;
     opacity: 1;
     transition: opacity 0.4s;
+    cursor: pointer;
   }
 
   .scroll-indicator.hidden {
@@ -968,6 +969,10 @@ const heroSection = document.querySelector('header');
 window.addEventListener('scroll', () => {
   scrollIndicator.classList.toggle('hidden', window.scrollY > heroSection.offsetHeight);
 }, { passive: true });
+scrollIndicator.addEventListener('click', () => {
+  const target = document.querySelector('.featured-section');
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+});
 
 // Back to top
 const backToTop = document.getElementById('back-to-top');
