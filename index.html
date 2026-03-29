@@ -79,6 +79,23 @@
     margin-top: 3px;
   }
 
+  /* ── INSIGHTS LINK ── */
+  .insights-link {
+    display: inline-block;
+    margin-top: 16px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 8px 14px;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .insights-link:hover { background: rgba(0,194,184,0.1); }
+
   /* ── SCROLL INDICATOR ── */
   @keyframes bob {
     0%, 100% { transform: translateY(0); }
@@ -606,6 +623,7 @@
       <div class="stat-label">Songs</div>
     </div>
   </div>
+  <a href="insights.html" class="insights-link" data-umami-event="insights-click">DATA &amp; INSIGHTS →</a>
   <div class="scroll-indicator" id="scrollIndicator">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6 9 12 15 18 9"></polyline>
