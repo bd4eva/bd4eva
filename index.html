@@ -982,7 +982,7 @@ yearGroups.forEach(g => yearObserver.observe(g));
 const scrollIndicator = document.getElementById('scrollIndicator');
 const heroSection = document.querySelector('header');
 window.addEventListener('scroll', () => {
-  scrollIndicator.classList.toggle('hidden', window.scrollY > heroSection.offsetHeight);
+  scrollIndicator.classList.toggle('hidden', window.scrollY > 80);
 }, { passive: true });
 scrollIndicator.addEventListener('click', () => {
   const target = document.querySelector('.featured-section');
