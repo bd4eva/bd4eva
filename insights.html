@@ -697,6 +697,15 @@
     color: var(--muted);
     letter-spacing: 0.03em;
   }
+  .timeline-in-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 0.08em;
+    font-style: italic;
+    padding-left: 64px;
+    margin-top: 4px;
+  }
 
   /* ── FOOTER ── */
   footer {
@@ -897,7 +906,6 @@ const FIRST_DISCOVERIES = [
   { year: 2023, artist: 'Khruangbin', note: 'Pelota was the summer song' },
   { year: 2024, artist: 'Jonas Brothers', note: 'Waffle House — no notes' },
   { year: 2025, artist: 'FIDLAR', note: "Can't You See, Summer 25" },
-  { year: 2026, artist: 'King Gizzard & The Lizard Wizard', note: 'Le Risque, Spring 26' },
 ];
 
 const DEEP_CUTS = [
@@ -1099,6 +1107,12 @@ const DEEP_CUTS = [
     row.appendChild(content);
     el.appendChild(row);
   });
+
+  // 2026 in-progress note
+  const note = document.createElement('div');
+  note.className = 'timeline-in-progress';
+  note.textContent = '2026 · still in progress';
+  el.appendChild(note);
 })();
 
 // ─────────────────────────────────────────────
