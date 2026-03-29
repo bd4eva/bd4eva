@@ -110,7 +110,7 @@
 
   .dot-matrix-artists {
     flex-shrink: 0;
-    width: 130px;
+    width: 100px;
     padding-top: 22px; /* align with year header row */
   }
 
@@ -125,6 +125,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100px;
   }
 
   .dot-matrix-scroll {
@@ -149,8 +150,9 @@
 
   .dot-year-label {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
     width: 32px;
     text-align: center;
     flex-shrink: 0;
@@ -192,6 +194,34 @@
   .dot.visible {
     opacity: 1;
   }
+
+  .dot-swipe-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-top: 10px;
+    opacity: 0.6;
+  }
+
+  .dot-tooltip {
+    position: fixed;
+    background: var(--border);
+    border: 1px solid var(--accent);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 5px 9px;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .dot-tooltip.show { opacity: 1; }
 
   /* ── SECTION 2: HOURS DEEP ── */
   .bar-chart {
@@ -538,7 +568,9 @@
       </div>
     </div>
   </div>
+  <p class="dot-swipe-hint">← swipe to see all years →</p>
 </section>
+<div class="dot-tooltip" id="dot-tooltip"></div>
 
 <!-- SECTION 2: HOURS DEEP -->
 <section class="section" id="section-hours">
@@ -708,6 +740,11 @@ const DEEP_CUTS = [
       dot.dataset.row = rowIdx;
       dot.dataset.col = colIdx;
       dot.dataset.delay = rowIdx * 30 + colIdx * 20;
+      if (isFilled) {
+        const label = `${entry.artist} · '${String(year).slice(2)}`;
+        dot.title = label;
+        dot.dataset.tooltip = label;
+      }
 
       cell.appendChild(dot);
       rowEl.appendChild(cell);
@@ -715,6 +752,42 @@ const DEEP_CUTS = [
 
     rowsEl.appendChild(rowEl);
   });
+})();
+
+// Dot tooltip
+(function initDotTooltip() {
+  const tooltip = document.getElementById('dot-tooltip');
+  if (!tooltip) return;
+
+  function show(text, x, y) {
+    tooltip.textContent = text;
+    tooltip.classList.add('show');
+    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+    tooltip.style.left = Math.min(x + 10, window.innerWidth - tw - 8) + 'px';
+    tooltip.style.top  = Math.max(y - th - 8, 8) + 'px';
+  }
+  function hide() { tooltip.classList.remove('show'); }
+
+  document.getElementById('dot-rows').addEventListener('mouseover', e => {
+    const dot = e.target.closest('[data-tooltip]');
+    if (dot) show(dot.dataset.tooltip, e.clientX, e.clientY);
+  });
+  document.getElementById('dot-rows').addEventListener('mouseout', e => {
+    if (!e.target.closest('[data-tooltip]')) hide();
+  });
+  document.getElementById('dot-rows').addEventListener('touchstart', e => {
+    const dot = e.target.closest('[data-tooltip]');
+    if (dot) {
+      const t = e.touches[0];
+      show(dot.dataset.tooltip, t.clientX, t.clientY);
+      e.preventDefault();
+    } else {
+      hide();
+    }
+  }, { passive: false });
+  document.addEventListener('touchstart', e => {
+    if (!e.target.closest('#dot-rows')) hide();
+  }, { passive: true });
 })();
 
 // ─────────────────────────────────────────────
