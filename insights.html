@@ -571,6 +571,85 @@
     white-space: nowrap;
   }
 
+  /* ── FIRST HEARD TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding: 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 44px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0 0 32px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .timeline-row.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .timeline-row:last-child { padding-bottom: 0; }
+
+  .timeline-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    width: 34px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    text-align: right;
+  }
+
+  .timeline-dot-wrap {
+    width: 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+    margin: 0 10px;
+  }
+  .timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .timeline-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .timeline-artist {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+  .timeline-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
   /* ── FOOTER ── */
   footer {
     text-align: center;
@@ -628,6 +707,14 @@
   <p class="dot-swipe-hint">← swipe to see all years →</p>
 </section>
 <div class="dot-tooltip" id="dot-tooltip"></div>
+
+<!-- SECTION 1B: FIRST HEARD TIMELINE -->
+<section class="section" id="section-firstheard">
+  <div class="section-rule"></div>
+  <h2 class="section-heading">First Heard</h2>
+  <p class="section-caption">One artist or song that arrived for the first time each year — and stayed.</p>
+  <div class="timeline" id="timeline"></div>
+</section>
 
 <!-- SECTION 2: HOURS DEEP -->
 <section class="section" id="section-hours">
@@ -743,6 +830,20 @@ const GENRE_DNA = [
   { genre: 'Indie Rock', count: 160, pct: 2.5 },
 ];
 
+const FIRST_DISCOVERIES = [
+  { year: 2016, artist: 'White Denim', note: 'Ten years in and still showing up' },
+  { year: 2017, artist: 'Whitney', note: 'Light Upon the Lake never aged' },
+  { year: 2018, artist: 'Still Woozy', note: 'Summer staple ever since' },
+  { year: 2019, artist: 'Neal Francis', note: 'Soul that stuck immediately' },
+  { year: 2020, artist: 'King Gizzard & The Lizard Wizard', note: '436 hours deep and counting' },
+  { year: 2021, artist: 'Turnstile', note: 'HOLIDAY changed the playlist' },
+  { year: 2022, artist: 'Vulfpeck', note: 'Game Winner on a loop' },
+  { year: 2023, artist: 'Khruangbin', note: 'Pelota was the summer song' },
+  { year: 2024, artist: 'Jonas Brothers', note: 'Waffle House — no notes' },
+  { year: 2025, artist: 'FIDLAR', note: "Can't You See, Summer 25" },
+  { year: 2026, artist: 'King Gizzard & The Lizard Wizard', note: 'Le Risque, Spring 26' },
+];
+
 const DEEP_CUTS = [
   { rank: 1, artist: 'Raffi', track: 'Baby Beluga', streams: 315, hours: 13.6 },
   { rank: 2, artist: 'Comeback Kid', track: 'Losing Sleep (feat. Poli Correia)', streams: 313, hours: 11.6 },
@@ -845,6 +946,47 @@ const DEEP_CUTS = [
   document.addEventListener('touchstart', e => {
     if (!e.target.closest('#dot-rows')) hide();
   }, { passive: true });
+})();
+
+// ─────────────────────────────────────────────
+// RENDER: FIRST HEARD TIMELINE
+// ─────────────────────────────────────────────
+(function renderTimeline() {
+  const el = document.getElementById('timeline');
+  FIRST_DISCOVERIES.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'timeline-row';
+    row.dataset.delay = idx * 70;
+
+    const yearEl = document.createElement('div');
+    yearEl.className = 'timeline-year';
+    yearEl.textContent = String(item.year).slice(2);
+
+    const dotWrap = document.createElement('div');
+    dotWrap.className = 'timeline-dot-wrap';
+    const dot = document.createElement('div');
+    dot.className = 'timeline-dot';
+    dotWrap.appendChild(dot);
+
+    const content = document.createElement('div');
+    content.className = 'timeline-content';
+
+    const artistEl = document.createElement('div');
+    artistEl.className = 'timeline-artist';
+    artistEl.textContent = item.artist;
+
+    const noteEl = document.createElement('div');
+    noteEl.className = 'timeline-note';
+    noteEl.textContent = item.note;
+
+    content.appendChild(artistEl);
+    content.appendChild(noteEl);
+
+    row.appendChild(yearEl);
+    row.appendChild(dotWrap);
+    row.appendChild(content);
+    el.appendChild(row);
+  });
 })();
 
 // ─────────────────────────────────────────────
@@ -1065,6 +1207,23 @@ function initObservers() {
 
   const enduringSection = document.getElementById('section-enduring');
   if (enduringSection) dotObserver.observe(enduringSection);
+
+  // First Heard timeline observer
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const rows = entry.target.querySelectorAll('.timeline-row');
+        rows.forEach(row => {
+          const delay = parseInt(row.dataset.delay || 0);
+          setTimeout(() => row.classList.add('visible'), delay);
+        });
+        timelineObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  const timelineEl = document.getElementById('timeline');
+  if (timelineEl) timelineObserver.observe(timelineEl);
 
   // Bar chart observer
   const barObserver = new IntersectionObserver((entries) => {
