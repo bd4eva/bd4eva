@@ -709,16 +709,34 @@
 
   /* ── FOOTER ── */
   footer {
-    text-align: center;
-    padding: 40px 20px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    border-top: 1px solid var(--border);
     max-width: 900px;
     margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .footer-link:hover { color: var(--accent-dark); }
 </style>
 </head>
 <body>
@@ -821,7 +839,10 @@
   <div class="deep-cuts-list" id="deep-cuts-list"></div>
 </section>
 
-<footer>BD4EVA · 2016–2026</footer>
+<footer>
+  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
+  <div class="footer-text">2016 – 2026</div>
+</footer>
 
 <script>
 // ─────────────────────────────────────────────
