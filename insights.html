@@ -571,6 +571,54 @@
     white-space: nowrap;
   }
 
+  /* ── LONGEST STREAK CALLOUTS ── */
+  .streak-cards {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .streak-card {
+    flex: 1 1 180px;
+    background: #0f0f0f;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    padding: 20px 16px 18px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .streak-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .streak-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 10vw, 64px);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .streak-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .streak-artist {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .streak-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
   /* ── FIRST HEARD TIMELINE ── */
   .timeline {
     position: relative;
@@ -707,6 +755,14 @@
   <p class="dot-swipe-hint">← swipe to see all years →</p>
 </section>
 <div class="dot-tooltip" id="dot-tooltip"></div>
+
+<!-- SECTION 1A: LONGEST STREAK -->
+<section class="section" id="section-streak">
+  <div class="section-rule"></div>
+  <h2 class="section-heading">Longest Streak</h2>
+  <p class="section-caption">Most consecutive years an artist appeared in the mixes.</p>
+  <div class="streak-cards" id="streak-cards"></div>
+</section>
 
 <!-- SECTION 1B: FIRST HEARD TIMELINE -->
 <section class="section" id="section-firstheard">
@@ -946,6 +1002,62 @@ const DEEP_CUTS = [
   document.addEventListener('touchstart', e => {
     if (!e.target.closest('#dot-rows')) hide();
   }, { passive: true });
+})();
+
+// ─────────────────────────────────────────────
+// RENDER: LONGEST STREAK CALLOUTS
+// ─────────────────────────────────────────────
+(function renderStreaks() {
+  function longestStreak(years) {
+    if (!years.length) return { length: 0, start: 0, end: 0 };
+    const sorted = [...years].sort((a, b) => a - b);
+    let best = { length: 1, start: sorted[0], end: sorted[0] };
+    let cur = { length: 1, start: sorted[0], end: sorted[0] };
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i] === sorted[i - 1] + 1) {
+        cur.length++;
+        cur.end = sorted[i];
+        if (cur.length > best.length) best = { ...cur };
+      } else {
+        cur = { length: 1, start: sorted[i], end: sorted[i] };
+      }
+    }
+    return best;
+  }
+
+  const ranked = ENDURING_ARTISTS
+    .map(entry => ({ artist: entry.artist, ...longestStreak(entry.years) }))
+    .sort((a, b) => b.length - a.length || a.start - b.start)
+    .slice(0, 3);
+
+  const el = document.getElementById('streak-cards');
+  ranked.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'streak-card';
+    card.dataset.delay = idx * 100;
+
+    const numEl = document.createElement('div');
+    numEl.className = 'streak-number';
+    numEl.textContent = item.length;
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'streak-label';
+    labelEl.textContent = 'consecutive years';
+
+    const artistEl = document.createElement('div');
+    artistEl.className = 'streak-artist';
+    artistEl.textContent = item.artist;
+
+    const rangeEl = document.createElement('div');
+    rangeEl.className = 'streak-range';
+    rangeEl.textContent = item.start === item.end ? String(item.start) : `${item.start}–${item.end}`;
+
+    card.appendChild(numEl);
+    card.appendChild(labelEl);
+    card.appendChild(artistEl);
+    card.appendChild(rangeEl);
+    el.appendChild(card);
+  });
 })();
 
 // ─────────────────────────────────────────────
@@ -1207,6 +1319,23 @@ function initObservers() {
 
   const enduringSection = document.getElementById('section-enduring');
   if (enduringSection) dotObserver.observe(enduringSection);
+
+  // Streak cards observer
+  const streakObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const cards = entry.target.querySelectorAll('.streak-card');
+        cards.forEach(card => {
+          const delay = parseInt(card.dataset.delay || 0);
+          setTimeout(() => card.classList.add('visible'), delay);
+        });
+        streakObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  const streakEl = document.getElementById('streak-cards');
+  if (streakEl) streakObserver.observe(streakEl);
 
   // First Heard timeline observer
   const timelineObserver = new IntersectionObserver((entries) => {
