@@ -79,6 +79,32 @@
     margin-top: 3px;
   }
 
+  /* ── SCROLL INDICATOR ── */
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(5px); }
+  }
+
+  .scroll-indicator {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 4px;
+    opacity: 1;
+    transition: opacity 0.4s;
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    animation: bob 1.6s ease-in-out infinite;
+  }
+
   /* ── FEATURED MIXES ── */
   .featured-section {
     padding: 24px 20px;
@@ -534,6 +560,11 @@
       <div class="stat-label">Songs</div>
     </div>
   </div>
+  <div class="scroll-indicator" id="scrollIndicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
 </header>
 
 <!-- FEATURED MIXES -->
@@ -832,6 +863,13 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
   });
 });
+
+// Scroll indicator
+const scrollIndicator = document.getElementById('scrollIndicator');
+const heroSection = document.querySelector('header');
+window.addEventListener('scroll', () => {
+  scrollIndicator.classList.toggle('hidden', window.scrollY > heroSection.offsetHeight);
+}, { passive: true });
 
 // Back to top
 const backToTop = document.getElementById('back-to-top');
