@@ -454,6 +454,36 @@
 
   .playlist-card.hidden { display: none; }
 
+  /* ── BACK TO TOP ── */
+  #back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #back-to-top:hover { background: var(--accent-dark); }
+
   /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--border);
@@ -564,6 +594,8 @@
   <div class="footer-text">@BD4EVA</div>
   <div class="footer-text">2016 – 2026</div>
 </footer>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
 // ── TOP 50 TRACKS ──
@@ -788,6 +820,15 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
       group.classList.toggle('all-hidden', visible.length === 0);
     });
   });
+});
+
+// Back to top
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('visible', window.scrollY > 300);
+}, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 </body>
