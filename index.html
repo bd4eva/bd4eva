@@ -511,7 +511,9 @@
   }
 
   .card-link-btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     background: var(--accent);
     color: var(--black);
     text-decoration: none;
@@ -521,6 +523,29 @@
     text-transform: uppercase;
     padding: 5px 8px;
     font-weight: 500;
+  }
+
+  .card-spotify-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #1DB954;
+    color: #000;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 8px;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  .card-link-btn svg,
+  .card-spotify-btn svg {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
   }
 
   .in-progress-badge {
@@ -803,54 +828,54 @@ document.getElementById('bestofToggle').addEventListener('click', function() {
 
 // ── PLAYLISTS ──
 const playlists = [
-  { season: "Summer",     year: 2016, label: "Summer 16",     link: "https://music.apple.com/us/playlist/summer-16/pl.u-mJy835BCzBLRyl",         img: "summer-16.jpg",     tracks: 33 },
-  { season: "Early Fall", year: 2016, label: "Early Fall 16", link: "https://music.apple.com/us/playlist/early-fall-16/pl.u-76oNz3MsWNdbxZ",     img: "early-fall-16.jpg", tracks: 51 },
-  { season: "Late Fall",  year: 2016, label: "Late Fall 16",  link: "https://music.apple.com/us/playlist/late-fall-16/pl.u-mJy833JuzBLRyl",      img: "late-fall-16.jpg",  tracks: 36 },
-  { season: "Spring",     year: 2017, label: "Spring 17",     link: "https://music.apple.com/us/playlist/spring-17/pl.u-76oNzGeuWNdbxZ",          img: "spring-17.jpg",     tracks: 48 },
-  { season: "Summer",     year: 2017, label: "Summer 17",     link: "https://music.apple.com/us/playlist/summer-17/pl.u-JPAZzB3CDWN1EJ",          img: "summer-17.jpg",     tracks: 49 },
-  { season: "Early Fall", year: 2017, label: "Early Fall 17", link: "https://music.apple.com/us/playlist/early-fall-17/pl.u-V9D7gpJHB1GLEP",     img: "early-fall-17.jpg", tracks: 40 },
-  { season: "Late Fall",  year: 2017, label: "Late Fall 17",  link: "https://music.apple.com/us/playlist/late-fall-17/pl.u-76oNPJ3TWNdbxZ",      img: "late-fall-17.jpg",  tracks: 40 },
-  { season: "Winter",     year: 2017, label: "Winter 17",     link: "https://music.apple.com/us/playlist/winter-17/pl.u-DdANrYaFalPdmg",          img: "winter-17.jpg",     tracks: 23 },
-  { season: "Spring",     year: 2018, label: "Spring 18",     link: "https://music.apple.com/us/playlist/spring-18/pl.u-JPAZzyqTDWN1EJ",          img: "spring-18.jpg",     tracks: 49 },
-  { season: "Summer",     year: 2018, label: "Summer 18",     link: "https://music.apple.com/us/playlist/summer-18/pl.u-76oNPbbTWNdbxZ",          img: "summer-18.jpg",     tracks: 40 },
-  { season: "Early Fall", year: 2018, label: "Early Fall 18", link: "https://music.apple.com/us/playlist/early-fall-18/pl.u-d2b0MAjFMBaYDd",     img: "early-fall-18.jpg", tracks: 49 },
-  { season: "Late Fall",  year: 2018, label: "Late Fall 18",  link: "https://music.apple.com/us/playlist/late-fall-18/pl.u-V9D77GEUB1GLEP",      img: "late-fall-18.jpg",  tracks: 28 },
-  { season: "Winter",     year: 2018, label: "Winter 18",     link: "https://music.apple.com/us/playlist/winter-18/pl.u-38oWWxbTPgoedq",           img: "winter-18.jpg",     tracks: 33 },
-  { season: "Spring",     year: 2019, label: "Spring 19",     link: "https://music.apple.com/us/playlist/spring-19/pl.u-mJy82NPtzBLRyl",          img: "spring-19.jpg",     tracks: 49 },
-  { season: "Summer",     year: 2019, label: "Summer 19",     link: "https://music.apple.com/us/playlist/summer-19/pl.u-9N9Lz6dFx7lBXo",          img: "summer-19.jpg",     tracks: 50 },
-  { season: "Early Fall", year: 2019, label: "Early Fall 19", link: "https://music.apple.com/us/playlist/early-fall-19/pl.u-9N9Lz1JCx7lBXo",     img: "early-fall-19.jpg", tracks: 50 },
-  { season: "Late Fall",  year: 2019, label: "Late Fall 19",  link: "https://music.apple.com/us/playlist/late-fall-19/pl.u-V9D7gLKcB1GLEP",      img: "late-fall-19.jpg",  tracks: 40 },
-  { season: "Winter",     year: 2019, label: "Winter 19",     link: "https://music.apple.com/us/playlist/winter-19/pl.u-JPAZzKNuDWN1EJ",          img: "winter-19.jpg",     tracks: 49 },
-  { season: "Spring",     year: 2020, label: "Spring 20",     link: "https://music.apple.com/us/playlist/spring-20/pl.u-76oNzd6sWNdbxZ",          img: "spring-20.jpg",     tracks: 48 },
-  { season: "Summer",     year: 2020, label: "Summer 20",     link: "https://music.apple.com/us/playlist/summer-20/pl.u-e98llB5hzWX7Ke",          img: "summer-20.jpg",     tracks: 32 },
-  { season: "Early Fall", year: 2020, label: "Early Fall 20", link: "https://music.apple.com/us/playlist/early-fall-20/pl.u-d2b0vqlFMBaYDd",     img: "early-fall-20.jpg", tracks: 80 },
-  { season: "Late Fall",  year: 2020, label: "Late Fall 20",  link: "https://music.apple.com/us/playlist/late-fall-20/pl.u-DdAN243TalPdmg",      img: "late-fall-20.jpg",  tracks: 49 },
-  { season: "Winter",     year: 2020, label: "Winter 20",     link: "https://music.apple.com/us/playlist/winter-20/pl.u-76oNPE6TWNdbxZ",          img: "winter-20.jpg",     tracks: 40 },
-  { season: "Spring",     year: 2021, label: "Spring 21",     link: "https://music.apple.com/us/playlist/spring-21/pl.u-76oNP4pTWNdbxZ",          img: "spring-21.jpg",     tracks: 44 },
-  { season: "Summer",     year: 2021, label: "Summer 21",     link: "https://music.apple.com/us/playlist/summer-21/pl.u-11zBPxyu8Z652j",          img: "summer-21.jpg",     tracks: 45 },
-  { season: "Early Fall", year: 2021, label: "Early Fall 21", link: "https://music.apple.com/us/playlist/early-fall-21/pl.u-mJy82Y8tzBLRyl",     img: "early-fall-21.jpg", tracks: 49 },
-  { season: "Late Fall",  year: 2021, label: "Late Fall 21",  link: "https://music.apple.com/us/playlist/late-fall-21/pl.u-11zBPamH8Z652j",      img: "late-fall-21.jpg",  tracks: 45 },
-  { season: "Winter",     year: 2021, label: "Winter 21",     link: "https://music.apple.com/us/playlist/winter-21/pl.u-d2b0MX0tMBaYDd",          img: "winter-21.jpg",     tracks: 46 },
-  { season: "Spring",     year: 2022, label: "Spring 22",     link: "https://music.apple.com/us/playlist/spring-22/pl.u-38oWjGEuPgoedq",          img: "spring-22.jpg",     tracks: 49 },
-  { season: "Summer",     year: 2022, label: "Summer 22",     link: "https://music.apple.com/us/playlist/summer-22/pl.u-11zB9dgu8Z652j",          img: "summer-22.jpg",     tracks: 55 },
-  { season: "Early Fall", year: 2022, label: "Early Fall 22", link: "https://music.apple.com/us/playlist/early-fall-22/pl.u-mJy82RRIzBLRyl",     img: "early-fall-22.jpg", tracks: 49 },
-  { season: "Late Fall",  year: 2022, label: "Late Fall 22",  link: "https://music.apple.com/us/playlist/late-fall-22/pl.u-d2b00GXFMBaYDd",      img: "late-fall-22.jpg",  tracks: 32 },
-  { season: "Winter",     year: 2022, label: "Winter 22",     link: "https://music.apple.com/us/playlist/winter-22/pl.u-e98l3PEczWX7Ke",          img: "winter-22.jpg",     tracks: 49 },
-  { season: "Spring",     year: 2023, label: "Spring 23",     link: "https://music.apple.com/us/playlist/spring-23/pl.u-38oW9PWCPgoedq",          img: "spring-23.jpg",     tracks: 49 },
-  { season: "Summer",     year: 2023, label: "Summer 23",     link: "https://music.apple.com/us/playlist/summer-23/pl.u-9N9LzZWCx7lBXo",          img: "summer-23.jpg",     tracks: 50 },
-  { season: "Early Fall", year: 2023, label: "Early Fall 23", link: "https://music.apple.com/us/playlist/early-fall-23/pl.u-76oNzdNuWNdbxZ",     img: "early-fall-23.jpg", tracks: 50 },
-  { season: "Late Fall",  year: 2023, label: "Late Fall 23",  link: "https://music.apple.com/us/playlist/late-fall-23/pl.u-9N9LzpNIx7lBXo",      img: "late-fall-23.jpg",  tracks: 49 },
-  { season: "Winter",     year: 2023, label: "Winter 23",     link: "https://music.apple.com/us/playlist/winter-23/pl.u-e98l3gmTzWX7Ke",          img: "winter-23.jpg",     tracks: 49 },
-  { season: "Spring",     year: 2024, label: "Spring 24",     link: "https://music.apple.com/us/playlist/spring-24/pl.u-e98lMKDizWX7Ke",          img: "spring-24.jpg",     tracks: 46 },
-  { season: "Summer",     year: 2024, label: "Summer 24",     link: "https://music.apple.com/us/playlist/summer-24/pl.u-aZb0azxuPVpqyz",          img: "summer-24.jpg",     tracks: 59 },
-  { season: "Early Fall", year: 2024, label: "Early Fall 24", link: "https://music.apple.com/us/playlist/early-fall-24/pl.u-V9D73yGSB1GLEP",     img: "early-fall-24.jpg", tracks: 49 },
-  { season: "Late Fall",  year: 2024, label: "Late Fall 24",  link: "https://music.apple.com/us/playlist/late-fall-24/pl.u-76oNz9ysWNdbxZ",      img: "late-fall-24.jpg",  tracks: 50 },
-  { season: "Winter",     year: 2024, label: "Winter 24",     link: "https://music.apple.com/us/playlist/winter-24/pl.u-V9D7g47FB1GLEP",          img: "winter-24.jpg",     tracks: 44 },
-  { season: "Spring",     year: 2025, label: "Spring 25",     link: "https://music.apple.com/us/playlist/spring-25/pl.u-mJy829ruzBLRyl",          img: "spring-25.jpg",     tracks: 50 },
-  { season: "Summer",     year: 2025, label: "Summer 25",     link: "https://music.apple.com/us/playlist/summer-25/pl.u-11zBPZ1T8Z652j",          img: "summer-25.jpg",     tracks: 48 },
+  { season: "Summer",     year: 2016, label: "Summer 16",     link: "https://music.apple.com/us/playlist/summer-16/pl.u-mJy835BCzBLRyl",         img: "summer-16.jpg",     tracks: 33, spotify: "https://open.spotify.com/playlist/0jXjrDMX2K9Q03zcS1gKct" },
+  { season: "Early Fall", year: 2016, label: "Early Fall 16", link: "https://music.apple.com/us/playlist/early-fall-16/pl.u-76oNz3MsWNdbxZ",     img: "early-fall-16.jpg", tracks: 51, spotify: "https://open.spotify.com/playlist/3BVLkBmhWcSWDAI26VlKVR" },
+  { season: "Late Fall",  year: 2016, label: "Late Fall 16",  link: "https://music.apple.com/us/playlist/late-fall-16/pl.u-mJy833JuzBLRyl",      img: "late-fall-16.jpg",  tracks: 36, spotify: "https://open.spotify.com/playlist/7yW1asqr5vhA96MmKwZPzE" },
+  { season: "Spring",     year: 2017, label: "Spring 17",     link: "https://music.apple.com/us/playlist/spring-17/pl.u-76oNzGeuWNdbxZ",          img: "spring-17.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/4NJZtv6kyOqTUTGchZfxEz" },
+  { season: "Summer",     year: 2017, label: "Summer 17",     link: "https://music.apple.com/us/playlist/summer-17/pl.u-JPAZzB3CDWN1EJ",          img: "summer-17.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/2necQj4rWUfYirpp8a6nqH" },
+  { season: "Early Fall", year: 2017, label: "Early Fall 17", link: "https://music.apple.com/us/playlist/early-fall-17/pl.u-V9D7gpJHB1GLEP",     img: "early-fall-17.jpg", tracks: 40, spotify: "https://open.spotify.com/playlist/6MdphN1DDyqqvO8gLDnhnC" },
+  { season: "Late Fall",  year: 2017, label: "Late Fall 17",  link: "https://music.apple.com/us/playlist/late-fall-17/pl.u-76oNPJ3TWNdbxZ",      img: "late-fall-17.jpg",  tracks: 40, spotify: "https://open.spotify.com/playlist/2KvvT9qzzBhUb1cZJPskUF" },
+  { season: "Winter",     year: 2017, label: "Winter 17",     link: "https://music.apple.com/us/playlist/winter-17/pl.u-DdANrYaFalPdmg",          img: "winter-17.jpg",     tracks: 23, spotify: "https://open.spotify.com/playlist/52ou614iakCiDMPaTpdciF" },
+  { season: "Spring",     year: 2018, label: "Spring 18",     link: "https://music.apple.com/us/playlist/spring-18/pl.u-JPAZzyqTDWN1EJ",          img: "spring-18.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4W2lGQzRxjQDiO87ryG0sE" },
+  { season: "Summer",     year: 2018, label: "Summer 18",     link: "https://music.apple.com/us/playlist/summer-18/pl.u-76oNPbbTWNdbxZ",          img: "summer-18.jpg",     tracks: 40, spotify: "https://open.spotify.com/playlist/7t58H6bebN09AM3XTVnd0s" },
+  { season: "Early Fall", year: 2018, label: "Early Fall 18", link: "https://music.apple.com/us/playlist/early-fall-18/pl.u-d2b0MAjFMBaYDd",     img: "early-fall-18.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/2RYcUoAixXIXBvG20ot4EG" },
+  { season: "Late Fall",  year: 2018, label: "Late Fall 18",  link: "https://music.apple.com/us/playlist/late-fall-18/pl.u-V9D77GEUB1GLEP",      img: "late-fall-18.jpg",  tracks: 28, spotify: "https://open.spotify.com/playlist/0nYUvQbchOwMyPusfkpExY" },
+  { season: "Winter",     year: 2018, label: "Winter 18",     link: "https://music.apple.com/us/playlist/winter-18/pl.u-38oWWxbTPgoedq",           img: "winter-18.jpg",     tracks: 33, spotify: "https://open.spotify.com/playlist/2YYkDIZwPVwvikI5Mmeheq" },
+  { season: "Spring",     year: 2019, label: "Spring 19",     link: "https://music.apple.com/us/playlist/spring-19/pl.u-mJy82NPtzBLRyl",          img: "spring-19.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/1SjJIEuXxtitgXChNVbaLD" },
+  { season: "Summer",     year: 2019, label: "Summer 19",     link: "https://music.apple.com/us/playlist/summer-19/pl.u-9N9Lz6dFx7lBXo",          img: "summer-19.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/0uIfP6ioHSyydA9PIB2Vaz" },
+  { season: "Early Fall", year: 2019, label: "Early Fall 19", link: "https://music.apple.com/us/playlist/early-fall-19/pl.u-9N9Lz1JCx7lBXo",     img: "early-fall-19.jpg", tracks: 50, spotify: "https://open.spotify.com/playlist/2Hj7PL70UK9CfWZPV4VljW" },
+  { season: "Late Fall",  year: 2019, label: "Late Fall 19",  link: "https://music.apple.com/us/playlist/late-fall-19/pl.u-V9D7gLKcB1GLEP",      img: "late-fall-19.jpg",  tracks: 40, spotify: "https://open.spotify.com/playlist/5YM9OTBcPQ4D3UpbiFPcCM" },
+  { season: "Winter",     year: 2019, label: "Winter 19",     link: "https://music.apple.com/us/playlist/winter-19/pl.u-JPAZzKNuDWN1EJ",          img: "winter-19.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/6SBTlIPD3rvY81Tej6OTfu" },
+  { season: "Spring",     year: 2020, label: "Spring 20",     link: "https://music.apple.com/us/playlist/spring-20/pl.u-76oNzd6sWNdbxZ",          img: "spring-20.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/5YwbleigoVjSgTqp6IXwFT" },
+  { season: "Summer",     year: 2020, label: "Summer 20",     link: "https://music.apple.com/us/playlist/summer-20/pl.u-e98llB5hzWX7Ke",          img: "summer-20.jpg",     tracks: 32, spotify: "https://open.spotify.com/playlist/0S2YMJYlmIsTVn0jenS05Q" },
+  { season: "Early Fall", year: 2020, label: "Early Fall 20", link: "https://music.apple.com/us/playlist/early-fall-20/pl.u-d2b0vqlFMBaYDd",     img: "early-fall-20.jpg", tracks: 80, spotify: "https://open.spotify.com/playlist/7CGyVqHHA1bQUXoxQzpvuU" },
+  { season: "Late Fall",  year: 2020, label: "Late Fall 20",  link: "https://music.apple.com/us/playlist/late-fall-20/pl.u-DdAN243TalPdmg",      img: "late-fall-20.jpg",  tracks: 49, spotify: "https://open.spotify.com/playlist/0sRdd2wUeZPlMXMUsYbAay" },
+  { season: "Winter",     year: 2020, label: "Winter 20",     link: "https://music.apple.com/us/playlist/winter-20/pl.u-76oNPE6TWNdbxZ",          img: "winter-20.jpg",     tracks: 40, spotify: "https://open.spotify.com/playlist/5YZCTtbk12WmyOuIBHvqPG" },
+  { season: "Spring",     year: 2021, label: "Spring 21",     link: "https://music.apple.com/us/playlist/spring-21/pl.u-76oNP4pTWNdbxZ",          img: "spring-21.jpg",     tracks: 44, spotify: "https://open.spotify.com/playlist/6JHTSwKXbleLb9lL2ICzhx" },
+  { season: "Summer",     year: 2021, label: "Summer 21",     link: "https://music.apple.com/us/playlist/summer-21/pl.u-11zBPxyu8Z652j",          img: "summer-21.jpg",     tracks: 45, spotify: "https://open.spotify.com/playlist/1nBXISBE6ChK4ZNrjbBxhz" },
+  { season: "Early Fall", year: 2021, label: "Early Fall 21", link: "https://music.apple.com/us/playlist/early-fall-21/pl.u-mJy82Y8tzBLRyl",     img: "early-fall-21.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/3w0f9LyAY7ZZi3SdVyTVKL" },
+  { season: "Late Fall",  year: 2021, label: "Late Fall 21",  link: "https://music.apple.com/us/playlist/late-fall-21/pl.u-11zBPamH8Z652j",      img: "late-fall-21.jpg",  tracks: 45, spotify: "https://open.spotify.com/playlist/5qSRYX9yBWQMCfYUjPOGJb" },
+  { season: "Winter",     year: 2021, label: "Winter 21",     link: "https://music.apple.com/us/playlist/winter-21/pl.u-d2b0MX0tMBaYDd",          img: "winter-21.jpg",     tracks: 46, spotify: "https://open.spotify.com/playlist/22Az6fh1t15eCqyj697EAb" },
+  { season: "Spring",     year: 2022, label: "Spring 22",     link: "https://music.apple.com/us/playlist/spring-22/pl.u-38oWjGEuPgoedq",          img: "spring-22.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4tQAdNPuFfDW8yIvyEJHwd" },
+  { season: "Summer",     year: 2022, label: "Summer 22",     link: "https://music.apple.com/us/playlist/summer-22/pl.u-11zB9dgu8Z652j",          img: "summer-22.jpg",     tracks: 55, spotify: "https://open.spotify.com/playlist/4kzm7YvoTy5efXwr3vKKn0" },
+  { season: "Early Fall", year: 2022, label: "Early Fall 22", link: "https://music.apple.com/us/playlist/early-fall-22/pl.u-mJy82RRIzBLRyl",     img: "early-fall-22.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/6lU2OIX5JdSLjGSfRdBPdd" },
+  { season: "Late Fall",  year: 2022, label: "Late Fall 22",  link: "https://music.apple.com/us/playlist/late-fall-22/pl.u-d2b00GXFMBaYDd",      img: "late-fall-22.jpg",  tracks: 32, spotify: "https://open.spotify.com/playlist/3TmPsnkZmkhTkpCNrLzb3a" },
+  { season: "Winter",     year: 2022, label: "Winter 22",     link: "https://music.apple.com/us/playlist/winter-22/pl.u-e98l3PEczWX7Ke",          img: "winter-22.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4M0besKKGoM4SMdxjycY7L" },
+  { season: "Spring",     year: 2023, label: "Spring 23",     link: "https://music.apple.com/us/playlist/spring-23/pl.u-38oW9PWCPgoedq",          img: "spring-23.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/481f7GUGCkh1XZJvtlqEUe" },
+  { season: "Summer",     year: 2023, label: "Summer 23",     link: "https://music.apple.com/us/playlist/summer-23/pl.u-9N9LzZWCx7lBXo",          img: "summer-23.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/3dkBprGmfqm6kV6rvvAJFn" },
+  { season: "Early Fall", year: 2023, label: "Early Fall 23", link: "https://music.apple.com/us/playlist/early-fall-23/pl.u-76oNzdNuWNdbxZ",     img: "early-fall-23.jpg", tracks: 50, spotify: "https://open.spotify.com/playlist/6pBBeVg9DSvazMaAZU0L0P" },
+  { season: "Late Fall",  year: 2023, label: "Late Fall 23",  link: "https://music.apple.com/us/playlist/late-fall-23/pl.u-9N9LzpNIx7lBXo",      img: "late-fall-23.jpg",  tracks: 49, spotify: "https://open.spotify.com/playlist/5ujp91V3x0Hs5pQJVDwBcH" },
+  { season: "Winter",     year: 2023, label: "Winter 23",     link: "https://music.apple.com/us/playlist/winter-23/pl.u-e98l3gmTzWX7Ke",          img: "winter-23.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/6qgx1I9RvcerY17GpddBKE" },
+  { season: "Spring",     year: 2024, label: "Spring 24",     link: "https://music.apple.com/us/playlist/spring-24/pl.u-e98lMKDizWX7Ke",          img: "spring-24.jpg",     tracks: 46, spotify: "https://open.spotify.com/playlist/49QtzmidSEOYlGaZw5b927" },
+  { season: "Summer",     year: 2024, label: "Summer 24",     link: "https://music.apple.com/us/playlist/summer-24/pl.u-aZb0azxuPVpqyz",          img: "summer-24.jpg",     tracks: 59, spotify: "https://open.spotify.com/playlist/3Zqix1iQx1dxGQhZVsKd8C" },
+  { season: "Early Fall", year: 2024, label: "Early Fall 24", link: "https://music.apple.com/us/playlist/early-fall-24/pl.u-V9D73yGSB1GLEP",     img: "early-fall-24.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/4GQJFgxUWtJTSh153UHWme" },
+  { season: "Late Fall",  year: 2024, label: "Late Fall 24",  link: "https://music.apple.com/us/playlist/late-fall-24/pl.u-76oNz9ysWNdbxZ",      img: "late-fall-24.jpg",  tracks: 50, spotify: "https://open.spotify.com/playlist/2ky7hfee81An2oiGzDS15I" },
+  { season: "Winter",     year: 2024, label: "Winter 24",     link: "https://music.apple.com/us/playlist/winter-24/pl.u-V9D7g47FB1GLEP",          img: "winter-24.jpg",     tracks: 44, spotify: "https://open.spotify.com/playlist/1uonVmVAOVZM8XTBLoS4Iv" },
+  { season: "Spring",     year: 2025, label: "Spring 25",     link: "https://music.apple.com/us/playlist/spring-25/pl.u-mJy829ruzBLRyl",          img: "spring-25.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/2JWEjCTAF2uCq0uZy2y8ad" },
+  { season: "Summer",     year: 2025, label: "Summer 25",     link: "https://music.apple.com/us/playlist/summer-25/pl.u-11zBPZ1T8Z652j",          img: "summer-25.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/2vLnMU4UBQQLt0tcU712DX" },
   { season: "Early Fall", year: 2025, label: "Early Fall 25", link: "https://music.apple.com/us/playlist/early-fall-25/pl.u-V9D73ZpIB1GLEP",     img: "early-fall-25.jpg", tracks: 50 },
   { season: "Late Fall",  year: 2025, label: "Late Fall 25",  link: "https://music.apple.com/us/playlist/late-fall-25/pl.u-aZb0gA6uPVpqyz",      img: "late-fall-25.jpg",  tracks: 50 },
-  { season: "Winter",     year: 2025, label: "Winter 25",     link: "https://music.apple.com/us/playlist/winter-25/pl.u-JPAZzK9FDWN1EJ",          img: "winter-25.jpg",     tracks: 51 },
+  { season: "Winter",     year: 2025, label: "Winter 25",     link: "https://music.apple.com/us/playlist/winter-25/pl.u-JPAZzK9FDWN1EJ",          img: "winter-25.jpg",     tracks: 51, spotify: "https://open.spotify.com/playlist/0xowXtM7QWAaOapTKYWEzu" },
   { season: "Winter",     year: 2026, label: "Winter 26",     link: "https://music.apple.com/us/playlist/winter-26/pl.u-V9D7ZDaiB1GLEP",          img: "winter-26.jpg",     tracks: 50 },
   { season: "Spring",     year: 2026, label: "Spring 26",     link: "https://music.apple.com/us/playlist/spring-26/pl.u-JPAZBqPFDWN1EJ",          img: "spring-26.jpg",     tracks: 40, inProgress: true },
 ];
@@ -900,7 +925,14 @@ Object.keys(byYear).sort((a,b) => b - a).forEach(year => {
         <div class="playlist-card-overlay">
           <div class="card-label">${p.label}</div>
           <div class="card-tracks">${p.tracks} tracks</div>
-          <a href="${p.link}" target="_blank" class="card-link-btn" data-umami-event="playlist-click" data-umami-event-name="${p.label}">Open ↗</a>
+          <a href="${p.link}" target="_blank" class="card-link-btn" data-umami-event="playlist-click" data-umami-event-name="${p.label}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 6.628 5.374 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12zm3.369 5.28l.03 6.552c0 .08-.006.16-.018.238a1.93 1.93 0 0 1-.582 1.138 1.95 1.95 0 0 1-1.315.51 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.333L9.646 8.26v5.927a1.954 1.954 0 0 1-1.953 1.953 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.024a.87.87 0 0 1 .658-.845l5.254-1.314a.87.87 0 0 1 .858.415z"/></svg>
+            Apple Music
+          </a>
+          ${p.spotify ? `<a href="${p.spotify}" target="_blank" class="card-spotify-btn" data-umami-event="spotify-click" data-umami-event-name="${p.label}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            Spotify
+          </a>` : ''}
         </div>
       </div>
       <div class="card-caption">
