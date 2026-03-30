@@ -239,6 +239,24 @@
     flex-shrink: 0;
   }
 
+  @media (max-width: 480px) {
+    .featured-card {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .featured-cover {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+    }
+
+    .featured-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
   @media (max-width: 360px) {
     .featured-cover {
       width: 72px;
