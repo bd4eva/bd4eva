@@ -551,6 +551,8 @@
   .card-link-btn,
   .card-spotify-btn {
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -563,6 +565,13 @@
     font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  .card-btn-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   .card-link-btn {
