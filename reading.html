@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BD4EVA — Reading</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede6;
+    --accent: #00c2b8;
+    --accent-dark: #009e96;
+    --muted: #aaa;
+    --border: #1c1c1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: opacity 0.15s;
+  }
+  .back-link:hover { opacity: 0.75; }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .page-subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px 0;
+  }
+  .section:last-of-type { padding-bottom: 80px; }
+
+  .section-rule {
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease, opacity 0.3s ease;
+  }
+  .section.is-visible .section-rule {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .section-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    color: var(--white);
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+
+  /* ── YEAR STATS ── */
+  .year-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .year-stat {
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    min-width: 72px;
+  }
+
+  .year-stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .year-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── BOOK CARDS ── */
+  .book-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .book-card {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .book-card:last-child { border-bottom: none; }
+
+  .book-cover {
+    width: 56px;
+    height: 84px;
+    flex-shrink: 0;
+    object-fit: cover;
+    display: block;
+    background: #111;
+  }
+
+  .book-cover-placeholder {
+    width: 56px;
+    height: 84px;
+    flex-shrink: 0;
+    background: #111;
+    border: 1px solid var(--border);
+  }
+
+  .book-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 2px;
+  }
+
+  .book-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .book-author {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .book-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .book-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 0.04em;
+  }
+
+  .book-stars {
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .star-filled { color: var(--accent); }
+  .star-empty  { color: #2a2a2a; }
+
+  /* ── LOADING / ERROR ── */
+  .status-msg {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .footer-link:hover { color: var(--accent-dark); }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← BD4EVA</a>
+  <h1 class="page-title">WHAT I'VE<br>BEEN READING</h1>
+  <p class="page-subhead">Every book since I started tracking.</p>
+</div>
+
+<div id="content">
+  <div class="status-msg">Loading...</div>
+</div>
+
+<footer>
+  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
+  <div class="footer-text">2016 – 2026</div>
+</footer>
+
+<script>
+const QUERY = `query MyBooks {
+  me {
+    user_books(where: { status_id: { _eq: 3 } }) {
+      rating
+      user_book_reads { finished_at }
+      book {
+        title
+        contributions { author { name } }
+        image { url }
+        pages
+      }
+    }
+  }
+}`;
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function formatDate(str) {
+  if (!str) return '';
+  const [y, m] = str.split('-');
+  return MONTHS[parseInt(m, 10) - 1] + ' ' + y;
+}
+
+function renderStars(rating) {
+  const stars = rating != null ? Math.round(rating / 2) : 0;
+  let out = '';
+  for (let i = 1; i <= 5; i++) {
+    out += `<span class="${i <= stars ? 'star-filled' : 'star-empty'}">★</span>`;
+  }
+  return out;
+}
+
+function finishedAt(ub) {
+  return ub.user_book_reads && ub.user_book_reads.length
+    ? ub.user_book_reads[0].finished_at : null;
+}
+
+function buildYearSection(year, books) {
+  // Sort: most recent first
+  books.sort((a, b) => (finishedAt(b) || '').localeCompare(finishedAt(a) || ''));
+
+  const count = books.length;
+  const pages = books.reduce((s, ub) => s + (ub.book.pages || 0), 0);
+  const rated = books.filter(ub => ub.rating != null && ub.rating > 0);
+  const avgRating = rated.length
+    ? (rated.reduce((s, ub) => s + ub.rating / 2, 0) / rated.length).toFixed(1)
+    : null;
+
+  // Most read author
+  const authorCount = {};
+  books.forEach(ub => {
+    const name = ub.book.contributions && ub.book.contributions.length
+      ? ub.book.contributions[0].author.name : null;
+    if (name) authorCount[name] = (authorCount[name] || 0) + 1;
+  });
+  const topEntry = Object.entries(authorCount).sort((a, b) => b[1] - a[1])[0];
+
+  const section = document.createElement('div');
+  section.className = 'section';
+
+  const topAuthorStat = topEntry && topEntry[1] > 1
+    ? `<div class="year-stat">
+        <div class="year-stat-number" style="font-size:clamp(12px,3vw,18px);line-height:1.2;">${topEntry[0]}</div>
+        <div class="year-stat-label">Most Read (${topEntry[1]})</div>
+       </div>` : '';
+
+  section.innerHTML = `
+    <div class="section-rule"></div>
+    <h2 class="section-heading">${year}</h2>
+    <div class="year-stats">
+      <div class="year-stat">
+        <div class="year-stat-number">${count}</div>
+        <div class="year-stat-label">Books</div>
+      </div>
+      <div class="year-stat">
+        <div class="year-stat-number">${pages.toLocaleString()}</div>
+        <div class="year-stat-label">Pages</div>
+      </div>
+      ${avgRating ? `<div class="year-stat">
+        <div class="year-stat-number">${avgRating} ★</div>
+        <div class="year-stat-label">Avg Rating</div>
+      </div>` : ''}
+      ${topAuthorStat}
+    </div>
+    <div class="book-list"></div>
+  `;
+
+  const list = section.querySelector('.book-list');
+  books.forEach(ub => {
+    const b = ub.book;
+    const author = b.contributions && b.contributions.length
+      ? b.contributions[0].author.name : '';
+    const finished = finishedAt(ub);
+    const imgUrl = b.image && b.image.url;
+
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.innerHTML = `
+      ${imgUrl
+        ? `<img class="book-cover" src="${imgUrl}" alt="${b.title.replace(/"/g,'&quot;')}" loading="lazy">`
+        : `<div class="book-cover-placeholder"></div>`}
+      <div class="book-info">
+        <div class="book-title">${b.title}</div>
+        ${author ? `<div class="book-author">${author}</div>` : ''}
+        <div class="book-meta">
+          ${finished ? `<span class="book-date">${formatDate(finished)}</span>` : ''}
+          ${ub.rating != null && ub.rating > 0
+            ? `<span class="book-stars">${renderStars(ub.rating)}</span>` : ''}
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  return section;
+}
+
+async function load() {
+  const content = document.getElementById('content');
+  try {
+    const res = await fetch('https://api.hardcover.app/v1/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIYXJkY292ZXIiLCJ2ZXJzaW9uIjoiOCIsImp0aSI6ImVjZjc5ODQ2LTIyOTMtNDk4NC04MzU5LTZlMzQ4YmIyOWUwNCIsImFwcGxpY2F0aW9uSWQiOjIsInN1YiI6Ijg3ODQ5IiwiYXVkIjoiMSIsImlkIjoiODc4NDkiLCJsb2dnZWRJbiI6dHJ1ZSwiaWF0IjoxNzc1MDAwOTczLCJleHAiOjE4MDY1MzY5NzMsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1yb2xlIjoidXNlciIsIlgtaGFzdXJhLXVzZXItaWQiOiI4Nzg0OSJ9LCJ1c2VyIjp7ImlkIjo4Nzg0OX19.vWt5gxa0ZA9RKQQRn7wUXwy1UlInl2aCZRtRwHoy5BU'
+      },
+      body: JSON.stringify({ query: QUERY })
+    });
+
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0].message);
+
+    const userBooks = json.data.me[0].user_books;
+
+    // Group by year
+    const byYear = {};
+    userBooks.forEach(ub => {
+      const d = finishedAt(ub);
+      if (!d) return;
+      const y = d.slice(0, 4);
+      if (!byYear[y]) byYear[y] = [];
+      byYear[y].push(ub);
+    });
+
+    content.innerHTML = '';
+    Object.keys(byYear)
+      .sort((a, b) => b - a)
+      .forEach(year => content.appendChild(buildYearSection(year, byYear[year])));
+
+    // Animate section rules on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  } catch (err) {
+    content.innerHTML = `<div class="status-msg">Couldn't load books. Try refreshing.</div>`;
+    console.error(err);
+  }
+}
+
+load();
+</script>
+</body>
+</html>
