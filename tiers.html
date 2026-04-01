@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BD4EVA — Ranked</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede6;
+    --accent: #00c2b8;
+    --accent-dark: #009e96;
+    --muted: #aaa;
+    --border: #1c1c1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+
+  .header-links {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.15s;
+  }
+  .back-link:hover { opacity: 0.75; }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .page-subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ── STICKY YEAR NAV ── */
+  .year-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--black);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .year-nav::-webkit-scrollbar { display: none; }
+
+  .year-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .year-nav-btn:hover,
+  .year-nav-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── YEAR SECTIONS ── */
+  .year-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .year-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 80px;
+  }
+
+  .year-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    color: var(--white);
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
+  /* ── TIER LIST ── */
+  .tier-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tier-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    min-height: 94px;
+  }
+  .tier-row:last-child { border-bottom: none; }
+
+  /* ── TIER LABEL COLUMN ── */
+  .tier-left {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .tier-color-bar {
+    width: 4px;
+    flex-shrink: 0;
+  }
+
+  .tier-label-inner {
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .tier-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  .tier-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── TIER COVERS ── */
+  .tier-covers {
+    flex: 1;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tier-covers::-webkit-scrollbar { display: none; }
+
+  .tier-empty {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    padding: 0 4px;
+  }
+
+  /* ── COVER CARDS ── */
+  .cover-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .cover-img {
+    width: 52px;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+  }
+
+  .cover-placeholder {
+    width: 52px;
+    height: 78px;
+    background: #1c1c1c;
+    border-radius: 2px;
+    display: block;
+  }
+
+  .cover-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 20;
+    border: 1px solid var(--border);
+  }
+  .cover-wrap:hover .cover-tooltip { opacity: 1; }
+
+  /* ── LOADING / ERROR ── */
+  .status-msg {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .footer-link:hover { color: var(--accent-dark); }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-links">
+    <a href="index.html" class="back-link">← BD4EVA</a>
+  </div>
+  <h1 class="page-title">RANKED</h1>
+  <p class="page-subhead">Every year. Every book. Sorted by how much I liked them.</p>
+</div>
+
+<nav class="year-nav" id="yearNav">
+  <button class="year-nav-btn active" data-year="2026">2026</button>
+  <button class="year-nav-btn" data-year="2025">2025</button>
+  <button class="year-nav-btn" data-year="2024">2024</button>
+</nav>
+
+<div id="tiers-content">
+  <div class="status-msg">Loading...</div>
+</div>
+
+<footer>
+  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
+  <div class="footer-text">2016 – 2026</div>
+</footer>
+
+<script>
+const COVER_OVERRIDES = {
+  "Long Island Golf": "/covers/books/long-island-golf.jpg",
+  "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg"
+};
+
+const TIERS = {
+  "2026": {
+    "LOVED IT": ["The Eye of the Bedlam Bride", "A Parade of Horribles", "This Inevitable Ruin", "The Butcher's Masquerade"],
+    "REALLY LIKED IT": ["Mother Night"],
+    "WORTH A READ": [],
+    "NEUTRAL": [],
+    "SUCKED": ["Long Island Golf"],
+    "DNF'D": []
+  },
+  "2025": {
+    "LOVED IT": ["The Strength of the Few", "The Will of the Many", "Lonesome Dove", "The Devils", "Brother", "Razorblade Tears", "When the Wolf Comes Home", "Nobody Knows You're Here", "I Who Have Never Known Men", "Rest Stop"],
+    "REALLY LIKED IT": ["The Gate of the Feral Gods", "Dark Matter", "A Knight of the Seven Kingdoms", "Stoner", "Hidden Pictures", "Maggie's Grave", "Mean Spirited", "The Buffalo Hunter Hunter", "The Girl Next Door", "Station Eleven", "Who Is Government?: The Untold Story of Public Service", "On Tyranny: Twenty Lessons from the Twentieth Century"],
+    "WORTH A READ": ["How to Write One Song", "The match", "Wake Up and Open Your Eyes", "Dead of Winter", "Thornhedge", "Evil in Me", "The Dungeon Anarchist's Cookbook", "The Worst Kind of Monsters", "On the Calculation of Volume (Book I)", "The Reformatory", "The Salt Grows Heavy"],
+    "NEUTRAL": ["The Wager: A Tale of Shipwreck, Mutiny and Murder", "Dark Harvest", "On the Calculation of Volume (Book II)", "Fahrenheit 451", "Red Letter Days", "Crazy Horse", "A Psalm for the Wild-Built", "A Prayer for the Crown-Shy", "Everything Is Tuberculosis: The History and Persistence of Our Deadliest Infection", "Ben Hogan's Five Lessons: The Modern Fundamentals of Golf", "The Rise and Fall of the Dinosaurs: A New History of a Lost World", "The Wide, Carnivorous Sky and Other Monstrous Geographies", "Entangled Life: How Fungi Make Our Worlds, Change Our Minds & Shape Our Futures", "Train Dreams", "The Four Agreements: A Practical Guide to Personal Freedom"],
+    "SUCKED": ["This Is How You Lose the Time War", "Eynhallow", "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life", "Voice Like a Hyacinth"],
+    "DNF'D": []
+  },
+  "2024": {
+    "LOVED IT": ["Slewfoot: A Tale of Bewitchery", "Project Hail Mary", "The Spear Cuts Through Water", "The Hike", "Dungeon Crawler Carl", "Piranesi", "A Short Stay in Hell"],
+    "REALLY LIKED IT": ["The Sword of Kaigen", "Redshirts", "Carl's Doomsday Scenario", "Krampus: The Yule Lord", "1984", "Look Closer", "The Haar", "FantasticLand", "Clown in a Cornfield", "Mary: An Awakening of Terror"],
+    "WORTH A READ": ["The Fisherman", "The Road", "Small Things Like These", "Diavola", "The Troop", "Intercepts"],
+    "NEUTRAL": ["Mythos: The Greek Myths Retold", "The Old Man and the Sea", "A Head Full of Ghosts", "The Butcher of the Forest", "The Wood at Midwinter", "Un chant de Noël"],
+    "SUCKED": ["The Last House on Needless Street", "The Legend of Sleepy Hollow"],
+    "DNF'D": []
+  }
+};
+
+const TIER_ORDER = ["LOVED IT", "REALLY LIKED IT", "WORTH A READ", "NEUTRAL", "SUCKED", "DNF'D"];
+const TIER_COLORS = {
+  "LOVED IT":       "#4ade80",
+  "REALLY LIKED IT":"#a3e635",
+  "WORTH A READ":   "#facc15",
+  "NEUTRAL":        "#fb923c",
+  "SUCKED":         "#f87171",
+  "DNF'D":          "#9ca3af"
+};
+
+async function load() {
+  // Build title → cover URL map from API
+  const imageMap = {};
+  try {
+    const res = await fetch('/api/books');
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data && json.data.me && json.data.me[0]) {
+        (json.data.me[0].user_books || []).forEach(ub => {
+          if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+            imageMap[ub.book.title] = ub.book.image.url;
+          }
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('Could not load covers from API:', e);
+  }
+
+  const container = document.getElementById('tiers-content');
+  container.innerHTML = '';
+
+  const years = Object.keys(TIERS).sort((a, b) => b - a);
+
+  years.forEach(year => {
+    const section = document.createElement('section');
+    section.className = 'year-section';
+    section.id = `year-${year}`;
+
+    const heading = document.createElement('h2');
+    heading.className = 'year-heading';
+    heading.textContent = year;
+    section.appendChild(heading);
+
+    const tierList = document.createElement('div');
+    tierList.className = 'tier-list';
+
+    TIER_ORDER.forEach(tierName => {
+      const books = TIERS[year][tierName] || [];
+      const color = TIER_COLORS[tierName];
+      const countText = books.length === 1 ? '1 book' : `${books.length} books`;
+
+      const row = document.createElement('div');
+      row.className = 'tier-row';
+
+      let coversHtml;
+      if (books.length === 0) {
+        coversHtml = '<span class="tier-empty">—</span>';
+      } else {
+        coversHtml = books.map(title => {
+          const src = COVER_OVERRIDES[title] || imageMap[title];
+          const safe = title.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+          const img = src
+            ? `<img class="cover-img" src="${src}" alt="${safe}" loading="lazy">`
+            : `<div class="cover-placeholder"></div>`;
+          return `<div class="cover-wrap">${img}<div class="cover-tooltip">${safe}</div></div>`;
+        }).join('');
+      }
+
+      row.innerHTML = `
+        <div class="tier-left">
+          <div class="tier-color-bar" style="background:${color}"></div>
+          <div class="tier-label-inner">
+            <div class="tier-name" style="color:${color}">${tierName}</div>
+            <div class="tier-count">${countText}</div>
+          </div>
+        </div>
+        <div class="tier-covers">${coversHtml}</div>
+      `;
+      tierList.appendChild(row);
+    });
+
+    section.appendChild(tierList);
+    container.appendChild(section);
+  });
+
+  // Active year tracking on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const year = e.target.id.replace('year-', '');
+        document.querySelectorAll('.year-nav-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.year === year);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  document.querySelectorAll('.year-section').forEach(s => observer.observe(s));
+}
+
+// Year nav smooth scroll
+document.querySelectorAll('.year-nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(`year-${btn.dataset.year}`);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+load();
+</script>
+</body>
+</html>
