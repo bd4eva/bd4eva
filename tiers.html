@@ -351,6 +351,7 @@ async function load() {
     const res = await fetch('/api/books');
     if (res.ok) {
       const json = await res.json();
+      // Finished books
       if (json.data && json.data.me && json.data.me[0]) {
         (json.data.me[0].user_books || []).forEach(ub => {
           if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
@@ -358,6 +359,12 @@ async function load() {
           }
         });
       }
+      // Currently reading books — same cover data, include so no gaps
+      (json.currentlyReading || []).forEach(ub => {
+        if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+          imageMap[ub.book.title] = ub.book.image.url;
+        }
+      });
     }
   } catch (e) {
     console.warn('Could not load covers from API:', e);
