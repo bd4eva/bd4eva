@@ -265,26 +265,10 @@
   }
 
   /* ── COVER CARDS ── */
-  .cover-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .cover-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #f0ede6;
-    text-align: center;
-    max-width: 52px;
-    line-height: 1.3;
-    display: none;
-    word-break: break-word;
-  }
-  .cover-wrap.active .cover-title { display: block; }
+  .cover-wrap { position: relative; flex-shrink: 0; cursor: pointer; }
+  .cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; border-radius: 2px; pointer-events: none; }
+  .cover-overlay-text { font-family: 'DM Mono', monospace; font-size: 9px; color: #f0ede6; text-align: center; padding: 4px; line-height: 1.4; word-break: break-word; }
+  .cover-wrap.active .cover-overlay { opacity: 1; }
 
   .cover-img {
     width: 52px;
@@ -512,7 +496,7 @@ async function load() {
           const img = src
             ? `<img class="cover-img" src="${src}" alt="${safe}" loading="lazy">`
             : `<div class="cover-placeholder"></div>`;
-          return `<div class="cover-wrap">${img}<div class="cover-title">${safe}</div></div>`;
+          return `<div class="cover-wrap">${img}<div class="cover-overlay"><div class="cover-overlay-text">${safe}</div></div></div>`;
         }).join('');
       }
 
