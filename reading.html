@@ -285,6 +285,11 @@
 </footer>
 
 <script>
+const BOOK_COVER_OVERRIDES = {
+  "Long Island Golf": "/covers/books/long-island-golf.jpg",
+  "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg"
+};
+
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function formatDate(str) {
@@ -367,7 +372,7 @@ function buildYearSection(year, books) {
     const author = b.contributions && b.contributions.length
       ? b.contributions[0].author.name : '';
     const finished = finishedAt(ub);
-    const imgUrl = b.image && b.image.url;
+    const imgUrl = BOOK_COVER_OVERRIDES[b.title] || (b.image && b.image.url);
 
     const card = document.createElement('div');
     card.className = 'book-card';
