@@ -318,14 +318,18 @@ function buildYearSection(year, books) {
     ? (rated.reduce((s, ub) => s + ub.rating, 0) / rated.length).toFixed(1)
     : null;
 
-  // Most read author
+  // Most read author (overrides resolve ties)
+  const AUTHOR_OVERRIDES = { '2024': 'BROM', '2025': 'Nat Cassidy' };
   const authorCount = {};
   books.forEach(ub => {
     const name = ub.book.contributions && ub.book.contributions.length
       ? ub.book.contributions[0].author.name : null;
     if (name) authorCount[name] = (authorCount[name] || 0) + 1;
   });
-  const topEntry = Object.entries(authorCount).sort((a, b) => b[1] - a[1])[0];
+  const override = AUTHOR_OVERRIDES[year];
+  const topEntry = override && authorCount[override]
+    ? [override, authorCount[override]]
+    : Object.entries(authorCount).sort((a, b) => b[1] - a[1])[0];
 
   const section = document.createElement('div');
   section.className = 'section';
