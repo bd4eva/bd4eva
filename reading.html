@@ -214,6 +214,14 @@
     letter-spacing: 0.04em;
   }
 
+  .book-in-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   .book-stars {
     font-size: 12px;
     letter-spacing: 1px;
@@ -313,6 +321,46 @@ function finishedAt(ub) {
     ? ub.user_book_reads[0].finished_at : null;
 }
 
+function buildCurrentlyReadingSection(books) {
+  if (!books || books.length === 0) return null;
+
+  const section = document.createElement('div');
+  section.className = 'section';
+
+  section.innerHTML = `
+    <div class="section-rule"></div>
+    <h2 class="section-heading">Currently Reading</h2>
+    <div class="book-list"></div>
+  `;
+
+  const list = section.querySelector('.book-list');
+  books.forEach(ub => {
+    const b = ub.book;
+    const author = b.contributions && b.contributions.length
+      ? b.contributions[0].author.name : '';
+    const imgUrl = BOOK_COVER_OVERRIDES[b.title] || (b.image && b.image.url);
+
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.innerHTML = `
+      ${imgUrl
+        ? `<img class="book-cover" src="${imgUrl}" alt="${b.title.replace(/"/g,'&quot;')}" loading="lazy">`
+        : `<div class="book-cover-placeholder"></div>`}
+      <div class="book-info">
+        <div class="book-title">${b.title}</div>
+        ${author ? `<div class="book-author">${author}</div>` : ''}
+        <div class="book-meta">
+          ${b.pages ? `<span class="book-pages">${b.pages.toLocaleString()} pp</span>` : ''}
+          <span class="book-in-progress">In Progress</span>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  return section;
+}
+
 function buildYearSection(year, books) {
   // Sort: most recent first
   books.sort((a, b) => (finishedAt(b) || '').localeCompare(finishedAt(a) || ''));
@@ -410,6 +458,7 @@ async function load() {
     if (!json.data || !json.data.me || !json.data.me[0]) throw new Error('Unexpected API response shape');
 
     const userBooks = json.data.me[0].user_books || [];
+    const currentlyReading = json.currentlyReading || [];
 
     // Group by year
     const byYear = {};
@@ -451,6 +500,9 @@ async function load() {
         <div class="year-stat-label">Years Tracked</div>
       </div>
     `;
+
+    const currentSection = buildCurrentlyReadingSection(currentlyReading);
+    if (currentSection) content.appendChild(currentSection);
 
     Object.keys(byYear)
       .sort((a, b) => b - a)
