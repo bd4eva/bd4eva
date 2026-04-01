@@ -230,6 +230,56 @@
   .star-filled { color: var(--accent); }
   .star-empty  { color: #2a2a2a; }
 
+  /* ── RANKED CARD ── */
+  #ranked-card-slot {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 20px 0;
+  }
+
+  .ranked-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+  .ranked-card:hover { border-color: var(--accent); }
+
+  .ranked-card-text {}
+
+  .ranked-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .ranked-card-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ranked-card-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 7px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
   /* ── LOADING / ERROR ── */
   .status-msg {
     max-width: 900px;
@@ -277,12 +327,12 @@
 
 <div class="page-header">
   <a href="index.html" class="back-link">← BD4EVA</a>
-  <a href="tiers.html" class="back-link" style="margin-left:16px;">RANKED →</a>
   <h1 class="page-title">WHAT I'VE<br>BEEN READING</h1>
   <p class="page-subhead">Every book since I started tracking.</p>
 </div>
 
 <div id="alltime-stats"></div>
+<div id="ranked-card-slot"></div>
 
 <div id="content">
   <div class="status-msg">Loading...</div>
@@ -499,6 +549,16 @@ async function load() {
         <div class="year-stat-number" style="font-size:clamp(14px,3vw,22px);line-height:1.2;">${yearsLabel}</div>
         <div class="year-stat-label">Years Tracked</div>
       </div>
+    `;
+
+    document.getElementById('ranked-card-slot').innerHTML = `
+      <a href="tiers.html" class="ranked-card">
+        <div class="ranked-card-text">
+          <div class="ranked-card-title">Ranked</div>
+          <div class="ranked-card-sub">Every year. Every book. Sorted.</div>
+        </div>
+        <div class="ranked-card-cta">View Tiers →</div>
+      </a>
     `;
 
     const currentSection = buildCurrentlyReadingSection(currentlyReading);
