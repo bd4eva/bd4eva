@@ -117,6 +117,16 @@
   }
   .section:last-of-type { padding-bottom: 80px; }
 
+  .section {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .section-rule {
     width: 100%;
     height: 2px;
@@ -657,7 +667,7 @@ async function load() {
     });
     yearNav.style.display = '';
 
-    // Animate section rules on scroll + active year highlight
+    // Animate sections on scroll (fade-in-up + section-rule)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -665,8 +675,12 @@ async function load() {
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+    // Immediately reveal first section without waiting for scroll
+    const firstSection = document.querySelector('.section');
+    if (firstSection) firstSection.classList.add('is-visible');
 
     const activeObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
