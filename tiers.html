@@ -286,29 +286,6 @@
     display: block;
   }
 
-  .cover-tooltip {
-    position: absolute;
-    top: calc(100% + 4px);
-    bottom: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #080808;
-    color: #f0ede6;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 6px 8px;
-    border-radius: 3px;
-    border: 1px solid #00c2b8;
-    max-width: 140px;
-    text-align: center;
-    white-space: normal;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s;
-    z-index: 10;
-  }
-  .cover-wrap:hover .cover-tooltip { opacity: 1; }
-  .cover-wrap.active .cover-tooltip { opacity: 1; pointer-events: auto; }
 
   /* ── LOADING / ERROR ── */
   .status-msg {
@@ -519,7 +496,7 @@ async function load() {
           const img = src
             ? `<img class="cover-img" src="${src}" alt="${safe}" loading="lazy">`
             : `<div class="cover-placeholder"></div>`;
-          return `<div class="cover-wrap">${img}<div class="cover-tooltip">${safe}</div></div>`;
+          return `<div class="cover-wrap" data-title="${safe}">${img}</div>`;
         }).join('');
       }
 
@@ -579,18 +556,16 @@ document.querySelectorAll('.year-nav-btn').forEach(btn => {
   });
 });
 
-// Tap-to-reveal tooltip on covers
+// Tap-to-reveal book title label
+let labelTimer;
 document.getElementById('tiers-content').addEventListener('click', e => {
   const wrap = e.target.closest('.cover-wrap');
   if (!wrap) return;
-  e.stopPropagation();
-  const isActive = wrap.classList.contains('active');
-  document.querySelectorAll('.cover-wrap.active').forEach(w => w.classList.remove('active'));
-  if (!isActive) wrap.classList.add('active');
-});
-
-document.addEventListener('click', () => {
-  document.querySelectorAll('.cover-wrap.active').forEach(w => w.classList.remove('active'));
+  const label = document.getElementById('book-label');
+  label.textContent = wrap.dataset.title;
+  label.style.display = 'block';
+  clearTimeout(labelTimer);
+  labelTimer = setTimeout(() => { label.style.display = 'none'; }, 2000);
 });
 
 load();
@@ -621,5 +596,6 @@ backToTop.addEventListener('click', () => {
 </script>
 
 <button id="back-to-top" aria-label="Back to top">↑</button>
+<div id="book-label" style="display:none; position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#080808; color:#f0ede6; font-family:'DM Mono',monospace; font-size:12px; padding:8px 14px; border-radius:4px; border:1px solid #00c2b8; z-index:100; max-width:80vw; text-align:center; white-space:normal; pointer-events:none;"></div>
 </body>
 </html>
