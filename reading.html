@@ -142,15 +142,57 @@
     transform: scaleX(1);
   }
 
+  .section-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
   .section-heading {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(32px, 5vw, 48px);
     color: var(--white);
     border-left: 3px solid var(--accent);
     padding-left: 16px;
-    margin-bottom: 24px;
     line-height: 1;
+    margin-bottom: 0;
   }
+
+  .share-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    transition: color 0.15s;
+  }
+  .share-btn:hover { color: var(--white); }
+
+  .share-tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .share-tooltip.show { opacity: 1; }
 
   /* ── YEAR STATS ── */
   .year-stats {
@@ -531,7 +573,13 @@ function buildYearSection(year, books) {
 
   section.innerHTML = `
     <div class="section-rule"></div>
-    <h2 class="section-heading">${year}</h2>
+    <div class="section-heading-row">
+      <h2 class="section-heading">${year}</h2>
+      <button class="share-btn" data-year="${year}" aria-label="Share ${year}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span class="share-tooltip">Copied!</span>
+      </button>
+    </div>
     <div class="year-stats">
       <div class="year-stat">
         <div class="year-stat-number">${count}</div>
@@ -704,6 +752,22 @@ async function load() {
 }
 
 load();
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.share-btn');
+  if (!btn) return;
+  const year = btn.dataset.year;
+  const url = window.location.origin + window.location.pathname + `#year-${year}`;
+  const tooltip = btn.querySelector('.share-tooltip');
+  if (navigator.share) {
+    navigator.share({ title: `BD4EVA – ${year}`, url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      tooltip.classList.add('show');
+      setTimeout(() => tooltip.classList.remove('show'), 1800);
+    });
+  }
+});
 
 const backToTop = document.getElementById('back-to-top');
 window.addEventListener('scroll', () => {
