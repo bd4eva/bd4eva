@@ -8,6 +8,7 @@ const QUERY = `query MyBooks {
         contributions { author { name } }
         image { url }
         pages
+        genres { genre { name } }
       }
     }
   }

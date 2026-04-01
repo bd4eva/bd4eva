@@ -192,6 +192,24 @@
     letter-spacing: 0.03em;
   }
 
+  .book-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .book-genre {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--border);
+    padding: 3px 6px;
+    border-radius: 2px;
+  }
+
   .book-meta {
     display: flex;
     align-items: center;
@@ -374,6 +392,9 @@ function buildYearSection(year, books) {
       <div class="book-info">
         <div class="book-title">${b.title}</div>
         ${author ? `<div class="book-author">${author}</div>` : ''}
+        ${b.genres && b.genres.length
+          ? `<div class="book-genres">${b.genres.slice(0, 2).map(g => `<span class="book-genre">${g.genre.name}</span>`).join('')}</div>`
+          : ''}
         <div class="book-meta">
           ${finished ? `<span class="book-date">${formatDate(finished)}</span>` : ''}
           ${b.pages ? `<span class="book-pages">${b.pages.toLocaleString()} pp</span>` : ''}
