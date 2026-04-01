@@ -289,19 +289,23 @@
     bottom: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
-    background: var(--black);
-    color: var(--white);
+    background: #080808;
+    color: #f0ede6;
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 4px 8px;
-    white-space: nowrap;
+    font-size: 11px;
+    padding: 6px 8px;
+    border-radius: 3px;
+    border: 1px solid #00c2b8;
+    max-width: 140px;
+    text-align: center;
+    white-space: normal;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.15s;
-    z-index: 20;
-    border: 1px solid var(--border);
+    z-index: 10;
   }
   .cover-wrap:hover .cover-tooltip { opacity: 1; }
+  .cover-wrap.active .cover-tooltip { opacity: 1; pointer-events: auto; }
 
   /* ── LOADING / ERROR ── */
   .status-msg {
@@ -570,6 +574,20 @@ document.querySelectorAll('.year-nav-btn').forEach(btn => {
     const target = document.getElementById(`year-${btn.dataset.year}`);
     if (target) target.scrollIntoView({ behavior: 'smooth' });
   });
+});
+
+// Tap-to-reveal tooltip on covers
+document.getElementById('tiers-content').addEventListener('click', e => {
+  const wrap = e.target.closest('.cover-wrap');
+  if (!wrap) return;
+  e.stopPropagation();
+  const isActive = wrap.classList.contains('active');
+  document.querySelectorAll('.cover-wrap.active').forEach(w => w.classList.remove('active'));
+  if (!isActive) wrap.classList.add('active');
+});
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.cover-wrap.active').forEach(w => w.classList.remove('active'));
 });
 
 load();
