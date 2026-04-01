@@ -80,6 +80,58 @@
     margin-top: 3px;
   }
 
+  /* ── NAV HAMBURGER ── */
+  header { position: relative; }
+
+  .nav-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--white);
+    cursor: pointer;
+    padding: 7px 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s;
+    z-index: 100;
+  }
+  .nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-toggle svg { width: 16px; height: 16px; display: block; }
+
+  .nav-dropdown {
+    position: absolute;
+    top: 52px;
+    right: 20px;
+    background: #111;
+    border: 1px solid var(--border);
+    min-width: 160px;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .nav-dropdown.open { display: block; }
+
+  .nav-item {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { color: var(--accent); background: #181818; }
+  .nav-item.active { color: var(--accent); }
+
   /* ── INSIGHTS LINK ── */
   .insights-cta {
     margin-top: 20px;
@@ -697,6 +749,17 @@
 
 <!-- HEADER -->
 <header>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <div class="nav-dropdown" id="navDropdown" role="menu">
+    <a href="index.html" class="nav-item active" role="menuitem" data-umami-event="nav-music">Music</a>
+    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-books">Books</a>
+  </div>
   <div class="eyebrow">BD4EVA — 2016 to 2026</div>
   <h1>My Playlists,<br>For You</h1>
   <div class="stats-row">
@@ -716,7 +779,6 @@
   <div class="insights-cta">
     <a href="insights.html" class="insights-link" data-umami-event="insights-click">DATA &amp; INSIGHTS →</a>
     <p class="insights-subtitle">10 years of listening, visualized.</p>
-    <a href="reading.html" class="insights-link" style="background:transparent;color:var(--accent);border:1px solid var(--accent);margin-top:8px;" data-umami-event="reading-click">READING →</a>
   </div>
   <div class="scroll-indicator" id="scrollIndicator">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1064,6 +1126,27 @@ const yearObserver = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-30% 0px -60% 0px' });
 yearGroups.forEach(g => yearObserver.observe(g));
+
+// Hamburger nav
+const navToggle = document.getElementById('navToggle');
+const navDropdown = document.getElementById('navDropdown');
+navToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = navDropdown.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+});
+document.addEventListener('click', (e) => {
+  if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
 
 // Scroll indicator
 const scrollIndicator = document.getElementById('scrollIndicator');
