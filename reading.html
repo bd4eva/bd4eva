@@ -72,6 +72,42 @@
     gap: 8px;
   }
 
+  /* ── YEAR NAV ── */
+  .year-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--black);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .year-nav::-webkit-scrollbar { display: none; }
+
+  .year-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .year-nav-btn:hover,
+  .year-nav-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   /* ── SECTIONS ── */
   .section {
     max-width: 900px;
@@ -333,6 +369,7 @@
 
 <div id="alltime-stats"></div>
 <div id="ranked-card-slot"></div>
+<nav class="year-nav" id="yearNav" style="display:none;"></nav>
 
 <div id="content">
   <div class="status-msg">Loading...</div>
@@ -437,6 +474,7 @@ function buildYearSection(year, books) {
 
   const section = document.createElement('div');
   section.className = 'section';
+  section.id = `year-${year}`;
 
   const topAuthorStat = topEntry && topEntry[1] > 1
     ? `<div class="year-stat">
@@ -564,11 +602,24 @@ async function load() {
     const currentSection = buildCurrentlyReadingSection(currentlyReading);
     if (currentSection) content.appendChild(currentSection);
 
-    Object.keys(byYear)
-      .sort((a, b) => b - a)
-      .forEach(year => content.appendChild(buildYearSection(year, byYear[year])));
+    const sortedYears = Object.keys(byYear).sort((a, b) => b - a);
+    sortedYears.forEach(year => content.appendChild(buildYearSection(year, byYear[year])));
 
-    // Animate section rules on scroll
+    // Build year nav
+    const yearNav = document.getElementById('yearNav');
+    yearNav.innerHTML = '';
+    sortedYears.forEach((year, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'year-nav-btn' + (i === 0 ? ' active' : '');
+      btn.textContent = year;
+      btn.addEventListener('click', () => {
+        document.getElementById(`year-${year}`).scrollIntoView({ behavior: 'smooth' });
+      });
+      yearNav.appendChild(btn);
+    });
+    yearNav.style.display = '';
+
+    // Animate section rules on scroll + active year highlight
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -578,6 +629,21 @@ async function load() {
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+    const activeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const year = e.target.id.replace('year-', '');
+          document.querySelectorAll('.year-nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent === year);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sortedYears.forEach(year => {
+      const el = document.getElementById(`year-${year}`);
+      if (el) activeObserver.observe(el);
+    });
 
   } catch (err) {
     content.innerHTML = `<div class="status-msg">Couldn't load books — ${err.message}</div>`;
