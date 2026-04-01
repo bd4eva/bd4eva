@@ -188,6 +188,7 @@
     align-items: stretch;
     border-bottom: 1px solid var(--border);
     min-height: 94px;
+    overflow: visible;
   }
   .tier-row:last-child { border-bottom: none; }
 
@@ -228,7 +229,8 @@
   /* ── TIER COVERS ── */
   .tier-covers-wrap {
     position: relative;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
     flex: 1;
   }
   .tier-covers-wrap::after {
@@ -286,7 +288,8 @@
 
   .cover-tooltip {
     position: absolute;
-    bottom: calc(100% + 6px);
+    top: calc(100% + 4px);
+    bottom: auto;
     left: 50%;
     transform: translateX(-50%);
     background: #080808;
