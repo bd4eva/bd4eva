@@ -272,7 +272,7 @@ function formatDate(str) {
 }
 
 function renderStars(rating) {
-  const stars = rating != null ? Math.round(rating / 2) : 0;
+  const stars = rating != null ? Math.round(rating) : 0;
   let out = '';
   for (let i = 1; i <= 5; i++) {
     out += `<span class="${i <= stars ? 'star-filled' : 'star-empty'}">★</span>`;
