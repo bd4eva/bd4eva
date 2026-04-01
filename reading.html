@@ -382,6 +382,11 @@
 </footer>
 
 <script>
+const RATING_COLORS = { 5: '#4ade80', 4: '#a3e635', 3: '#facc15', 2: '#fb923c', 1: '#f87171' };
+function ratingBorderColor(rating) {
+  return RATING_COLORS[Math.round(rating)] || '#1c1c1c';
+}
+
 const BOOK_COVER_OVERRIDES = {
   "Long Island Golf": "/covers/books/long-island-golf.jpg",
   "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg"
@@ -430,6 +435,7 @@ function buildCurrentlyReadingSection(books) {
 
     const card = document.createElement('div');
     card.className = 'book-card';
+    card.style = 'border-left: 3px solid #1c1c1c; padding-left: 10px;';
     card.innerHTML = `
       ${imgUrl
         ? `<img class="book-cover" src="${imgUrl}" alt="${b.title.replace(/"/g,'&quot;')}" loading="lazy">`
@@ -514,6 +520,7 @@ function buildYearSection(year, books) {
 
     const card = document.createElement('div');
     card.className = 'book-card';
+    card.style = `border-left: 3px solid ${ratingBorderColor(ub.rating)}; padding-left: 10px;`;
     card.innerHTML = `
       ${imgUrl
         ? `<img class="book-cover" src="${imgUrl}" alt="${b.title.replace(/"/g,'&quot;')}" loading="lazy">`
