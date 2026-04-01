@@ -131,7 +131,7 @@
 
   .book-card {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     padding: 14px 0;
     border-bottom: 1px solid var(--border);
     align-items: flex-start;
@@ -139,20 +139,21 @@
   .book-card:last-child { border-bottom: none; }
 
   .book-cover {
-    width: 56px;
-    height: 84px;
+    width: 52px;
+    height: 78px;
     flex-shrink: 0;
     object-fit: cover;
+    border-radius: 2px;
     display: block;
     background: #111;
   }
 
   .book-cover-placeholder {
-    width: 56px;
-    height: 84px;
+    width: 52px;
+    height: 78px;
     flex-shrink: 0;
-    background: #111;
-    border: 1px solid var(--border);
+    background: #1c1c1c;
+    border-radius: 2px;
   }
 
   .book-info {
@@ -191,6 +192,13 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     color: #555;
+    letter-spacing: 0.04em;
+  }
+
+  .book-pages {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
     letter-spacing: 0.04em;
   }
 
@@ -354,6 +362,7 @@ function buildYearSection(year, books) {
         ${author ? `<div class="book-author">${author}</div>` : ''}
         <div class="book-meta">
           ${finished ? `<span class="book-date">${formatDate(finished)}</span>` : ''}
+          ${b.pages ? `<span class="book-pages">${b.pages.toLocaleString()} pp</span>` : ''}
           ${ub.rating != null && ub.rating > 0
             ? `<span class="book-stars">${renderStars(ub.rating)}</span>` : ''}
         </div>
