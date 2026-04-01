@@ -60,6 +60,18 @@
     font-weight: 300;
   }
 
+  /* ── ALL-TIME STATS ── */
+  .alltime-stats {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   /* ── SECTIONS ── */
   .section {
     max-width: 900px;
@@ -261,6 +273,8 @@
   <p class="page-subhead">Every book since I started tracking.</p>
 </div>
 
+<div id="alltime-stats"></div>
+
 <div id="content">
   <div class="status-msg">Loading...</div>
 </div>
@@ -403,6 +417,30 @@ async function load() {
       content.innerHTML = `<div class="status-msg">No finished books found.</div>`;
       return;
     }
+
+    // All-time stats
+    const totalBooks = userBooks.filter(ub => finishedAt(ub)).length;
+    const totalPages = userBooks.reduce((s, ub) => s + (ub.book.pages || 0), 0);
+    const years = Object.keys(byYear).map(Number).sort((a, b) => a - b);
+    const earliestYear = years[0];
+    const currentYear = new Date().getFullYear();
+    const yearsLabel = earliestYear === currentYear ? String(currentYear) : `${earliestYear} \u2013 ${currentYear}`;
+    const alltimeEl = document.getElementById('alltime-stats');
+    alltimeEl.className = 'alltime-stats';
+    alltimeEl.innerHTML = `
+      <div class="year-stat">
+        <div class="year-stat-number">${totalBooks}</div>
+        <div class="year-stat-label">Books Read</div>
+      </div>
+      <div class="year-stat">
+        <div class="year-stat-number">${totalPages.toLocaleString()}</div>
+        <div class="year-stat-label">Pages Read</div>
+      </div>
+      <div class="year-stat">
+        <div class="year-stat-number" style="font-size:clamp(14px,3vw,22px);line-height:1.2;">${yearsLabel}</div>
+        <div class="year-stat-label">Years Tracked</div>
+      </div>
+    `;
 
     Object.keys(byYear)
       .sort((a, b) => b - a)
