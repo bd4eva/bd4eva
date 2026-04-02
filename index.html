@@ -169,6 +169,64 @@
     margin-left: 16px;
   }
 
+  .pillar-children {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .pillar-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .pillar-child:hover { text-decoration: underline; }
+
+  .pillar-static {
+    cursor: default;
+    align-items: flex-start;
+  }
+  .pillar-static:hover { border-color: var(--border); background: transparent; }
+
+  .pillar-project-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .pillar-project-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    text-decoration: none;
+    background: #111;
+    transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .pillar-project-card:hover { border-color: var(--accent); }
+
+  .pillar-project-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  .pillar-project-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
   /* ── FOOTER ── */
   footer {
     padding: 28px 24px 36px;
@@ -211,12 +269,9 @@
     </svg>
   </button>
   <div class="nav-dropdown" id="navDropdown" role="menu">
-    <a href="index.html" class="nav-item active" role="menuitem" data-umami-event="nav-home">Home</a>
     <a href="music.html" class="nav-item" role="menuitem" data-umami-event="nav-music">Music</a>
-    <a href="insights.html" class="nav-item" role="menuitem" data-umami-event="nav-insights">Insights</a>
-    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-books">Books</a>
-    <a href="tiers.html" class="nav-item" role="menuitem" data-umami-event="nav-ranked">Ranked</a>
-    <a href="book.html" class="nav-item" role="menuitem" data-umami-event="nav-author">Author</a>
+    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-reading">Reading</a>
+    <a href="index.html" class="nav-item active" role="menuitem" data-umami-event="nav-projects">Projects</a>
   </div>
 </header>
 
@@ -227,17 +282,46 @@
     <a href="music.html" class="pillar" data-umami-event="home-music-card">
       <div>
         <div class="pillar-label">Music</div>
-        <div class="pillar-meta">50 mixes · 2,303 songs</div>
+        <div class="pillar-meta">50 mixes · 2,303 songs · 10 years</div>
+        <div class="pillar-children">
+          <a href="music.html" class="pillar-child" data-umami-event="home-music-playlists">Playlists →</a>
+          <a href="insights.html" class="pillar-child" data-umami-event="home-music-insights">Data &amp; Insights →</a>
+        </div>
       </div>
       <span class="pillar-arrow">→</span>
     </a>
     <a href="reading.html" class="pillar" data-umami-event="home-reading-card">
       <div>
         <div class="pillar-label">Reading</div>
-        <div class="pillar-meta">Books since 2023</div>
+        <div class="pillar-meta">90 books · ranked by year</div>
+        <div class="pillar-children">
+          <a href="reading.html" class="pillar-child" data-umami-event="home-reading-books">Books →</a>
+          <a href="tiers.html" class="pillar-child" data-umami-event="home-reading-ranked">Ranked →</a>
+        </div>
       </div>
       <span class="pillar-arrow">→</span>
     </a>
+    <div class="pillar pillar-static">
+      <div style="width:100%;">
+        <div class="pillar-label">Projects</div>
+        <div class="pillar-project-cards">
+          <a href="book.html" class="pillar-project-card" data-umami-event="home-project-book">
+            <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" style="width:36px;height:48px;object-fit:cover;border-radius:2px;flex-shrink:0;" alt="My Parent Is a Superhero">
+            <div>
+              <div class="pillar-project-title">MY PARENT IS A SUPERHERO</div>
+              <div class="pillar-project-sub">Children's book · 2025 →</div>
+            </div>
+          </a>
+          <a href="https://buschleaguearchive.com" target="_blank" class="pillar-project-card" data-umami-event="home-project-bla">
+            <div style="width:36px;flex-shrink:0;text-align:center;font-size:24px;color:#00c2b8;">★</div>
+            <div>
+              <div class="pillar-project-title">BUSCH LEAGUE ARCHIVE</div>
+              <div class="pillar-project-sub">20+ years of fantasy football →</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
