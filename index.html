@@ -133,6 +133,45 @@
   .nav-item:hover { color: var(--accent); background: #181818; }
   .nav-item.active { color: var(--accent); }
 
+  /* ── BOOK CARD ── */
+  .book-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 0 20px 32px;
+    text-decoration: none;
+    transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .book-card:hover { border-color: var(--accent); }
+
+  .book-card-thumb {
+    width: 48px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .book-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .book-card-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
   /* ── INSIGHTS LINK ── */
   .insights-cta {
     margin-top: 20px;
@@ -761,6 +800,7 @@
     <a href="index.html" class="nav-item active" role="menuitem" data-umami-event="nav-music">Music</a>
     <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-books">Books</a>
     <a href="tiers.html" class="nav-item" role="menuitem" data-umami-event="nav-ranked">Ranked</a>
+    <a href="book.html" class="nav-item" role="menuitem" data-umami-event="nav-book">Book</a>
   </div>
   <div class="eyebrow">BD4EVA — 2016 to 2026</div>
   <h1>My Playlists,<br>For You</h1>
@@ -788,6 +828,15 @@
     </svg>
   </div>
 </header>
+
+<!-- BOOK CARD -->
+<a href="book.html" class="book-card" data-umami-event="book-card-click">
+  <img class="book-card-thumb" src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" alt="My Parent Is a Superhero">
+  <div>
+    <div class="book-card-title">My Parent Is a Superhero</div>
+    <div class="book-card-sub">I wrote a children's book. →</div>
+  </div>
+</a>
 
 <!-- FEATURED MIXES -->
 <div class="featured-section">

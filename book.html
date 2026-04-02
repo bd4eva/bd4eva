@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BD4EVA — My Parent Is a Superhero</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede6;
+    --accent: #00c2b8;
+    --accent-dark: #009e96;
+    --muted: #aaa;
+    --border: #1c1c1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    transition: opacity 0.15s;
+  }
+  .back-link:hover { opacity: 0.75; }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 9vw, 80px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .page-subhead {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── BOOK LAYOUT ── */
+  .book-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 600px) {
+    .book-section {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  .book-cover-img {
+    width: 200px;
+    display: block;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .book-cover-img { width: 100%; max-width: 240px; }
+  }
+
+  /* ── BOOK INFO ── */
+  .book-info { display: flex; flex-direction: column; gap: 16px; }
+
+  .book-author {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .book-description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── STATS ── */
+  .book-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .year-stat {
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    min-width: 72px;
+  }
+
+  .year-stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .year-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── CTA ── */
+  .book-cta {
+    background: var(--accent);
+    color: #080808;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    border-radius: 3px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 4px;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .book-cta:hover { background: var(--accent-dark); }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .footer-link:hover { color: var(--accent-dark); }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← BD4EVA</a>
+  <h1 class="page-title">MY PARENT IS<br>A SUPERHERO</h1>
+  <p class="page-subhead">A picture book. September 2025.</p>
+</div>
+
+<div class="book-section">
+  <img
+    class="book-cover-img"
+    src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg"
+    alt="My Parent Is a Superhero book cover"
+  >
+  <div class="book-info">
+    <div class="book-author">Written by Brendan Duffy · Illustrated by Elena Yalcin</div>
+    <p class="book-description">A thoughtful, imaginative picture book that helps children understand the many roles their parents play — both at home and in the world. Framed through the eyes of a curious child, it reimagines everyday moments as heroic acts: fixing problems, leading teams, helping others, and always coming back home.</p>
+    <div class="book-stats">
+      <div class="year-stat">
+        <div class="year-stat-number">36</div>
+        <div class="year-stat-label">Pages</div>
+      </div>
+      <div class="year-stat">
+        <div class="year-stat-number">2025</div>
+        <div class="year-stat-label">Year</div>
+      </div>
+    </div>
+    <a href="https://www.amazon.com/My-Parent-Superhero-Brendan-Duffy/dp/B0FMFQZ17X" target="_blank" class="book-cta" data-umami-event="book-amazon-click">Buy on Amazon →</a>
+  </div>
+</div>
+
+<footer>
+  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
+  <div class="footer-text">2016 – 2026</div>
+</footer>
+
+</body>
+</html>
