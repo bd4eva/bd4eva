@@ -20,7 +20,7 @@ header { display: flex; align-items: center; justify-content: center; padding: 2
 .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 22vw, 140px); line-height: 0.9; color: #f0ede6; letter-spacing: 0.02em; }
 .hero-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: #aaa; letter-spacing: 0.08em; margin-top: 16px; }
 .cards { display: flex; flex-direction: column; gap: 12px; padding: 0 20px; }
-.card { display: flex; flex-direction: column; gap: 6px; border: 1px solid #1c1c1c; border-radius: 6px; padding: 24px 20px; background: #0d0d0d; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+.card { display: flex; flex-direction: column; gap: 6px; border: 1px solid #1c1c1c; border-radius: 6px; padding: 24px 20px; background: #0d0d0d; text-decoration: none; color: inherit; transition: border-color 0.15s; cursor: pointer; }
 .card:hover { border-color: #00c2b8; }
 .card-static { cursor: default; }
 .card-static:hover { border-color: #1c1c1c; }
@@ -63,7 +63,7 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
 
   <div class="cards">
 
-    <a href="music.html" class="card">
+    <div class="card" data-href="music.html">
       <div class="card-title">Music</div>
       <div class="card-meta">50 mixes · 2,303 songs · 10 years</div>
       <div class="card-children">
@@ -71,9 +71,9 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
         <span class="card-sep">·</span>
         <a href="insights.html" class="card-child" onclick="event.stopPropagation()">Data &amp; Insights →</a>
       </div>
-    </a>
+    </div>
 
-    <a href="reading.html" class="card">
+    <div class="card" data-href="reading.html">
       <div class="card-title">Reading</div>
       <div class="card-meta">90 books · ranked by year</div>
       <div class="card-children">
@@ -81,7 +81,7 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
         <span class="card-sep">·</span>
         <a href="tiers.html" class="card-child" onclick="event.stopPropagation()">Ranked →</a>
       </div>
-    </a>
+    </div>
 
     <div class="card card-static" id="projects">
       <div class="card-title">Projects</div>
@@ -127,6 +127,12 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
       navDropdown.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
     }
+  });
+  document.querySelector('.card[data-href="music.html"]').addEventListener('click', function(e) {
+    if (!e.target.closest('.card-child')) window.location = 'music.html';
+  });
+  document.querySelector('.card[data-href="reading.html"]').addEventListener('click', function(e) {
+    if (!e.target.closest('.card-child')) window.location = 'reading.html';
   });
 </script>
 
