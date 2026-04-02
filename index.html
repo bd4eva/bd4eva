@@ -6,236 +6,38 @@
 <title>BD4EVA</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #080808;
-    --white: #f0ede6;
-    --accent: #00c2b8;
-    --muted: #aaa;
-    --border: #1c1c1c;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { overflow-x: hidden; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* HEADER */
-  header {
-    position: relative;
-    padding: 28px 20px 0;
-    text-align: center;
-  }
-
-  .wordmark {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    display: inline-block;
-  }
-
-  /* NAV */
-  .nav-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--white);
-    cursor: pointer;
-    min-width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-    transition: border-color 0.15s;
-    z-index: 100;
-  }
-  .nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
-  .nav-toggle svg { width: 16px; height: 16px; display: block; }
-
-  .nav-dropdown {
-    position: absolute;
-    top: 64px;
-    right: 20px;
-    background: #111;
-    border: 1px solid var(--border);
-    min-width: 160px;
-    z-index: 200;
-    display: none;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  }
-  .nav-dropdown.open { display: block; }
-
-  .nav-item {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.15s, background 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .nav-item:last-child { border-bottom: none; }
-  .nav-item:hover { color: var(--accent); background: #181818; }
-  .nav-item.active { color: var(--accent); }
-
-  /* HERO */
-  .hero {
-    padding: 48px 20px 32px;
-    text-align: center;
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(80px, 22vw, 120px);
-    line-height: 0.88;
-    letter-spacing: 0.02em;
-    color: #f0ede6;
-    margin-bottom: 16px;
-  }
-
-  .hero-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: #aaa;
-    letter-spacing: 0.05em;
-  }
-
-  /* CARDS */
-  .cards {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 32px 20px 48px;
-    flex: 1;
-  }
-
-  .card-link {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border: 1px solid #1c1c1c;
-    border-radius: 6px;
-    padding: 24px 20px;
-    background: #0d0d0d;
-    text-decoration: none;
-    transition: border-color 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .card-link:hover { border-color: #00c2b8; }
-
-  .card-div {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border: 1px solid #1c1c1c;
-    border-radius: 6px;
-    padding: 24px 20px;
-    background: #0d0d0d;
-  }
-
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: #f0ede6;
-    line-height: 1;
-    letter-spacing: 0.02em;
-  }
-
-  .card-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #aaa;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .card-children {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 8px;
-  }
-
-  .card-child {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #00c2b8;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .card-child:hover { text-decoration: underline; }
-
-  /* PROJECT SUB-CARDS */
-  .sub-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid #1c1c1c;
-    border-radius: 4px;
-    padding: 10px 12px;
-    background: #111;
-    text-decoration: none;
-    transition: border-color 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .sub-card:hover { border-color: #00c2b8; }
-  .sub-card:first-child { margin-top: 12px; }
-  .sub-card + .sub-card { margin-top: 8px; }
-
-  .sub-thumb {
-    width: 36px;
-    height: 48px;
-    object-fit: cover;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  .sub-icon {
-    width: 36px;
-    text-align: center;
-    font-size: 22px;
-    color: #00c2b8;
-    flex-shrink: 0;
-  }
-
-  .sub-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    color: #f0ede6;
-    line-height: 1.2;
-  }
-
-  .sub-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #aaa;
-    margin-top: 2px;
-  }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 20px;
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #444;
-    letter-spacing: 0.08em;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #080808; color: #f0ede6; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+header { display: flex; align-items: center; justify-content: center; padding: 20px 20px; position: relative; }
+.wordmark { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.2em; color: #00c2b8; text-transform: uppercase; }
+.nav-toggle { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: none; border: 1px solid #1c1c1c; border-radius: 4px; color: #f0ede6; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.nav-dropdown { display: none; flex-direction: column; position: absolute; top: 70px; right: 20px; background: #080808; border: 1px solid #1c1c1c; border-radius: 4px; z-index: 100; min-width: 160px; overflow: hidden; }
+.nav-dropdown.open { display: flex; }
+.nav-item { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #f0ede6; text-decoration: none; padding: 14px 20px; border-bottom: 1px solid #1c1c1c; }
+.nav-item:last-child { border-bottom: none; }
+.nav-item:hover { color: #00c2b8; }
+.hero { text-align: center; padding: 40px 20px 48px; }
+.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 22vw, 140px); line-height: 0.9; color: #f0ede6; letter-spacing: 0.02em; }
+.hero-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: #aaa; letter-spacing: 0.08em; margin-top: 16px; }
+.cards { display: flex; flex-direction: column; gap: 12px; padding: 0 20px; }
+.card { display: flex; flex-direction: column; gap: 6px; border: 1px solid #1c1c1c; border-radius: 6px; padding: 24px 20px; background: #0d0d0d; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+.card:hover { border-color: #00c2b8; }
+.card-static { cursor: default; }
+.card-static:hover { border-color: #1c1c1c; }
+.card-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #f0ede6; line-height: 1; letter-spacing: 0.03em; }
+.card-meta { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; }
+.card-children { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.card-child { font-family: 'DM Mono', monospace; font-size: 10px; color: #00c2b8; text-decoration: none; letter-spacing: 0.05em; }
+.card-child:hover { text-decoration: underline; }
+.card-sep { font-size: 10px; color: #333; }
+.card-projects { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.project-card { display: flex; align-items: center; gap: 12px; border: 1px solid #1c1c1c; border-radius: 4px; padding: 10px 12px; background: #111; text-decoration: none; transition: border-color 0.15s; }
+.project-card:hover { border-color: #00c2b8; }
+.project-thumb { width: 36px; height: 48px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+.project-icon { width: 36px; text-align: center; font-size: 22px; color: #00c2b8; flex-shrink: 0; }
+.project-title { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: #f0ede6; line-height: 1.2; }
+.project-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; margin-top: 3px; }
+footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px; color: #444; padding: 48px 20px; }
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
 </head>
@@ -244,89 +46,88 @@
 <header>
   <span class="wordmark">BD4EVA</span>
   <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <div class="nav-dropdown" id="navDropdown" role="menu">
-    <a href="music.html" class="nav-item" role="menuitem" data-umami-event="nav-music">Music</a>
-    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-reading">Reading</a>
-    <a href="index.html#projects" class="nav-item active" role="menuitem" data-umami-event="nav-projects">Projects</a>
-  </div>
+  <nav class="nav-dropdown" id="navDropdown" role="menu">
+    <a href="music.html" class="nav-item" role="menuitem">Music</a>
+    <a href="reading.html" class="nav-item" role="menuitem">Reading</a>
+    <a href="index.html#projects" class="nav-item" role="menuitem">Projects</a>
+  </nav>
 </header>
 
-<div class="hero">
-  <div class="hero-title">BD4EVA</div>
-  <div class="hero-sub">Ten years of music &amp; books — 2016 to 2026</div>
-</div>
-
-<div class="cards">
-
-  <a href="music.html" class="card-link" data-umami-event="home-music">
-    <div class="card-title">MUSIC</div>
-    <div class="card-meta">50 MIXES · 2,303 SONGS · 10 YEARS</div>
-    <div class="card-children">
-      <a href="music.html" class="card-child" data-umami-event="home-playlists">Playlists →</a>
-      <a href="insights.html" class="card-child" data-umami-event="home-insights">Data &amp; Insights →</a>
-    </div>
-  </a>
-
-  <a href="reading.html" class="card-link" data-umami-event="home-reading">
-    <div class="card-title">READING</div>
-    <div class="card-meta">90 BOOKS · RANKED BY YEAR</div>
-    <div class="card-children">
-      <a href="reading.html" class="card-child" data-umami-event="home-books">Books →</a>
-      <a href="tiers.html" class="card-child" data-umami-event="home-ranked">Ranked →</a>
-    </div>
-  </a>
-
-  <div class="card-div" id="projects">
-    <div class="card-title">PROJECTS</div>
-    <a href="book.html" class="sub-card" data-umami-event="home-book">
-      <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" class="sub-thumb" alt="My Parent Is A Superhero">
-      <div>
-        <div class="sub-title">MY PARENT IS A SUPERHERO</div>
-        <div class="sub-meta">Children's book · 2025 →</div>
-      </div>
-    </a>
-    <a href="https://buschleaguearchive.com" class="sub-card" target="_blank" data-umami-event="home-busch">
-      <div class="sub-icon">★</div>
-      <div>
-        <div class="sub-title">BUSCH LEAGUE ARCHIVE</div>
-        <div class="sub-meta">20+ years of fantasy football →</div>
-      </div>
-    </a>
+<main>
+  <div class="hero">
+    <div class="hero-title">BD4EVA</div>
+    <div class="hero-sub">Ten years of music &amp; books — 2016 to 2026</div>
   </div>
 
-</div>
+  <div class="cards">
 
-<footer>@bd4eva · 2016–2026</footer>
+    <a href="music.html" class="card">
+      <div class="card-title">Music</div>
+      <div class="card-meta">50 mixes · 2,303 songs · 10 years</div>
+      <div class="card-children">
+        <a href="music.html" class="card-child" onclick="event.stopPropagation()">Playlists →</a>
+        <span class="card-sep">·</span>
+        <a href="insights.html" class="card-child" onclick="event.stopPropagation()">Data &amp; Insights →</a>
+      </div>
+    </a>
+
+    <a href="reading.html" class="card">
+      <div class="card-title">Reading</div>
+      <div class="card-meta">90 books · ranked by year</div>
+      <div class="card-children">
+        <a href="reading.html" class="card-child" onclick="event.stopPropagation()">Books →</a>
+        <span class="card-sep">·</span>
+        <a href="tiers.html" class="card-child" onclick="event.stopPropagation()">Ranked →</a>
+      </div>
+    </a>
+
+    <div class="card card-static" id="projects">
+      <div class="card-title">Projects</div>
+      <div class="card-projects">
+        <a href="book.html" class="project-card">
+          <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" class="project-thumb" alt="My Parent Is A Superhero">
+          <div>
+            <div class="project-title">My Parent Is A Superhero</div>
+            <div class="project-sub">Children's book · 2025 →</div>
+          </div>
+        </a>
+        <a href="https://buschleaguearchive.com" class="project-card" target="_blank">
+          <div class="project-icon">★</div>
+          <div>
+            <div class="project-title">Busch League Archive</div>
+            <div class="project-sub">20+ years of fantasy football →</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>@bd4eva · 2016–2026</footer>
+</main>
 
 <script>
-const navToggle = document.getElementById('navToggle');
-const navDropdown = document.getElementById('navDropdown');
-navToggle.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const isOpen = navDropdown.classList.toggle('open');
-  navToggle.setAttribute('aria-expanded', isOpen);
-});
-document.addEventListener('click', (e) => {
-  if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
-    navDropdown.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  }
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    navDropdown.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  }
-});
-document.querySelectorAll('.card-child').forEach(link => {
-  link.addEventListener('click', e => e.stopPropagation());
-});
+  const navToggle = document.getElementById('navToggle');
+  const navDropdown = document.getElementById('navDropdown');
+  navToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = navDropdown.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  document.addEventListener('click', function(e) {
+    if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
+      navDropdown.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      navDropdown.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
 </script>
 
 </body>
