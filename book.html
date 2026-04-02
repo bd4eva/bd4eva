@@ -30,6 +30,7 @@
     max-width: 900px;
     margin: 0 auto;
     padding: 28px 20px 40px;
+    position: relative;
   }
 
   .back-link {
@@ -44,6 +45,57 @@
     transition: opacity 0.15s;
   }
   .back-link:hover { opacity: 0.75; }
+
+  /* ── NAV HAMBURGER ── */
+  .nav-toggle {
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--white);
+    cursor: pointer;
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s;
+    z-index: 100;
+  }
+  .nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-toggle svg { width: 16px; height: 16px; display: block; }
+
+  .nav-dropdown {
+    position: absolute;
+    top: 72px;
+    right: 20px;
+    background: #111;
+    border: 1px solid var(--border);
+    min-width: 160px;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .nav-dropdown.open { display: block; }
+
+  .nav-item {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { color: var(--accent); background: #181818; }
+  .nav-item.active { color: var(--accent); }
 
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
@@ -189,6 +241,21 @@
 <body>
 
 <div class="page-header">
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <div class="nav-dropdown" id="navDropdown" role="menu">
+    <a href="index.html" class="nav-item" role="menuitem" data-umami-event="nav-home">Home</a>
+    <a href="music.html" class="nav-item" role="menuitem" data-umami-event="nav-music">Music</a>
+    <a href="insights.html" class="nav-item" role="menuitem" data-umami-event="nav-insights">Insights</a>
+    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-books">Books</a>
+    <a href="tiers.html" class="nav-item" role="menuitem" data-umami-event="nav-ranked">Ranked</a>
+    <a href="book.html" class="nav-item active" role="menuitem" data-umami-event="nav-author">Author</a>
+  </div>
   <a href="index.html" class="back-link">← BD4EVA</a>
   <h1 class="page-title">MY PARENT IS<br>A SUPERHERO</h1>
   <p class="page-subhead">A picture book. September 2025.</p>
@@ -222,5 +289,26 @@
   <div class="footer-text">2016 – 2026</div>
 </footer>
 
+<script>
+const navToggle = document.getElementById('navToggle');
+const navDropdown = document.getElementById('navDropdown');
+navToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = navDropdown.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+});
+document.addEventListener('click', (e) => {
+  if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+</script>
 </body>
 </html>

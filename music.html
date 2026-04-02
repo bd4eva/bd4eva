@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BD4EVA — Music</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede6;
+    --accent: #00c2b8;
+    --accent-dark: #009e96;
+    --muted: #aaa;
+    --border: #1c1c1c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 16vw, 80px);
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .stats-row {
+    display: flex;
+    border: 1px solid var(--border);
+  }
+
+  .stat {
+    flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* ── NAV HAMBURGER ── */
+  header { position: relative; }
+
+  .nav-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--white);
+    cursor: pointer;
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color 0.15s;
+    z-index: 100;
+  }
+  .nav-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-toggle svg { width: 16px; height: 16px; display: block; }
+
+  .nav-dropdown {
+    position: absolute;
+    top: 52px;
+    right: 20px;
+    background: #111;
+    border: 1px solid var(--border);
+    min-width: 160px;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .nav-dropdown.open { display: block; }
+
+  .nav-item {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item:hover { color: var(--accent); background: #181818; }
+  .nav-item.active { color: var(--accent); }
+
+  /* ── BOOK CARD ── */
+  .book-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 0 20px 32px;
+    text-decoration: none;
+    transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .book-card:hover { border-color: var(--accent); }
+
+  .book-card-thumb {
+    width: 48px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .book-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .book-card-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── INSIGHTS LINK ── */
+  .insights-cta {
+    margin-top: 20px;
+  }
+  .insights-link {
+    display: block;
+    background: var(--accent);
+    color: #080808;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 13px 16px;
+    text-align: center;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .insights-link:hover { background: var(--accent-dark); }
+  .insights-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(5px); }
+  }
+
+  .scroll-indicator {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 4px;
+    opacity: 1;
+    transition: opacity 0.4s;
+    cursor: pointer;
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    animation: bob 1.6s ease-in-out infinite;
+  }
+
+  /* ── FEATURED MIXES ── */
+  .featured-section {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .featured-card {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .featured-cover {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    background: #111;
+    overflow: hidden;
+  }
+
+  .featured-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .featured-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .featured-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .featured-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex: 1;
+  }
+
+  .featured-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--black);
+    text-decoration: none;
+    padding: 9px 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    width: fit-content;
+  }
+
+  .featured-btn:hover, .featured-btn:active {
+    background: var(--accent-dark);
+  }
+
+  .featured-btn--ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .featured-btn--ghost:hover, .featured-btn--ghost:active {
+    background: rgba(0, 194, 184, 0.1);
+  }
+
+  .featured-btn svg {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .featured-card {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .featured-cover {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+    }
+
+    .featured-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .featured-cover {
+      width: 72px;
+      height: 72px;
+    }
+    .featured-btn {
+      font-size: 11px;
+      padding: 7px 10px;
+      width: 100%;
+    }
+  }
+
+  .featured-divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── BEST OF TRACKLIST ── */
+  .bestof-section {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bestof-toggle {
+    width: 100%;
+    background: #111;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    min-height: 52px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -20px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .bestof-toggle:hover { background: #181818; color: var(--white); }
+  .bestof-toggle .arrow { font-size: 18px; transition: transform 0.25s; }
+  .bestof-toggle.open .arrow { transform: rotate(180deg); }
+
+  .bestof-tracks {
+    display: none;
+    padding-top: 12px;
+  }
+
+  .bestof-tracks.visible { display: block; }
+
+  .track-row {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 8px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .track-row:last-child { border-bottom: none; }
+
+  .track-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .track-info {}
+
+  .track-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .track-artist {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .track-meta {
+    text-align: right;
+  }
+
+  .track-streams {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .track-playlist {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  /* ── FILTERS ── */
+  .filters {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--black);
+  }
+
+  /* ── YEAR NAV ── */
+  .year-nav {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .year-nav::-webkit-scrollbar { display: none; }
+
+  .year-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .year-nav-btn:hover,
+  .year-nav-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── GRID ── */
+  .grid-section { padding: 20px 20px 60px; }
+
+  .year-group { margin-bottom: 20px; }
+  .year-group.all-hidden { display: none; }
+
+  .year-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .year-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    align-items: start;
+  }
+
+  .playlist-card {
+    min-width: 0;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .playlist-card.empty {
+    aspect-ratio: 1;
+    background: #0d0d0d;
+    pointer-events: none;
+  }
+
+  .card-image-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .playlist-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-caption {
+    padding: 4px 3px 2px;
+    background: var(--black);
+  }
+
+  .card-caption-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-caption-tracks {
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 1px;
+  }
+
+  .playlist-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    text-align: center;
+  }
+
+  .playlist-card.tapped .playlist-card-overlay,
+  .playlist-card:hover .playlist-card-overlay { opacity: 1; }
+
+  .card-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .card-tracks {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .card-link-btn,
+  .card-spotify-btn {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .card-btn-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .card-link-btn {
+    background: var(--accent);
+    color: var(--black);
+  }
+
+  .card-spotify-btn {
+    background: #1DB954;
+    color: #000;
+  }
+
+  .card-link-btn svg,
+  .card-spotify-btn svg {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .card-actions .card-link-btn:only-child {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  /* Hide label text on very small cards, show icons only */
+  @media (max-width: 420px) {
+    .card-btn-label { display: none; }
+  }
+
+  .in-progress-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    font-weight: 500;
+  }
+
+  .season-dot {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .dot-Spring    { background: #7ec47e; }
+  .dot-Summer    { background: #f5c842; }
+  .dot-EarlyFall { background: #e07b39; }
+  .dot-LateFall  { background: #c14f2b; }
+  .dot-Winter    { background: #6ab0d4; }
+
+  .playlist-card.hidden { display: none; }
+
+  /* ── BACK TO TOP ── */
+  #back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #back-to-top:hover { background: var(--accent-dark); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .footer-link:hover { color: var(--accent-dark); }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  <div class="nav-dropdown" id="navDropdown" role="menu">
+    <a href="index.html" class="nav-item" role="menuitem" data-umami-event="nav-home">Home</a>
+    <a href="music.html" class="nav-item active" role="menuitem" data-umami-event="nav-music">Music</a>
+    <a href="insights.html" class="nav-item" role="menuitem" data-umami-event="nav-insights">Insights</a>
+    <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-books">Books</a>
+    <a href="tiers.html" class="nav-item" role="menuitem" data-umami-event="nav-ranked">Ranked</a>
+    <a href="book.html" class="nav-item" role="menuitem" data-umami-event="nav-author">Author</a>
+  </div>
+  <div class="eyebrow">BD4EVA — 2016 to 2026</div>
+  <h1>My Playlists,<br>For You</h1>
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-number">10</div>
+      <div class="stat-label">Years</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">50</div>
+      <div class="stat-label">Mixes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">2,303</div>
+      <div class="stat-label">Songs</div>
+    </div>
+  </div>
+  <div class="insights-cta">
+    <a href="insights.html" class="insights-link" data-umami-event="insights-click">DATA &amp; INSIGHTS →</a>
+    <p class="insights-subtitle">10 years of listening, visualized.</p>
+  </div>
+  <div class="scroll-indicator" id="scrollIndicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</header>
+
+<!-- BOOK CARD -->
+<a href="book.html" class="book-card" data-umami-event="book-card-click">
+  <img class="book-card-thumb" src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" alt="My Parent Is a Superhero">
+  <div>
+    <div class="book-card-title">My Parent Is a Superhero</div>
+    <div class="book-card-sub">I wrote a children's book. →</div>
+  </div>
+</a>
+
+<!-- FEATURED MIXES -->
+<div class="featured-section">
+
+  <!-- Every Mix -->
+  <div class="featured-card">
+    <div class="featured-cover">
+      <img src="covers/every-mix.jpg" alt="Every Mix">
+    </div>
+    <div class="featured-info">
+      <div>
+        <div class="featured-label">The Full Archive</div>
+        <div class="featured-title">Every Mix 🫠</div>
+        <div class="featured-desc">All 50 playlists in one place. Hit shuffle and disappear.</div>
+      </div>
+      <a href="https://music.apple.com/us/playlist/every-mix/pl.u-9N9L1rpux7lBXo" target="_blank" class="featured-btn" data-umami-event="every-mix-click">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 6.628 5.374 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12zm3.369 5.28l.03 6.552c0 .08-.006.16-.018.238a1.93 1.93 0 0 1-.582 1.138 1.95 1.95 0 0 1-1.315.51 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.333L9.646 8.26v5.927a1.954 1.954 0 0 1-1.953 1.953 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.024a.87.87 0 0 1 .658-.845l5.254-1.314a.87.87 0 0 1 .858.415z"/></svg>
+        Listen on Apple Music
+      </a>
+    </div>
+  </div>
+
+  <div class="featured-divider"></div>
+
+  <!-- Best Of -->
+  <div class="featured-card">
+    <div class="featured-cover" style="background:#1a1a1a; display:flex; align-items:center; justify-content:center;">
+      <img src="covers/best-of.jpg" alt="Best Of" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'font-family:Bebas Neue,sans-serif;font-size:11px;color:#444;letter-spacing:0.1em;text-align:center;padding:8px;\'>COMING<br>SOON</span>'">
+    </div>
+    <div class="featured-info">
+      <div>
+        <div class="featured-label">Most Played Across All 50</div>
+        <div class="featured-title">Decade — Best Of Mix</div>
+        <div class="featured-desc">50 songs. 10 years of data. The ones that kept coming back.</div>
+      </div>
+      <a href="https://music.apple.com/us/playlist/decade-best-of-mix/pl.u-JPAZBLVIDWN1EJ" target="_blank" class="featured-btn featured-btn--ghost" data-umami-event="best-of-click">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 6.628 5.374 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12zm3.369 5.28l.03 6.552c0 .08-.006.16-.018.238a1.93 1.93 0 0 1-.582 1.138 1.95 1.95 0 0 1-1.315.51 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.333L9.646 8.26v5.927a1.954 1.954 0 0 1-1.953 1.953 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.024a.87.87 0 0 1 .658-.845l5.254-1.314a.87.87 0 0 1 .858.415z"/></svg>
+        Listen on Apple Music
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- BEST OF TRACKLIST -->
+<div class="bestof-section">
+  <button class="bestof-toggle" id="bestofToggle" data-umami-event="tracklist-toggle">
+    <span>Top 50 Most Played Songs</span>
+    <span class="arrow">▾</span>
+  </button>
+  <div class="bestof-tracks" id="bestofTracks"></div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <button class="filter-btn active" data-filter="all" data-umami-event="filter-all">All</button>
+  <button class="filter-btn" data-filter="Spring" data-umami-event="filter-spring">Spring</button>
+  <button class="filter-btn" data-filter="Summer" data-umami-event="filter-summer">Summer</button>
+  <button class="filter-btn" data-filter="Early Fall" data-umami-event="filter-earlyfall">Early Fall</button>
+  <button class="filter-btn" data-filter="Late Fall" data-umami-event="filter-latefall">Late Fall</button>
+  <button class="filter-btn" data-filter="Winter" data-umami-event="filter-winter">Winter</button>
+</div>
+
+<!-- YEAR NAV -->
+<div class="year-nav" id="yearNav"></div>
+
+<!-- GRID -->
+<div class="grid-section" id="grid"></div>
+
+<footer>
+  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
+  <div class="footer-text">2016 – 2026</div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+// ── TOP 50 TRACKS ──
+const topTracks = [
+  { artist: "King Gizzard & The Lizard Wizard", title: "Field of Vision", streams: 202, playlists: "Early Fall 24" },
+  { artist: "Cloud Nothings", title: "Sight Unseen", streams: 197, playlists: "Late Fall 18, Late Fall 21" },
+  { artist: "Into It. Over It.", title: "22 Syllables", streams: 192, playlists: "Late Fall 20" },
+  { artist: "Cloud Nothings", title: "Another Way of Life", streams: 185, playlists: "Late Fall 19" },
+  { artist: "White Denim", title: "Fine Slime", streams: 176, playlists: "Summer 19" },
+  { artist: "Rage Against the Machine", title: "Snakecharmer", streams: 175, playlists: "Spring 20" },
+  { artist: "The Story So Far", title: "Out of It", streams: 166, playlists: "Late Fall 17" },
+  { artist: "Vampire Weekend", title: "White Sky", streams: 165, playlists: "Spring 23" },
+  { artist: "Vulfpeck", title: "Game Winner", streams: 165, playlists: "Late Fall 17" },
+  { artist: "John Lennon", title: "Ain't That a Shame", streams: 161, playlists: "Spring 18" },
+  { artist: "Mark Ronson", title: "Daffodils (feat. Kevin Parker)", streams: 160, playlists: "Spring 18" },
+  { artist: "Theo Katzman", title: "Hard Work", streams: 160, playlists: "Spring 18, Summer 22" },
+  { artist: "Gucci Mane", title: "Both (feat. Drake)", streams: 158, playlists: "Spring 17" },
+  { artist: "John Lennon", title: "Rip It Up / Ready Teddy", streams: 153, playlists: "Summer 23" },
+  { artist: "King Gizzard & The Lizard Wizard", title: "Mars For The Rich", streams: 148, playlists: "Winter 25" },
+  { artist: "The Story So Far", title: "Keep This Up", streams: 145, playlists: "Spring 19" },
+  { artist: "Natural Child", title: "Benny's Here", streams: 144, playlists: "Summer 18" },
+  { artist: "The Story So Far", title: "Big Blind", streams: 144, playlists: "Early Fall 23" },
+  { artist: "White Reaper", title: "Judy French", streams: 143, playlists: "Summer 17" },
+  { artist: "King Gizzard & The Lizard Wizard", title: "Le Risque", streams: 143, playlists: "Spring 26" },
+  { artist: "King Gizzard & The Lizard Wizard", title: "Interior People", streams: 143, playlists: "Winter 26" },
+  { artist: "Big K.R.I.T.", title: "Big K.R.I.T.", streams: 140, playlists: "Spring 18" },
+  { artist: "White Denim", title: "Magazin", streams: 136, playlists: "Summer 18" },
+  { artist: "White Denim", title: "Mirrored In Reverse", streams: 132, playlists: "Summer 22" },
+  { artist: "Dua Lipa", title: "Don't Start Now (Purple Disco Machine Remix)", streams: 128, playlists: "Spring 20" },
+  { artist: "Four Year Strong", title: "Crazy Pills", streams: 126, playlists: "Spring 20" },
+  { artist: "FIDLAR", title: "Can't You See", streams: 125, playlists: "Summer 25" },
+  { artist: "Arcade Fire", title: "The Suburbs", streams: 123, playlists: "Early Fall 17, Late Fall 21" },
+  { artist: "White Reaper", title: "Fog Machine", streams: 123, playlists: "Summer 23" },
+  { artist: "Cloud Nothings", title: "Modern Act", streams: 121, playlists: "Late Fall 16" },
+  { artist: "Pell", title: "The Never (feat. LV Baby)", streams: 120, playlists: "Summer 16, Spring 21" },
+  { artist: "The New Pornographers", title: "Play Money", streams: 119, playlists: "Summer 17" },
+  { artist: "Dawes", title: "When the Tequila Runs Out", streams: 118, playlists: "Early Fall 16" },
+  { artist: "Ray LaMontagne", title: "Three More Days", streams: 117, playlists: "Summer 16, Summer 19" },
+  { artist: "Jonas Brothers", title: "Waffle House", streams: 116, playlists: "Early Fall 23" },
+  { artist: "Mark Ronson", title: "Feel Right (feat. Mystikal)", streams: 112, playlists: "Spring 20" },
+  { artist: "Tycho", title: "Epoch", streams: 112, playlists: "Late Fall 17" },
+  { artist: "Thrice", title: "Black Honey", streams: 111, playlists: "Winter 18" },
+  { artist: "Turnstile", title: "HOLIDAY", streams: 109, playlists: "Early Fall 21" },
+  { artist: "Kurt Vile", title: "Pretty Pimpin", streams: 107, playlists: "Late Fall 19" },
+  { artist: "Into It. Over It.", title: "Adult Contempt", streams: 107, playlists: "Early Fall 17" },
+  { artist: "Third Eye Blind", title: "Company of Strangers", streams: 105, playlists: "Summer 17" },
+  { artist: "Into It. Over It.", title: "Courtesy Greetings", streams: 105, playlists: "Late Fall 20" },
+  { artist: "Khruangbin", title: "Pelota", streams: 105, playlists: "Summer 23" },
+  { artist: "Death By Unga Bunga", title: "Egocentric", streams: 104, playlists: "Spring 21" },
+  { artist: "JW Francis", title: "Casino", streams: 104, playlists: "Spring 23" },
+  { artist: "King Gizzard & The Lizard Wizard", title: "The Cruel Millennial", streams: 104, playlists: "Summer 24" },
+  { artist: "Arcade Fire", title: "Ready to Start", streams: 102, playlists: "Early Fall 19" },
+  { artist: "Dawes", title: "One of Us", streams: 102, playlists: "Spring 18" },
+  { artist: "Alvvays", title: "In Undertow", streams: 102, playlists: "Late Fall 19" },
+];
+
+// Render tracklist
+const trackContainer = document.getElementById('bestofTracks');
+topTracks.forEach((t, i) => {
+  const row = document.createElement('div');
+  row.className = 'track-row';
+  row.innerHTML = `
+    <div class="track-num">${i + 1}</div>
+    <div class="track-info">
+      <div class="track-title">${t.title}</div>
+      <div class="track-artist">${t.artist}</div>
+    </div>
+    <div class="track-meta">
+      <div class="track-streams">${t.streams}</div>
+      <div class="track-playlist">${t.playlists}</div>
+    </div>
+  `;
+  trackContainer.appendChild(row);
+});
+
+// Toggle tracklist
+document.getElementById('bestofToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('bestofTracks').classList.toggle('visible');
+});
+
+// ── PLAYLISTS ──
+const playlists = [
+  { season: "Summer",     year: 2016, label: "Summer 16",     link: "https://music.apple.com/us/playlist/summer-16/pl.u-mJy835BCzBLRyl",         img: "summer-16.jpg",     tracks: 33, spotify: "https://open.spotify.com/playlist/0jXjrDMX2K9Q03zcS1gKct" },
+  { season: "Early Fall", year: 2016, label: "Early Fall 16", link: "https://music.apple.com/us/playlist/early-fall-16/pl.u-76oNz3MsWNdbxZ",     img: "early-fall-16.jpg", tracks: 51, spotify: "https://open.spotify.com/playlist/3BVLkBmhWcSWDAI26VlKVR" },
+  { season: "Late Fall",  year: 2016, label: "Late Fall 16",  link: "https://music.apple.com/us/playlist/late-fall-16/pl.u-mJy833JuzBLRyl",      img: "late-fall-16.jpg",  tracks: 36, spotify: "https://open.spotify.com/playlist/7yW1asqr5vhA96MmKwZPzE" },
+  { season: "Spring",     year: 2017, label: "Spring 17",     link: "https://music.apple.com/us/playlist/spring-17/pl.u-76oNzGeuWNdbxZ",          img: "spring-17.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/4NJZtv6kyOqTUTGchZfxEz" },
+  { season: "Summer",     year: 2017, label: "Summer 17",     link: "https://music.apple.com/us/playlist/summer-17/pl.u-JPAZzB3CDWN1EJ",          img: "summer-17.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/2necQj4rWUfYirpp8a6nqH" },
+  { season: "Early Fall", year: 2017, label: "Early Fall 17", link: "https://music.apple.com/us/playlist/early-fall-17/pl.u-V9D7gpJHB1GLEP",     img: "early-fall-17.jpg", tracks: 40, spotify: "https://open.spotify.com/playlist/6MdphN1DDyqqvO8gLDnhnC" },
+  { season: "Late Fall",  year: 2017, label: "Late Fall 17",  link: "https://music.apple.com/us/playlist/late-fall-17/pl.u-76oNPJ3TWNdbxZ",      img: "late-fall-17.jpg",  tracks: 40, spotify: "https://open.spotify.com/playlist/2KvvT9qzzBhUb1cZJPskUF" },
+  { season: "Winter",     year: 2017, label: "Winter 17",     link: "https://music.apple.com/us/playlist/winter-17/pl.u-DdANrYaFalPdmg",          img: "winter-17.jpg",     tracks: 23, spotify: "https://open.spotify.com/playlist/52ou614iakCiDMPaTpdciF" },
+  { season: "Spring",     year: 2018, label: "Spring 18",     link: "https://music.apple.com/us/playlist/spring-18/pl.u-JPAZzyqTDWN1EJ",          img: "spring-18.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4W2lGQzRxjQDiO87ryG0sE" },
+  { season: "Summer",     year: 2018, label: "Summer 18",     link: "https://music.apple.com/us/playlist/summer-18/pl.u-76oNPbbTWNdbxZ",          img: "summer-18.jpg",     tracks: 40, spotify: "https://open.spotify.com/playlist/7t58H6bebN09AM3XTVnd0s" },
+  { season: "Early Fall", year: 2018, label: "Early Fall 18", link: "https://music.apple.com/us/playlist/early-fall-18/pl.u-d2b0MAjFMBaYDd",     img: "early-fall-18.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/2RYcUoAixXIXBvG20ot4EG" },
+  { season: "Late Fall",  year: 2018, label: "Late Fall 18",  link: "https://music.apple.com/us/playlist/late-fall-18/pl.u-V9D77GEUB1GLEP",      img: "late-fall-18.jpg",  tracks: 28, spotify: "https://open.spotify.com/playlist/0nYUvQbchOwMyPusfkpExY" },
+  { season: "Winter",     year: 2018, label: "Winter 18",     link: "https://music.apple.com/us/playlist/winter-18/pl.u-38oWWxbTPgoedq",           img: "winter-18.jpg",     tracks: 33, spotify: "https://open.spotify.com/playlist/2YYkDIZwPVwvikI5Mmeheq" },
+  { season: "Spring",     year: 2019, label: "Spring 19",     link: "https://music.apple.com/us/playlist/spring-19/pl.u-mJy82NPtzBLRyl",          img: "spring-19.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/1SjJIEuXxtitgXChNVbaLD" },
+  { season: "Summer",     year: 2019, label: "Summer 19",     link: "https://music.apple.com/us/playlist/summer-19/pl.u-9N9Lz6dFx7lBXo",          img: "summer-19.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/0uIfP6ioHSyydA9PIB2Vaz" },
+  { season: "Early Fall", year: 2019, label: "Early Fall 19", link: "https://music.apple.com/us/playlist/early-fall-19/pl.u-9N9Lz1JCx7lBXo",     img: "early-fall-19.jpg", tracks: 50, spotify: "https://open.spotify.com/playlist/2Hj7PL70UK9CfWZPV4VljW" },
+  { season: "Late Fall",  year: 2019, label: "Late Fall 19",  link: "https://music.apple.com/us/playlist/late-fall-19/pl.u-V9D7gLKcB1GLEP",      img: "late-fall-19.jpg",  tracks: 40, spotify: "https://open.spotify.com/playlist/5YM9OTBcPQ4D3UpbiFPcCM" },
+  { season: "Winter",     year: 2019, label: "Winter 19",     link: "https://music.apple.com/us/playlist/winter-19/pl.u-JPAZzKNuDWN1EJ",          img: "winter-19.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/6SBTlIPD3rvY81Tej6OTfu" },
+  { season: "Spring",     year: 2020, label: "Spring 20",     link: "https://music.apple.com/us/playlist/spring-20/pl.u-76oNzd6sWNdbxZ",          img: "spring-20.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/5YwbleigoVjSgTqp6IXwFT" },
+  { season: "Summer",     year: 2020, label: "Summer 20",     link: "https://music.apple.com/us/playlist/summer-20/pl.u-e98llB5hzWX7Ke",          img: "summer-20.jpg",     tracks: 32, spotify: "https://open.spotify.com/playlist/0S2YMJYlmIsTVn0jenS05Q" },
+  { season: "Early Fall", year: 2020, label: "Early Fall 20", link: "https://music.apple.com/us/playlist/early-fall-20/pl.u-d2b0vqlFMBaYDd",     img: "early-fall-20.jpg", tracks: 80, spotify: "https://open.spotify.com/playlist/7CGyVqHHA1bQUXoxQzpvuU" },
+  { season: "Late Fall",  year: 2020, label: "Late Fall 20",  link: "https://music.apple.com/us/playlist/late-fall-20/pl.u-DdAN243TalPdmg",      img: "late-fall-20.jpg",  tracks: 49, spotify: "https://open.spotify.com/playlist/0sRdd2wUeZPlMXMUsYbAay" },
+  { season: "Winter",     year: 2020, label: "Winter 20",     link: "https://music.apple.com/us/playlist/winter-20/pl.u-76oNPE6TWNdbxZ",          img: "winter-20.jpg",     tracks: 40, spotify: "https://open.spotify.com/playlist/5YZCTtbk12WmyOuIBHvqPG" },
+  { season: "Spring",     year: 2021, label: "Spring 21",     link: "https://music.apple.com/us/playlist/spring-21/pl.u-76oNP4pTWNdbxZ",          img: "spring-21.jpg",     tracks: 44, spotify: "https://open.spotify.com/playlist/6JHTSwKXbleLb9lL2ICzhx" },
+  { season: "Summer",     year: 2021, label: "Summer 21",     link: "https://music.apple.com/us/playlist/summer-21/pl.u-11zBPxyu8Z652j",          img: "summer-21.jpg",     tracks: 45, spotify: "https://open.spotify.com/playlist/1nBXISBE6ChK4ZNrjbBxhz" },
+  { season: "Early Fall", year: 2021, label: "Early Fall 21", link: "https://music.apple.com/us/playlist/early-fall-21/pl.u-mJy82Y8tzBLRyl",     img: "early-fall-21.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/3w0f9LyAY7ZZi3SdVyTVKL" },
+  { season: "Late Fall",  year: 2021, label: "Late Fall 21",  link: "https://music.apple.com/us/playlist/late-fall-21/pl.u-11zBPamH8Z652j",      img: "late-fall-21.jpg",  tracks: 45, spotify: "https://open.spotify.com/playlist/5qSRYX9yBWQMCfYUjPOGJb" },
+  { season: "Winter",     year: 2021, label: "Winter 21",     link: "https://music.apple.com/us/playlist/winter-21/pl.u-d2b0MX0tMBaYDd",          img: "winter-21.jpg",     tracks: 46, spotify: "https://open.spotify.com/playlist/22Az6fh1t15eCqyj697EAb" },
+  { season: "Spring",     year: 2022, label: "Spring 22",     link: "https://music.apple.com/us/playlist/spring-22/pl.u-38oWjGEuPgoedq",          img: "spring-22.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4tQAdNPuFfDW8yIvyEJHwd" },
+  { season: "Summer",     year: 2022, label: "Summer 22",     link: "https://music.apple.com/us/playlist/summer-22/pl.u-11zB9dgu8Z652j",          img: "summer-22.jpg",     tracks: 55, spotify: "https://open.spotify.com/playlist/4kzm7YvoTy5efXwr3vKKn0" },
+  { season: "Early Fall", year: 2022, label: "Early Fall 22", link: "https://music.apple.com/us/playlist/early-fall-22/pl.u-mJy82RRIzBLRyl",     img: "early-fall-22.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/6lU2OIX5JdSLjGSfRdBPdd" },
+  { season: "Late Fall",  year: 2022, label: "Late Fall 22",  link: "https://music.apple.com/us/playlist/late-fall-22/pl.u-d2b00GXFMBaYDd",      img: "late-fall-22.jpg",  tracks: 32, spotify: "https://open.spotify.com/playlist/3TmPsnkZmkhTkpCNrLzb3a" },
+  { season: "Winter",     year: 2022, label: "Winter 22",     link: "https://music.apple.com/us/playlist/winter-22/pl.u-e98l3PEczWX7Ke",          img: "winter-22.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/4M0besKKGoM4SMdxjycY7L" },
+  { season: "Spring",     year: 2023, label: "Spring 23",     link: "https://music.apple.com/us/playlist/spring-23/pl.u-38oW9PWCPgoedq",          img: "spring-23.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/481f7GUGCkh1XZJvtlqEUe" },
+  { season: "Summer",     year: 2023, label: "Summer 23",     link: "https://music.apple.com/us/playlist/summer-23/pl.u-9N9LzZWCx7lBXo",          img: "summer-23.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/3dkBprGmfqm6kV6rvvAJFn" },
+  { season: "Early Fall", year: 2023, label: "Early Fall 23", link: "https://music.apple.com/us/playlist/early-fall-23/pl.u-76oNzdNuWNdbxZ",     img: "early-fall-23.jpg", tracks: 50, spotify: "https://open.spotify.com/playlist/6pBBeVg9DSvazMaAZU0L0P" },
+  { season: "Late Fall",  year: 2023, label: "Late Fall 23",  link: "https://music.apple.com/us/playlist/late-fall-23/pl.u-9N9LzpNIx7lBXo",      img: "late-fall-23.jpg",  tracks: 49, spotify: "https://open.spotify.com/playlist/5ujp91V3x0Hs5pQJVDwBcH" },
+  { season: "Winter",     year: 2023, label: "Winter 23",     link: "https://music.apple.com/us/playlist/winter-23/pl.u-e98l3gmTzWX7Ke",          img: "winter-23.jpg",     tracks: 49, spotify: "https://open.spotify.com/playlist/6qgx1I9RvcerY17GpddBKE" },
+  { season: "Spring",     year: 2024, label: "Spring 24",     link: "https://music.apple.com/us/playlist/spring-24/pl.u-e98lMKDizWX7Ke",          img: "spring-24.jpg",     tracks: 46, spotify: "https://open.spotify.com/playlist/49QtzmidSEOYlGaZw5b927" },
+  { season: "Summer",     year: 2024, label: "Summer 24",     link: "https://music.apple.com/us/playlist/summer-24/pl.u-aZb0azxuPVpqyz",          img: "summer-24.jpg",     tracks: 59, spotify: "https://open.spotify.com/playlist/3Zqix1iQx1dxGQhZVsKd8C" },
+  { season: "Early Fall", year: 2024, label: "Early Fall 24", link: "https://music.apple.com/us/playlist/early-fall-24/pl.u-V9D73yGSB1GLEP",     img: "early-fall-24.jpg", tracks: 49, spotify: "https://open.spotify.com/playlist/4GQJFgxUWtJTSh153UHWme" },
+  { season: "Late Fall",  year: 2024, label: "Late Fall 24",  link: "https://music.apple.com/us/playlist/late-fall-24/pl.u-76oNz9ysWNdbxZ",      img: "late-fall-24.jpg",  tracks: 50, spotify: "https://open.spotify.com/playlist/2ky7hfee81An2oiGzDS15I" },
+  { season: "Winter",     year: 2024, label: "Winter 24",     link: "https://music.apple.com/us/playlist/winter-24/pl.u-V9D7g47FB1GLEP",          img: "winter-24.jpg",     tracks: 44, spotify: "https://open.spotify.com/playlist/1uonVmVAOVZM8XTBLoS4Iv" },
+  { season: "Spring",     year: 2025, label: "Spring 25",     link: "https://music.apple.com/us/playlist/spring-25/pl.u-mJy829ruzBLRyl",          img: "spring-25.jpg",     tracks: 50, spotify: "https://open.spotify.com/playlist/2JWEjCTAF2uCq0uZy2y8ad" },
+  { season: "Summer",     year: 2025, label: "Summer 25",     link: "https://music.apple.com/us/playlist/summer-25/pl.u-11zBPZ1T8Z652j",          img: "summer-25.jpg",     tracks: 48, spotify: "https://open.spotify.com/playlist/2vLnMU4UBQQLt0tcU712DX" },
+  { season: "Early Fall", year: 2025, label: "Early Fall 25", link: "https://music.apple.com/us/playlist/early-fall-25/pl.u-V9D73ZpIB1GLEP",     img: "early-fall-25.jpg", tracks: 50 },
+  { season: "Late Fall",  year: 2025, label: "Late Fall 25",  link: "https://music.apple.com/us/playlist/late-fall-25/pl.u-aZb0gA6uPVpqyz",      img: "late-fall-25.jpg",  tracks: 50 },
+  { season: "Winter",     year: 2025, label: "Winter 25",     link: "https://music.apple.com/us/playlist/winter-25/pl.u-JPAZzK9FDWN1EJ",          img: "winter-25.jpg",     tracks: 51, spotify: "https://open.spotify.com/playlist/0xowXtM7QWAaOapTKYWEzu" },
+  { season: "Winter",     year: 2026, label: "Winter 26",     link: "https://music.apple.com/us/playlist/winter-26/pl.u-V9D7ZDaiB1GLEP",          img: "winter-26.jpg",     tracks: 50 },
+  { season: "Spring",     year: 2026, label: "Spring 26",     link: "https://music.apple.com/us/playlist/spring-26/pl.u-JPAZBqPFDWN1EJ",          img: "spring-26.jpg",     tracks: 40, inProgress: true },
+];
+
+const SEASON_ORDER = ["Winter", "Spring", "Summer", "Early Fall", "Late Fall"];
+
+const byYear = {};
+playlists.forEach(p => {
+  if (!byYear[p.year]) byYear[p.year] = {};
+  byYear[p.year][p.season] = p;
+});
+
+const grid = document.getElementById('grid');
+
+Object.keys(byYear).sort((a,b) => b - a).forEach(year => {
+  const group = document.createElement('div');
+  group.className = 'year-group';
+  group.dataset.year = year;
+
+  const yearLabel = document.createElement('div');
+  yearLabel.className = 'year-label';
+  yearLabel.textContent = year;
+  group.appendChild(yearLabel);
+
+  const yearGrid = document.createElement('div');
+  yearGrid.className = 'year-grid';
+
+  SEASON_ORDER.forEach(season => {
+    const p = byYear[year] && byYear[year][season];
+    const card = document.createElement('div');
+
+    if (!p) {
+      card.className = 'playlist-card empty';
+      yearGrid.appendChild(card);
+      return;
+    }
+
+    card.className = 'playlist-card';
+    card.dataset.season = p.season;
+    const dotClass = 'dot-' + p.season.replace(' ', '');
+
+    card.innerHTML = `
+      <div class="card-image-wrap">
+        <div class="season-dot ${dotClass}"></div>
+        <img src="covers/${p.img}" alt="${p.label}" loading="lazy">
+        ${p.inProgress ? '<div class="in-progress-badge">Soon</div>' : ''}
+        <div class="playlist-card-overlay">
+          <div class="card-label">${p.label}</div>
+          <div class="card-tracks">${p.tracks} tracks</div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a href="${p.link}" target="_blank" class="card-link-btn" data-umami-event="playlist-click" data-umami-event-name="${p.label}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 6.628 5.374 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12zm3.369 5.28l.03 6.552c0 .08-.006.16-.018.238a1.93 1.93 0 0 1-.582 1.138 1.95 1.95 0 0 1-1.315.51 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.333L9.646 8.26v5.927a1.954 1.954 0 0 1-1.953 1.953 1.955 1.955 0 0 1-1.954-1.953 1.955 1.955 0 0 1 1.954-1.953c.327 0 .635.08.906.222V7.024a.87.87 0 0 1 .658-.845l5.254-1.314a.87.87 0 0 1 .858.415z"/></svg>
+          <span class="card-btn-label">Apple Music</span>
+        </a>
+        ${p.spotify ? `<a href="${p.spotify}" target="_blank" class="card-spotify-btn" data-umami-event="spotify-click" data-umami-event-name="${p.label}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          <span class="card-btn-label">Spotify</span>
+        </a>` : ''}
+      </div>
+      <div class="card-caption">
+        <div class="card-caption-label">${p.label}</div>
+        <div class="card-caption-tracks">${p.tracks} tracks</div>
+      </div>
+    `;
+
+    card.addEventListener('click', function(e) {
+      if (!e.target.closest('a')) {
+        const already = card.classList.contains('tapped');
+        document.querySelectorAll('.playlist-card.tapped').forEach(c => c.classList.remove('tapped'));
+        if (!already) card.classList.add('tapped');
+      }
+    });
+
+    yearGrid.appendChild(card);
+  });
+
+  group.appendChild(yearGrid);
+  grid.appendChild(group);
+});
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+
+    document.querySelectorAll('.playlist-card:not(.empty)').forEach(card => {
+      card.classList.toggle('hidden', filter !== 'all' && card.dataset.season !== filter);
+    });
+
+    document.querySelectorAll('.playlist-card.empty').forEach(card => {
+      card.classList.toggle('hidden', filter !== 'all');
+    });
+
+    document.querySelectorAll('.year-group').forEach(group => {
+      const visible = group.querySelectorAll('.playlist-card:not(.hidden):not(.empty)');
+      group.classList.toggle('all-hidden', visible.length === 0);
+    });
+  });
+});
+
+// Year nav
+const yearNav = document.getElementById('yearNav');
+const years = Object.keys(byYear).sort((a, b) => b - a);
+years.forEach(year => {
+  const btn = document.createElement('button');
+  btn.className = 'year-nav-btn';
+  btn.textContent = year;
+  btn.addEventListener('click', () => {
+    const target = document.querySelector(`.year-group[data-year="${year}"]`);
+    if (target) {
+      const offset = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  });
+  yearNav.appendChild(btn);
+});
+
+// Highlight active year in nav on scroll
+const yearGroups = document.querySelectorAll('.year-group');
+const yearObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const year = entry.target.dataset.year;
+      document.querySelectorAll('.year-nav-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent === year);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+yearGroups.forEach(g => yearObserver.observe(g));
+
+// Hamburger nav
+const navToggle = document.getElementById('navToggle');
+const navDropdown = document.getElementById('navDropdown');
+navToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = navDropdown.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', isOpen);
+});
+document.addEventListener('click', (e) => {
+  if (!navToggle.contains(e.target) && !navDropdown.contains(e.target)) {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    navDropdown.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+
+// Scroll indicator
+const scrollIndicator = document.getElementById('scrollIndicator');
+const heroSection = document.querySelector('header');
+window.addEventListener('scroll', () => {
+  scrollIndicator.classList.toggle('hidden', window.scrollY > 80);
+}, { passive: true });
+scrollIndicator.addEventListener('click', () => {
+  const target = document.querySelector('.featured-section');
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Back to top
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  backToTop.classList.toggle('visible', window.scrollY > 300);
+}, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
