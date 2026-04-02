@@ -10,7 +10,6 @@
     --black: #080808;
     --white: #f0ede6;
     --accent: #00c2b8;
-    --accent-dark: #009e96;
     --muted: #aaa;
     --border: #1c1c1c;
   }
@@ -27,26 +26,26 @@
     flex-direction: column;
   }
 
-  /* ── HEADER ── */
+  /* HEADER */
   header {
     position: relative;
-    padding: 32px 24px 0;
+    padding: 28px 20px 0;
     text-align: center;
   }
 
   .wordmark {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.2em;
     color: var(--accent);
     display: inline-block;
   }
 
-  /* ── NAV HAMBURGER ── */
+  /* NAV */
   .nav-toggle {
     position: absolute;
-    top: 28px;
-    right: 24px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: 1px solid var(--border);
     color: var(--white);
@@ -65,8 +64,8 @@
 
   .nav-dropdown {
     position: absolute;
-    top: 72px;
-    right: 24px;
+    top: 64px;
+    right: 20px;
     background: #111;
     border: 1px solid var(--border);
     min-width: 160px;
@@ -93,83 +92,150 @@
   .nav-item:hover { color: var(--accent); background: #181818; }
   .nav-item.active { color: var(--accent); }
 
-  /* ── HERO ── */
+  /* HERO */
   .hero {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 24px 40px;
+    padding: 48px 20px 32px;
     text-align: center;
   }
 
   .hero-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(64px, 18vw, 140px);
+    font-size: clamp(80px, 22vw, 120px);
     line-height: 0.88;
     letter-spacing: 0.02em;
-    color: var(--white);
-    margin-bottom: 20px;
+    color: #f0ede6;
+    margin-bottom: 16px;
   }
 
-  .hero-line {
+  .hero-sub {
     font-family: 'DM Mono', monospace;
     font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    margin-bottom: 56px;
+    color: #aaa;
+    letter-spacing: 0.05em;
   }
 
-  /* ── PILLAR CARDS ── */
-  .pillars { display: flex; flex-direction: column; gap: 12px; width: 100%; padding: 0 20px; }
-  .pillar { display: flex; align-items: center; justify-content: space-between; border: 1px solid #1c1c1c; border-radius: 6px; padding: 20px; text-decoration: none; background: #0d0d0d; transition: border-color 0.15s; -webkit-tap-highlight-color: transparent; }
-  .pillar:hover { border-color: #00c2b8; }
-  .pillar-static { cursor: default; align-items: flex-start; }
-  .pillar-static:hover { border-color: #1c1c1c; }
-  .pillar-body { display: flex; flex-direction: column; gap: 4px; }
-  .pillar-label { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #f0ede6; line-height: 1; letter-spacing: 0.03em; }
-  .pillar-meta { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; }
-  .pillar-children { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  .pillar-child { font-family: 'DM Mono', monospace; font-size: 9px; color: #00c2b8; text-decoration: none; letter-spacing: 0.05em; }
-  .pillar-child:hover { text-decoration: underline; }
-  .pillar-child-sep { font-size: 9px; color: #444; }
-  .pillar-arrow { font-family: 'DM Mono', monospace; font-size: 16px; color: #00c2b8; flex-shrink: 0; }
-  .pillar-projects { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-  .project-card { display: flex; align-items: center; gap: 12px; border: 1px solid #1c1c1c; border-radius: 4px; padding: 10px 12px; text-decoration: none; background: #111; transition: border-color 0.15s; }
-  .project-card:hover { border-color: #00c2b8; }
-  .project-thumb { width: 36px; height: 48px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
-  .project-icon { width: 36px; text-align: center; font-size: 22px; color: #00c2b8; flex-shrink: 0; }
-  .project-title { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: #f0ede6; line-height: 1.2; }
-  .project-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; margin-top: 2px; }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 28px 24px 36px;
-    border-top: 1px solid var(--border);
+  /* CARDS */
+  .cards {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 20px 48px;
+    flex: 1;
   }
 
-  .footer-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .footer-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #1c1c1c;
+    border-radius: 6px;
+    padding: 24px 20px;
+    background: #0d0d0d;
     text-decoration: none;
+    transition: border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .footer-link:hover { color: var(--accent-dark); }
+  .card-link:hover { border-color: #00c2b8; }
+
+  .card-div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #1c1c1c;
+    border-radius: 6px;
+    padding: 24px 20px;
+    background: #0d0d0d;
+  }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: #f0ede6;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .card-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .card-children {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .card-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #00c2b8;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .card-child:hover { text-decoration: underline; }
+
+  /* PROJECT SUB-CARDS */
+  .sub-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #1c1c1c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    background: #111;
+    text-decoration: none;
+    transition: border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sub-card:hover { border-color: #00c2b8; }
+  .sub-card:first-child { margin-top: 12px; }
+  .sub-card + .sub-card { margin-top: 8px; }
+
+  .sub-thumb {
+    width: 36px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .sub-icon {
+    width: 36px;
+    text-align: center;
+    font-size: 22px;
+    color: #00c2b8;
+    flex-shrink: 0;
+  }
+
+  .sub-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    color: #f0ede6;
+    line-height: 1.2;
+  }
+
+  .sub-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 20px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 0.08em;
+  }
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="94186075-b02f-441a-b3e7-9ff530b978eb"></script>
 </head>
@@ -187,70 +253,56 @@
   <div class="nav-dropdown" id="navDropdown" role="menu">
     <a href="music.html" class="nav-item" role="menuitem" data-umami-event="nav-music">Music</a>
     <a href="reading.html" class="nav-item" role="menuitem" data-umami-event="nav-reading">Reading</a>
-    <a href="index.html" class="nav-item active" role="menuitem" data-umami-event="nav-projects">Projects</a>
+    <a href="index.html#projects" class="nav-item active" role="menuitem" data-umami-event="nav-projects">Projects</a>
   </div>
 </header>
 
-<main class="hero">
-  <h1 class="hero-title">BD4EVA</h1>
-  <p class="hero-line">Ten years of music &amp; books — 2016 to 2026</p>
-  <div class="pillars">
+<div class="hero">
+  <div class="hero-title">BD4EVA</div>
+  <div class="hero-sub">Ten years of music &amp; books — 2016 to 2026</div>
+</div>
 
-    <a href="music.html" class="pillar" data-umami-event="home-music">
-      <div class="pillar-body">
-        <div class="pillar-label">Music</div>
-        <div class="pillar-meta">50 mixes · 2,303 songs · 10 years</div>
-        <div class="pillar-children">
-          <a href="music.html" class="pillar-child" data-umami-event="home-playlists">Playlists →</a>
-          <span class="pillar-child-sep">·</span>
-          <a href="insights.html" class="pillar-child" data-umami-event="home-insights">Data &amp; Insights →</a>
-        </div>
-      </div>
-      <span class="pillar-arrow">→</span>
-    </a>
+<div class="cards">
 
-    <a href="reading.html" class="pillar" data-umami-event="home-reading">
-      <div class="pillar-body">
-        <div class="pillar-label">Reading</div>
-        <div class="pillar-meta">90 books · ranked by year</div>
-        <div class="pillar-children">
-          <a href="reading.html" class="pillar-child" data-umami-event="home-books">Books →</a>
-          <span class="pillar-child-sep">·</span>
-          <a href="tiers.html" class="pillar-child" data-umami-event="home-ranked">Ranked →</a>
-        </div>
-      </div>
-      <span class="pillar-arrow">→</span>
-    </a>
-
-    <div class="pillar pillar-static">
-      <div class="pillar-body" style="flex:1">
-        <div class="pillar-label">Projects</div>
-        <div class="pillar-projects">
-          <a href="book.html" class="project-card" data-umami-event="home-book">
-            <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" class="project-thumb" alt="My Parent Is A Superhero">
-            <div>
-              <div class="project-title">My Parent Is A Superhero</div>
-              <div class="project-sub">Children's book · 2025 →</div>
-            </div>
-          </a>
-          <a href="https://buschleaguearchive.com" class="project-card" target="_blank" data-umami-event="home-busch">
-            <div class="project-icon">★</div>
-            <div>
-              <div class="project-title">Busch League Archive</div>
-              <div class="project-sub">20+ years of fantasy football →</div>
-            </div>
-          </a>
-        </div>
-      </div>
+  <a href="music.html" class="card-link" data-umami-event="home-music">
+    <div class="card-title">MUSIC</div>
+    <div class="card-meta">50 MIXES · 2,303 SONGS · 10 YEARS</div>
+    <div class="card-children">
+      <a href="music.html" class="card-child" data-umami-event="home-playlists">Playlists →</a>
+      <a href="insights.html" class="card-child" data-umami-event="home-insights">Data &amp; Insights →</a>
     </div>
+  </a>
 
+  <a href="reading.html" class="card-link" data-umami-event="home-reading">
+    <div class="card-title">READING</div>
+    <div class="card-meta">90 BOOKS · RANKED BY YEAR</div>
+    <div class="card-children">
+      <a href="reading.html" class="card-child" data-umami-event="home-books">Books →</a>
+      <a href="tiers.html" class="card-child" data-umami-event="home-ranked">Ranked →</a>
+    </div>
+  </a>
+
+  <div class="card-div" id="projects">
+    <div class="card-title">PROJECTS</div>
+    <a href="book.html" class="sub-card" data-umami-event="home-book">
+      <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" class="sub-thumb" alt="My Parent Is A Superhero">
+      <div>
+        <div class="sub-title">MY PARENT IS A SUPERHERO</div>
+        <div class="sub-meta">Children's book · 2025 →</div>
+      </div>
+    </a>
+    <a href="https://buschleaguearchive.com" class="sub-card" target="_blank" data-umami-event="home-busch">
+      <div class="sub-icon">★</div>
+      <div>
+        <div class="sub-title">BUSCH LEAGUE ARCHIVE</div>
+        <div class="sub-meta">20+ years of fantasy football →</div>
+      </div>
+    </a>
   </div>
-</main>
 
-<footer>
-  <a href="https://instagram.com/bd4eva" target="_blank" class="footer-link">@bd4eva</a>
-  <div class="footer-text">2016 – 2026</div>
-</footer>
+</div>
+
+<footer>@bd4eva · 2016–2026</footer>
 
 <script>
 const navToggle = document.getElementById('navToggle');
@@ -272,7 +324,7 @@ document.addEventListener('keydown', (e) => {
     navToggle.setAttribute('aria-expanded', 'false');
   }
 });
-document.querySelectorAll('.pillar-child').forEach(link => {
+document.querySelectorAll('.card-child').forEach(link => {
   link.addEventListener('click', e => e.stopPropagation());
 });
 </script>
