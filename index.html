@@ -122,110 +122,26 @@
   }
 
   /* ── PILLAR CARDS ── */
-  .pillars {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    padding: 0 20px;
-  }
-
-  .pillar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border: 1px solid var(--border);
-    padding: 24px 28px;
-    text-decoration: none;
-    transition: border-color 0.15s, background 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .pillar:hover { border-color: var(--accent); background: #0e0e0e; }
-
-  .pillar-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    letter-spacing: 0.05em;
-    color: var(--white);
-    line-height: 1;
-    text-align: left;
-  }
-
-  .pillar-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 4px;
-    text-align: left;
-  }
-
-  .pillar-arrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 16px;
-    color: var(--accent);
-    margin-left: 16px;
-  }
-
-  .pillar-children {
-    display: flex;
-    gap: 14px;
-    margin-top: 10px;
-  }
-
-  .pillar-child {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .pillars { display: flex; flex-direction: column; gap: 12px; width: 100%; padding: 0 20px; }
+  .pillar { display: flex; align-items: center; justify-content: space-between; border: 1px solid #1c1c1c; border-radius: 6px; padding: 20px; text-decoration: none; background: #0d0d0d; transition: border-color 0.15s; -webkit-tap-highlight-color: transparent; }
+  .pillar:hover { border-color: #00c2b8; }
+  .pillar-static { cursor: default; align-items: flex-start; }
+  .pillar-static:hover { border-color: #1c1c1c; }
+  .pillar-body { display: flex; flex-direction: column; gap: 4px; }
+  .pillar-label { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #f0ede6; line-height: 1; letter-spacing: 0.03em; }
+  .pillar-meta { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; }
+  .pillar-children { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .pillar-child { font-family: 'DM Mono', monospace; font-size: 9px; color: #00c2b8; text-decoration: none; letter-spacing: 0.05em; }
   .pillar-child:hover { text-decoration: underline; }
-
-  .pillar-static {
-    cursor: default;
-    align-items: flex-start;
-  }
-  .pillar-static:hover { border-color: var(--border); background: transparent; }
-
-  .pillar-project-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
-  }
-
-  .pillar-project-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px 12px;
-    text-decoration: none;
-    background: #111;
-    transition: border-color 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .pillar-project-card:hover { border-color: var(--accent); }
-
-  .pillar-project-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    color: var(--white);
-    line-height: 1.1;
-    margin-bottom: 3px;
-  }
-
-  .pillar-project-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
+  .pillar-child-sep { font-size: 9px; color: #444; }
+  .pillar-arrow { font-family: 'DM Mono', monospace; font-size: 16px; color: #00c2b8; flex-shrink: 0; }
+  .pillar-projects { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .project-card { display: flex; align-items: center; gap: 12px; border: 1px solid #1c1c1c; border-radius: 4px; padding: 10px 12px; text-decoration: none; background: #111; transition: border-color 0.15s; }
+  .project-card:hover { border-color: #00c2b8; }
+  .project-thumb { width: 36px; height: 48px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+  .project-icon { width: 36px; text-align: center; font-size: 22px; color: #00c2b8; flex-shrink: 0; }
+  .project-title { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: #f0ede6; line-height: 1.2; }
+  .project-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; margin-top: 2px; }
 
   /* ── FOOTER ── */
   footer {
@@ -279,49 +195,55 @@
   <h1 class="hero-title">BD4EVA</h1>
   <p class="hero-line">Ten years of music &amp; books — 2016 to 2026</p>
   <div class="pillars">
-    <a href="music.html" class="pillar" data-umami-event="home-music-card">
-      <div>
+
+    <a href="music.html" class="pillar" data-umami-event="home-music">
+      <div class="pillar-body">
         <div class="pillar-label">Music</div>
         <div class="pillar-meta">50 mixes · 2,303 songs · 10 years</div>
         <div class="pillar-children">
-          <a href="music.html" class="pillar-child" data-umami-event="home-music-playlists">Playlists →</a>
-          <a href="insights.html" class="pillar-child" data-umami-event="home-music-insights">Data &amp; Insights →</a>
+          <a href="music.html" class="pillar-child" data-umami-event="home-playlists">Playlists →</a>
+          <span class="pillar-child-sep">·</span>
+          <a href="insights.html" class="pillar-child" data-umami-event="home-insights">Data &amp; Insights →</a>
         </div>
       </div>
       <span class="pillar-arrow">→</span>
     </a>
-    <a href="reading.html" class="pillar" data-umami-event="home-reading-card">
-      <div>
+
+    <a href="reading.html" class="pillar" data-umami-event="home-reading">
+      <div class="pillar-body">
         <div class="pillar-label">Reading</div>
         <div class="pillar-meta">90 books · ranked by year</div>
         <div class="pillar-children">
-          <a href="reading.html" class="pillar-child" data-umami-event="home-reading-books">Books →</a>
-          <a href="tiers.html" class="pillar-child" data-umami-event="home-reading-ranked">Ranked →</a>
+          <a href="reading.html" class="pillar-child" data-umami-event="home-books">Books →</a>
+          <span class="pillar-child-sep">·</span>
+          <a href="tiers.html" class="pillar-child" data-umami-event="home-ranked">Ranked →</a>
         </div>
       </div>
       <span class="pillar-arrow">→</span>
     </a>
+
     <div class="pillar pillar-static">
-      <div style="width:100%;">
+      <div class="pillar-body" style="flex:1">
         <div class="pillar-label">Projects</div>
-        <div class="pillar-project-cards">
-          <a href="book.html" class="pillar-project-card" data-umami-event="home-project-book">
-            <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" style="width:36px;height:48px;object-fit:cover;border-radius:2px;flex-shrink:0;" alt="My Parent Is a Superhero">
+        <div class="pillar-projects">
+          <a href="book.html" class="project-card" data-umami-event="home-book">
+            <img src="https://m.media-amazon.com/images/I/61BrWr48vyL._SY425_.jpg" class="project-thumb" alt="My Parent Is A Superhero">
             <div>
-              <div class="pillar-project-title">MY PARENT IS A SUPERHERO</div>
-              <div class="pillar-project-sub">Children's book · 2025 →</div>
+              <div class="project-title">My Parent Is A Superhero</div>
+              <div class="project-sub">Children's book · 2025 →</div>
             </div>
           </a>
-          <a href="https://buschleaguearchive.com" target="_blank" class="pillar-project-card" data-umami-event="home-project-bla">
-            <div style="width:36px;flex-shrink:0;text-align:center;font-size:24px;color:#00c2b8;">★</div>
+          <a href="https://buschleaguearchive.com" class="project-card" target="_blank" data-umami-event="home-busch">
+            <div class="project-icon">★</div>
             <div>
-              <div class="pillar-project-title">BUSCH LEAGUE ARCHIVE</div>
-              <div class="pillar-project-sub">20+ years of fantasy football →</div>
+              <div class="project-title">Busch League Archive</div>
+              <div class="project-sub">20+ years of fantasy football →</div>
             </div>
           </a>
         </div>
       </div>
     </div>
+
   </div>
 </main>
 
@@ -349,6 +271,9 @@ document.addEventListener('keydown', (e) => {
     navDropdown.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
   }
+});
+document.querySelectorAll('.pillar-child').forEach(link => {
+  link.addEventListener('click', e => e.stopPropagation());
 });
 </script>
 
