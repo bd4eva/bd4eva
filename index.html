@@ -24,10 +24,11 @@ header { display: flex; align-items: center; justify-content: center; padding: 2
 .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 17vw, 140px); line-height: 0.9; color: #f0ede6; letter-spacing: 0.02em; }
 .hero-sub { font-family: 'DM Mono', monospace; font-size: 11px; color: #aaa; letter-spacing: 0.08em; margin-top: 16px; }
 .cards { display: flex; flex-direction: column; gap: 12px; padding: 0 20px; }
-.card { display: flex; flex-direction: column; gap: 6px; border: 1px solid #1c1c1c; border-radius: 6px; padding: 24px 20px; background: #0d0d0d; text-decoration: none; color: inherit; transition: border-color 0.15s; cursor: pointer; }
+.card { display: flex; flex-direction: column; gap: 6px; border: 1px solid #1c1c1c; border-radius: 6px; padding: 24px 20px; background: #0d0d0d; text-decoration: none; color: inherit; transition: border-color 0.15s; position: relative; }
 .card:hover { border-color: #00c2b8; }
-.card-static { cursor: default; }
 .card-static:hover { border-color: #1c1c1c; }
+.card-link-main::after { content: ''; position: absolute; inset: 0; border-radius: 6px; }
+.card-children { position: relative; z-index: 1; }
 .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #f0ede6; line-height: 1; letter-spacing: 0.03em; }
 .card-meta { font-family: 'DM Mono', monospace; font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; }
 .card-children { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
@@ -67,23 +68,23 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
 
   <div class="cards">
 
-    <div class="card" data-href="music.html">
+    <div class="card">
       <div class="card-title">Music</div>
       <div class="card-meta">50 MIXES · I WILL TALK ABOUT KING GIZZARD FOR FREE</div>
       <div class="card-children">
-        <a href="music.html" class="card-child" onclick="event.stopPropagation()">Playlists →</a>
+        <a href="music.html" class="card-child card-link-main">Playlists →</a>
         <span class="card-sep">·</span>
-        <a href="insights.html" class="card-child" onclick="event.stopPropagation()">Data &amp; Insights →</a>
+        <a href="insights.html" class="card-child">Data &amp; Insights →</a>
       </div>
     </div>
 
-    <div class="card" data-href="reading.html">
+    <div class="card">
       <div class="card-title">Reading</div>
       <div class="card-meta">Books, ranked by year and general vibes.</div>
       <div class="card-children">
-        <a href="reading.html" class="card-child" onclick="event.stopPropagation()">Books →</a>
+        <a href="reading.html" class="card-child card-link-main">Books →</a>
         <span class="card-sep">·</span>
-        <a href="tiers.html" class="card-child" onclick="event.stopPropagation()">Ranked →</a>
+        <a href="tiers.html" class="card-child">Ranked →</a>
       </div>
     </div>
 
@@ -132,12 +133,6 @@ footer { text-align: center; font-family: 'DM Mono', monospace; font-size: 10px;
       navDropdown.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
     }
-  });
-  document.querySelector('.card[data-href="music.html"]').addEventListener('click', function(e) {
-    if (!e.target.closest('.card-child')) window.location = 'music.html';
-  });
-  document.querySelector('.card[data-href="reading.html"]').addEventListener('click', function(e) {
-    if (!e.target.closest('.card-child')) window.location = 'reading.html';
   });
 </script>
 
