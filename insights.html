@@ -623,6 +623,59 @@
     white-space: nowrap;
   }
 
+  /* ── THE REGULARS ── */
+  .regulars-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .regulars-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .regulars-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .regulars-rank {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    opacity: 0.4;
+    width: 36px;
+    flex-shrink: 0;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .regulars-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--white);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .regulars-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
   /* ── LONGEST STREAK CALLOUTS ── */
   .streak-cards {
     display: flex;
@@ -848,6 +901,14 @@
 </section>
 <div class="dot-tooltip" id="dot-tooltip"></div>
 
+<!-- SECTION 1AA: THE REGULARS -->
+<section class="section" id="section-regulars">
+  <div class="section-rule"></div>
+  <h2 class="section-heading">The Regulars</h2>
+  <p class="section-caption">Ranked by total playlist appearances across all 50 mixes.</p>
+  <div class="regulars-list" id="regulars-list"></div>
+</section>
+
 <!-- SECTION 1A: LONGEST STREAK -->
 <section class="section" id="section-streak">
   <div class="section-rule"></div>
@@ -1005,6 +1066,26 @@ const DEEP_CUTS = [
   { rank: 8, artist: 'Comeback Kid', track: 'Should Know Better', streams: 256, hours: 9.6 },
   { rank: 9, artist: 'Comeback Kid', track: 'Absolute (feat. Devin Townsend)', streams: 239, hours: 11.6 },
   { rank: 10, artist: 'Grateful Dead', track: 'Althea', streams: 189, hours: 18.3 },
+];
+
+// Top 15 artists by number of distinct mixes they appear on (out of 50 total)
+// Computed from bd_music_merged.csv — same source as ENDURING_ARTISTS
+const REGULARS = [
+  { artist: 'White Denim',                      mixes: 32 },
+  { artist: 'Dawes',                            mixes: 28 },
+  { artist: 'Neal Francis',                     mixes: 26 },
+  { artist: 'Clean Cut Kid',                    mixes: 24 },
+  { artist: 'White Reaper',                     mixes: 23 },
+  { artist: 'The Sheepdogs',                    mixes: 21 },
+  { artist: 'The California Honeydrops',        mixes: 19 },
+  { artist: 'Hiss Golden Messenger',            mixes: 17 },
+  { artist: 'King Gizzard & The Lizard Wizard', mixes: 16 },
+  { artist: 'Delta Spirit',                     mixes: 15 },
+  { artist: 'Cloud Nothings',                   mixes: 14 },
+  { artist: 'JD McPherson',                     mixes: 13 },
+  { artist: 'Fruit Bats',                       mixes: 12 },
+  { artist: 'Arcade Fire',                      mixes: 11 },
+  { artist: 'Whitney',                          mixes:  9 },
 ];
 
 // ─────────────────────────────────────────────
@@ -1386,6 +1467,35 @@ const DEEP_CUTS = [
 })();
 
 // ─────────────────────────────────────────────
+// RENDER: THE REGULARS
+// ─────────────────────────────────────────────
+(function renderRegulars() {
+  const listEl = document.getElementById('regulars-list');
+  REGULARS.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'regulars-row';
+    row.dataset.delay = idx * 60;
+
+    const rankEl = document.createElement('div');
+    rankEl.className = 'regulars-rank';
+    rankEl.textContent = idx + 1;
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'regulars-name';
+    nameEl.textContent = item.artist;
+
+    const countEl = document.createElement('div');
+    countEl.className = 'regulars-count';
+    countEl.textContent = item.mixes + ' mixes';
+
+    row.appendChild(rankEl);
+    row.appendChild(nameEl);
+    row.appendChild(countEl);
+    listEl.appendChild(row);
+  });
+})();
+
+// ─────────────────────────────────────────────
 // INTERSECTION OBSERVER ANIMATIONS
 // ─────────────────────────────────────────────
 function initObservers() {
@@ -1529,6 +1639,23 @@ function initObservers() {
 
   const deepSection = document.getElementById('section-deepcuts');
   if (deepSection) deepObserver.observe(deepSection);
+
+  // Regulars observer
+  const regularsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const rows = entry.target.querySelectorAll('.regulars-row');
+        rows.forEach(row => {
+          const delay = parseInt(row.dataset.delay || 0);
+          setTimeout(() => row.classList.add('visible'), delay);
+        });
+        regularsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  const regularsSection = document.getElementById('section-regulars');
+  if (regularsSection) regularsObserver.observe(regularsSection);
 }
 
 // Run on DOM ready
