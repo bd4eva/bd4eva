@@ -125,22 +125,14 @@
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
-  .alltime-stats .year-stat:last-child {
-    grid-column: 1 / -1;
-    justify-self: center;
-    min-width: 120px;
+  .alltime-stats .year-stat {
+    padding: 10px 8px;
   }
-  @media (min-width: 480px) {
-    .alltime-stats {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .alltime-stats .year-stat:last-child {
-      grid-column: auto;
-      justify-self: auto;
-    }
+  .alltime-stats .year-stat-number {
+    font-size: clamp(14px, 4vw, 28px);
   }
 
   /* ── YEAR NAV ── */
