@@ -793,6 +793,7 @@ async function load() {
       const btn = document.createElement('button');
       btn.className = 'year-nav-btn' + (i === 0 ? ' active' : '');
       btn.textContent = year;
+      btn.setAttribute('aria-label', `Jump to ${year}`);
       btn.addEventListener('click', () => {
         document.getElementById(`year-${year}`).scrollIntoView({ behavior: 'smooth' });
       });

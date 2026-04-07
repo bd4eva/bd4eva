@@ -839,7 +839,7 @@
 
 <!-- BEST OF TRACKLIST -->
 <div class="bestof-section">
-  <button class="bestof-toggle" id="bestofToggle" data-umami-event="tracklist-toggle">
+  <button class="bestof-toggle" id="bestofToggle" aria-label="Toggle Top 50 Most Played Songs" aria-expanded="false" data-umami-event="tracklist-toggle">
     <span>Top 50 Most Played Songs</span>
     <span class="arrow">▾</span>
   </button>
@@ -946,6 +946,8 @@ topTracks.forEach((t, i) => {
 // Toggle tracklist
 document.getElementById('bestofToggle').addEventListener('click', function() {
   this.classList.toggle('open');
+  const isOpen = this.classList.contains('open');
+  this.setAttribute('aria-expanded', isOpen);
   document.getElementById('bestofTracks').classList.toggle('visible');
 });
 
@@ -1110,6 +1112,7 @@ years.forEach(year => {
   const btn = document.createElement('button');
   btn.className = 'year-nav-btn';
   btn.textContent = year;
+  btn.setAttribute('aria-label', `Jump to ${year}`);
   btn.addEventListener('click', () => {
     const target = document.querySelector(`.year-group[data-year="${year}"]`);
     if (target) {
