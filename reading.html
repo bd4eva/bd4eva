@@ -124,9 +124,23 @@
     padding: 20px 20px;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+  }
+  .alltime-stats .year-stat:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    min-width: 120px;
+  }
+  @media (min-width: 480px) {
+    .alltime-stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .alltime-stats .year-stat:last-child {
+      grid-column: auto;
+      justify-self: auto;
+    }
   }
 
   /* ── YEAR NAV ── */
