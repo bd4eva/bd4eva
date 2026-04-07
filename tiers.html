@@ -553,14 +553,12 @@ async function load() {
       const color = TIER_COLORS[tierName];
       const countText = books.length === 1 ? '1 book' : `${books.length} books`;
 
+      if (books.length === 0) return;
+
       const row = document.createElement('div');
       row.className = 'tier-row';
 
-      let coversHtml;
-      if (books.length === 0) {
-        coversHtml = '<span class="tier-empty">—</span>';
-      } else {
-        coversHtml = books.map(title => {
+      const coversHtml = books.map(title => {
           const src = COVER_OVERRIDES[title] || imageMap[title];
           const safe = title.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
           const img = src
@@ -568,7 +566,6 @@ async function load() {
             : `<div class="cover-placeholder"></div>`;
           return `<div class="cover-wrap">${img}<div class="cover-overlay"><div class="cover-overlay-text">${safe}</div></div></div>`;
         }).join('');
-      }
 
       row.innerHTML = `
         <div class="tier-left">
