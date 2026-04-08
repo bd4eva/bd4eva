@@ -304,8 +304,12 @@
 
     .featured-cover {
       width: 100%;
-      height: 200px;
-      aspect-ratio: unset;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .featured-cover img {
+      height: auto;
     }
 
     .featured-btn {
@@ -315,10 +319,6 @@
   }
 
   @media (max-width: 360px) {
-    .featured-cover {
-      width: 72px;
-      height: 72px;
-    }
     .featured-btn {
       font-size: 11px;
       padding: 7px 10px;
