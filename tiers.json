@@ -1,0 +1,201 @@
+{
+  "tierDefinitions": [
+    { "id": "loved", "label": "LOVED IT", "color": "#4ade80" },
+    { "id": "really_liked", "label": "REALLY LIKED IT", "color": "#a3e635" },
+    { "id": "worth_a_read", "label": "WORTH A READ", "color": "#facc15" },
+    { "id": "neutral", "label": "NEUTRAL", "color": "#fb923c" },
+    { "id": "sucked", "label": "SUCKED", "color": "#f87171" },
+    { "id": "dnfd", "label": "DNF'D", "color": "#9ca3af" }
+  ],
+  "years": [
+    {
+      "year": "2026",
+      "tiers": [
+        {
+          "id": "loved",
+          "books": [
+            { "title": "The Eye of the Bedlam Bride" },
+            { "title": "A Parade of Horribles" },
+            { "title": "This Inevitable Ruin" },
+            { "title": "The Butcher's Masquerade" }
+          ]
+        },
+        {
+          "id": "really_liked",
+          "books": [
+            { "title": "Mother Night" }
+          ]
+        },
+        {
+          "id": "worth_a_read",
+          "books": []
+        },
+        {
+          "id": "neutral",
+          "books": []
+        },
+        {
+          "id": "sucked",
+          "books": [
+            { "title": "Long Island Golf", "cover_url": "/covers/books/long-island-golf.jpg" }
+          ]
+        },
+        {
+          "id": "dnfd",
+          "books": []
+        }
+      ]
+    },
+    {
+      "year": "2025",
+      "tiers": [
+        {
+          "id": "loved",
+          "books": [
+            { "title": "The Strength of the Few" },
+            { "title": "The Will of the Many" },
+            { "title": "Lonesome Dove" },
+            { "title": "The Devils" },
+            { "title": "Brother" },
+            { "title": "Razorblade Tears" },
+            { "title": "When the Wolf Comes Home" },
+            { "title": "Nobody Knows You're Here" },
+            { "title": "I Who Have Never Known Men" },
+            { "title": "Rest Stop" }
+          ]
+        },
+        {
+          "id": "really_liked",
+          "books": [
+            { "title": "The Gate of the Feral Gods" },
+            { "title": "Dark Matter" },
+            { "title": "A Knight of the Seven Kingdoms" },
+            { "title": "Stoner" },
+            { "title": "Hidden Pictures" },
+            { "title": "Maggie's Grave" },
+            { "title": "Mean Spirited" },
+            { "title": "The Buffalo Hunter Hunter" },
+            { "title": "The Girl Next Door" },
+            { "title": "Station Eleven" },
+            { "title": "Who Is Government?: The Untold Story of Public Service" },
+            { "title": "On Tyranny: Twenty Lessons from the Twentieth Century" }
+          ]
+        },
+        {
+          "id": "worth_a_read",
+          "books": [
+            { "title": "How to Write One Song" },
+            { "title": "The match" },
+            { "title": "Wake Up and Open Your Eyes" },
+            { "title": "Dead of Winter" },
+            { "title": "Thornhedge" },
+            { "title": "Evil in Me" },
+            { "title": "The Dungeon Anarchist's Cookbook" },
+            { "title": "The Worst Kind of Monsters", "cover_url": "/covers/books/the-worst-kind-of-monsters.jpg" },
+            { "title": "On the Calculation of Volume (Book I)" },
+            { "title": "The Reformatory" },
+            { "title": "The Salt Grows Heavy" }
+          ]
+        },
+        {
+          "id": "neutral",
+          "books": [
+            { "title": "The Wager: A Tale of Shipwreck, Mutiny and Murder" },
+            { "title": "Dark Harvest" },
+            { "title": "On the Calculation of Volume (Book II)" },
+            { "title": "Fahrenheit 451" },
+            { "title": "Red Letter Days" },
+            { "title": "Crazy Horse" },
+            { "title": "A Psalm for the Wild-Built" },
+            { "title": "A Prayer for the Crown-Shy" },
+            { "title": "Everything Is Tuberculosis: The History and Persistence of Our Deadliest Infection" },
+            { "title": "Ben Hogan's Five Lessons: The Modern Fundamentals of Golf" },
+            { "title": "The Rise and Fall of the Dinosaurs: A New History of a Lost World" },
+            { "title": "The Wide, Carnivorous Sky and Other Monstrous Geographies" },
+            { "title": "Entangled Life: How Fungi Make Our Worlds, Change Our Minds & Shape Our Futures" },
+            { "title": "Train Dreams" },
+            { "title": "The Four Agreements: A Practical Guide to Personal Freedom" }
+          ]
+        },
+        {
+          "id": "sucked",
+          "books": [
+            { "title": "This Is How You Lose the Time War" },
+            { "title": "Eynhallow" },
+            { "title": "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life" },
+            { "title": "Voice Like a Hyacinth" }
+          ]
+        },
+        {
+          "id": "dnfd",
+          "books": []
+        }
+      ]
+    },
+    {
+      "year": "2024",
+      "tiers": [
+        {
+          "id": "loved",
+          "books": [
+            { "title": "Slewfoot: A Tale of Bewitchery" },
+            { "title": "Project Hail Mary" },
+            { "title": "The Spear Cuts Through Water" },
+            { "title": "The Hike" },
+            { "title": "Dungeon Crawler Carl" },
+            { "title": "Piranesi" },
+            { "title": "A Short Stay in Hell" }
+          ]
+        },
+        {
+          "id": "really_liked",
+          "books": [
+            { "title": "The Sword of Kaigen" },
+            { "title": "Redshirts" },
+            { "title": "Carl's Doomsday Scenario" },
+            { "title": "Krampus: The Yule Lord" },
+            { "title": "1984" },
+            { "title": "Look Closer" },
+            { "title": "The Haar" },
+            { "title": "FantasticLand" },
+            { "title": "Clown in a Cornfield" },
+            { "title": "Mary: An Awakening of Terror" }
+          ]
+        },
+        {
+          "id": "worth_a_read",
+          "books": [
+            { "title": "The Fisherman" },
+            { "title": "The Road" },
+            { "title": "Small Things Like These" },
+            { "title": "Diavola" },
+            { "title": "The Troop" },
+            { "title": "Intercepts" }
+          ]
+        },
+        {
+          "id": "neutral",
+          "books": [
+            { "title": "Mythos: The Greek Myths Retold" },
+            { "title": "The Old Man and the Sea" },
+            { "title": "A Head Full of Ghosts" },
+            { "title": "The Butcher of the Forest" },
+            { "title": "The Wood at Midwinter" },
+            { "title": "Un chant de Noël" }
+          ]
+        },
+        {
+          "id": "sucked",
+          "books": [
+            { "title": "The Last House on Needless Street" },
+            { "title": "The Legend of Sleepy Hollow" }
+          ]
+        },
+        {
+          "id": "dnfd",
+          "books": []
+        }
+      ]
+    }
+  ]
+}

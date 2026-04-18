@@ -439,11 +439,7 @@
   <p class="page-subhead">Every year. Every book. Sorted by how much I liked them.</p>
 </div>
 
-<nav class="year-nav" id="yearNav">
-  <button class="year-nav-btn active" data-year="2026" aria-label="Jump to 2026">2026</button>
-  <button class="year-nav-btn" data-year="2025" aria-label="Jump to 2025">2025</button>
-  <button class="year-nav-btn" data-year="2024" aria-label="Jump to 2024">2024</button>
-</nav>
+<nav class="year-nav" id="yearNav"></nav>
 
 <div id="tiers-content">
   <div class="status-msg">Loading...</div>
@@ -457,80 +453,40 @@
 <button id="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
-const COVER_OVERRIDES = {
-  "Long Island Golf": "/covers/books/long-island-golf.jpg",
-  "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg"
-};
-
-const TIERS = {
-  "2026": {
-    "LOVED IT": ["The Eye of the Bedlam Bride", "A Parade of Horribles", "This Inevitable Ruin", "The Butcher's Masquerade"],
-    "REALLY LIKED IT": ["Mother Night"],
-    "WORTH A READ": [],
-    "NEUTRAL": [],
-    "SUCKED": ["Long Island Golf"],
-    "DNF'D": []
-  },
-  "2025": {
-    "LOVED IT": ["The Strength of the Few", "The Will of the Many", "Lonesome Dove", "The Devils", "Brother", "Razorblade Tears", "When the Wolf Comes Home", "Nobody Knows You're Here", "I Who Have Never Known Men", "Rest Stop"],
-    "REALLY LIKED IT": ["The Gate of the Feral Gods", "Dark Matter", "A Knight of the Seven Kingdoms", "Stoner", "Hidden Pictures", "Maggie's Grave", "Mean Spirited", "The Buffalo Hunter Hunter", "The Girl Next Door", "Station Eleven", "Who Is Government?: The Untold Story of Public Service", "On Tyranny: Twenty Lessons from the Twentieth Century"],
-    "WORTH A READ": ["How to Write One Song", "The match", "Wake Up and Open Your Eyes", "Dead of Winter", "Thornhedge", "Evil in Me", "The Dungeon Anarchist's Cookbook", "The Worst Kind of Monsters", "On the Calculation of Volume (Book I)", "The Reformatory", "The Salt Grows Heavy"],
-    "NEUTRAL": ["The Wager: A Tale of Shipwreck, Mutiny and Murder", "Dark Harvest", "On the Calculation of Volume (Book II)", "Fahrenheit 451", "Red Letter Days", "Crazy Horse", "A Psalm for the Wild-Built", "A Prayer for the Crown-Shy", "Everything Is Tuberculosis: The History and Persistence of Our Deadliest Infection", "Ben Hogan's Five Lessons: The Modern Fundamentals of Golf", "The Rise and Fall of the Dinosaurs: A New History of a Lost World", "The Wide, Carnivorous Sky and Other Monstrous Geographies", "Entangled Life: How Fungi Make Our Worlds, Change Our Minds & Shape Our Futures", "Train Dreams", "The Four Agreements: A Practical Guide to Personal Freedom"],
-    "SUCKED": ["This Is How You Lose the Time War", "Eynhallow", "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life", "Voice Like a Hyacinth"],
-    "DNF'D": []
-  },
-  "2024": {
-    "LOVED IT": ["Slewfoot: A Tale of Bewitchery", "Project Hail Mary", "The Spear Cuts Through Water", "The Hike", "Dungeon Crawler Carl", "Piranesi", "A Short Stay in Hell"],
-    "REALLY LIKED IT": ["The Sword of Kaigen", "Redshirts", "Carl's Doomsday Scenario", "Krampus: The Yule Lord", "1984", "Look Closer", "The Haar", "FantasticLand", "Clown in a Cornfield", "Mary: An Awakening of Terror"],
-    "WORTH A READ": ["The Fisherman", "The Road", "Small Things Like These", "Diavola", "The Troop", "Intercepts"],
-    "NEUTRAL": ["Mythos: The Greek Myths Retold", "The Old Man and the Sea", "A Head Full of Ghosts", "The Butcher of the Forest", "The Wood at Midwinter", "Un chant de Noël"],
-    "SUCKED": ["The Last House on Needless Street", "The Legend of Sleepy Hollow"],
-    "DNF'D": []
-  }
-};
-
-const TIER_ORDER = ["LOVED IT", "REALLY LIKED IT", "WORTH A READ", "NEUTRAL", "SUCKED", "DNF'D"];
-const TIER_COLORS = {
-  "LOVED IT":       "#4ade80",
-  "REALLY LIKED IT":"#a3e635",
-  "WORTH A READ":   "#facc15",
-  "NEUTRAL":        "#fb923c",
-  "SUCKED":         "#f87171",
-  "DNF'D":          "#9ca3af"
-};
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 async function load() {
-  // Build title → cover URL map from API
-  const imageMap = {};
-  try {
-    const res = await fetch('/api/books');
-    if (res.ok) {
-      const json = await res.json();
-      // Finished books
-      if (json.data && json.data.me && json.data.me[0]) {
-        (json.data.me[0].user_books || []).forEach(ub => {
-          if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
-            imageMap[ub.book.title] = ub.book.image.url;
-          }
-        });
-      }
-      // Currently reading books — same cover data, include so no gaps
-      (json.currentlyReading || []).forEach(ub => {
-        if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
-          imageMap[ub.book.title] = ub.book.image.url;
-        }
-      });
-    }
-  } catch (e) {
-    console.warn('Could not load covers from API:', e);
-  }
+  // Fetch tier data and API covers in parallel
+  const [tiersJson, imageMap] = await Promise.all([
+    fetch('/tiers.json').then(r => r.json()),
+    loadImageMap(),
+  ]);
+
+  const { tierDefinitions, years } = tiersJson;
+  const tierById = Object.fromEntries(tierDefinitions.map(t => [t.id, t]));
 
   const container = document.getElementById('tiers-content');
   container.innerHTML = '';
 
-  const years = Object.keys(TIERS).sort((a, b) => b - a);
+  // Rebuild year nav from data
+  const yearNav = document.getElementById('yearNav');
+  yearNav.innerHTML = '';
+  years.forEach((y, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'year-nav-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.year = y.year;
+    btn.setAttribute('aria-label', `Jump to ${y.year}`);
+    btn.textContent = y.year;
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(`year-${y.year}`);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+    yearNav.appendChild(btn);
+  });
 
-  years.forEach(year => {
+  years.forEach(({ year, tiers }) => {
     const section = document.createElement('section');
     section.className = 'year-section';
     section.id = `year-${year}`;
@@ -549,30 +505,30 @@ async function load() {
     const tierList = document.createElement('div');
     tierList.className = 'tier-list';
 
-    TIER_ORDER.forEach(tierName => {
-      const books = TIERS[year][tierName] || [];
-      const color = TIER_COLORS[tierName];
-      const countText = books.length === 1 ? '1 book' : `${books.length} books`;
-
-      if (books.length === 0) return;
+    tiers.forEach(({ id, books }) => {
+      if (!books || books.length === 0) return;
+      const def = tierById[id];
+      if (!def) return;
 
       const row = document.createElement('div');
       row.className = 'tier-row';
 
-      const coversHtml = books.map(title => {
-          const src = COVER_OVERRIDES[title] || imageMap[title];
-          const safe = title.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-          const img = src
-            ? `<img class="cover-img" src="${src}" alt="${safe}" loading="lazy">`
-            : `<div class="cover-placeholder"></div>`;
-          return `<div class="cover-wrap">${img}<div class="cover-overlay"><div class="cover-overlay-text">${safe}</div></div></div>`;
-        }).join('');
+      const coversHtml = books.map(book => {
+        const src = book.cover_url || imageMap[book.title];
+        const safe = escapeHtml(book.title);
+        const img = src
+          ? `<img class="cover-img" src="${src}" alt="${safe}" loading="lazy">`
+          : `<div class="cover-placeholder"></div>`;
+        return `<div class="cover-wrap">${img}<div class="cover-overlay"><div class="cover-overlay-text">${safe}</div></div></div>`;
+      }).join('');
+
+      const countText = books.length === 1 ? '1 book' : `${books.length} books`;
 
       row.innerHTML = `
         <div class="tier-left">
-          <div class="tier-color-bar" style="background:${color}"></div>
+          <div class="tier-color-bar" style="background:${def.color}"></div>
           <div class="tier-label-inner">
-            <div class="tier-name" style="color:${color}">${tierName}</div>
+            <div class="tier-name" style="color:${def.color}">${escapeHtml(def.label)}</div>
             <div class="tier-count">${countText}</div>
           </div>
         </div>
@@ -616,13 +572,30 @@ async function load() {
   document.querySelectorAll('.year-section').forEach(s => observer.observe(s));
 }
 
-// Year nav smooth scroll
-document.querySelectorAll('.year-nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = document.getElementById(`year-${btn.dataset.year}`);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
-});
+async function loadImageMap() {
+  const imageMap = {};
+  try {
+    const res = await fetch('/api/books');
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data && json.data.me && json.data.me[0]) {
+        (json.data.me[0].user_books || []).forEach(ub => {
+          if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+            imageMap[ub.book.title] = ub.book.image.url;
+          }
+        });
+      }
+      (json.currentlyReading || []).forEach(ub => {
+        if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+          imageMap[ub.book.title] = ub.book.image.url;
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Could not load covers from API:', e);
+  }
+  return imageMap;
+}
 
 // Tap to reveal inline title below cover
 document.getElementById('tiers-content').addEventListener('click', e => {
@@ -633,7 +606,11 @@ document.getElementById('tiers-content').addEventListener('click', e => {
   if (!isActive) wrap.classList.add('active');
 });
 
-load();
+load().catch(err => {
+  document.getElementById('tiers-content').innerHTML =
+    `<div class="status-msg">Couldn't load tiers — ${escapeHtml(err.message)}</div>`;
+  console.error(err);
+});
 
 document.addEventListener('click', e => {
   const btn = e.target.closest('.share-btn');

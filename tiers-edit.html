@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>BD4EVA — Tiers Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0ede6;
+    --accent: #00c2b8;
+    --accent-dark: #009e96;
+    --muted: #aaa;
+    --border: #1c1c1c;
+    --danger: #f87171;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 20px 24px;
+    position: relative;
+  }
+
+  .back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 0 20px;
+    transition: opacity 0.15s;
+  }
+  .back-link:hover { opacity: 0.75; }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 7vw, 64px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .page-subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.btn-primary { border-color: var(--accent); color: var(--accent); }
+  .btn.btn-primary:hover { background: var(--accent); color: var(--black); }
+  .btn.btn-danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── YEAR SECTIONS ── */
+  .year-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .year-section:last-of-type { border-bottom: none; padding-bottom: 80px; }
+
+  .year-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .year-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    color: var(--white);
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+    line-height: 1;
+  }
+
+  /* ── TIER LIST ── */
+  .tier-list { display: flex; flex-direction: column; }
+
+  .tier-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    min-height: 94px;
+  }
+  .tier-row:last-child { border-bottom: none; }
+  .tier-row.drag-over { background: rgba(0, 194, 184, 0.08); }
+
+  .tier-left {
+    width: 110px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: stretch;
+  }
+  .tier-color-bar { width: 4px; flex-shrink: 0; }
+  .tier-label-inner {
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .tier-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.1;
+  }
+  .tier-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .tier-add-btn {
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 4px 6px;
+    margin-top: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .tier-add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── TIER COVERS ── */
+  .tier-covers-wrap {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    flex: 1;
+    min-height: 94px;
+  }
+  .tier-covers {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    min-height: 94px;
+  }
+  .tier-covers.empty::before {
+    content: 'Drop book here';
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #333;
+    font-style: italic;
+    padding: 0 8px;
+    align-self: center;
+  }
+
+  .cover-wrap {
+    position: relative;
+    flex-shrink: 0;
+    cursor: grab;
+    width: 52px;
+    height: 78px;
+  }
+  .cover-wrap:active { cursor: grabbing; }
+  .cover-wrap.dragging { opacity: 0.35; }
+
+  .cover-img, .cover-placeholder {
+    width: 52px;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+    background: #1c1c1c;
+  }
+  .cover-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    text-align: center;
+    padding: 4px;
+    line-height: 1.2;
+    word-break: break-word;
+    overflow: hidden;
+  }
+
+  .cover-remove {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--danger);
+    color: var(--black);
+    border: none;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 2;
+  }
+  .cover-wrap:hover .cover-remove { opacity: 1; }
+
+  .cover-tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 3;
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cover-wrap:hover .cover-tooltip { opacity: 1; }
+
+  /* drop indicator between covers */
+  .drop-indicator {
+    width: 3px;
+    height: 78px;
+    background: var(--accent);
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+
+  /* ── MODAL ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: #111;
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 520px;
+    padding: 24px;
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .modal-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .modal-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    cursor: pointer;
+  }
+  .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .field { margin-bottom: 14px; }
+  .field-label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field-input {
+    width: 100%;
+    background: #080808;
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  .field-input:focus { outline: none; border-color: var(--accent); }
+
+  .search-results {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .search-result {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    background: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    text-align: left;
+    color: var(--white);
+  }
+  .search-result:last-child { border-bottom: none; }
+  .search-result:hover { background: #181818; }
+  .search-result img, .search-result .no-cover {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #1c1c1c;
+    border-radius: 2px;
+  }
+  .search-result-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .search-result-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .search-result-author {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+  }
+
+  /* footer */
+  footer {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border);
+    padding: 28px 20px 36px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="tiers.html" class="back-link">← TIERS</a>
+  <h1 class="page-title">TIERS EDITOR</h1>
+  <p class="page-subhead">Edit tiers, export JSON, paste into CC to commit.</p>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" id="exportBtn">Export JSON</button>
+    <button class="btn btn-danger" id="resetBtn">Reset</button>
+    <button class="btn" id="addYearBtn">+ Year</button>
+  </div>
+</div>
+
+<div id="tiers-content">
+  <div style="max-width:900px;margin:0 auto;padding:60px 20px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.08em;">Loading…</div>
+</div>
+
+<footer>PRIVATE EDITOR — NOT LINKED FROM SITE</footer>
+
+<div class="toast" id="toast">Copied!</div>
+
+<!-- ADD BOOK MODAL -->
+<div class="modal-backdrop" id="addModal">
+  <div class="modal">
+    <div class="modal-title">Add Book</div>
+    <div class="modal-subtitle" id="addModalDest">—</div>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="search">Hardcover Search</button>
+      <button class="modal-tab" data-tab="manual">Manual Entry</button>
+    </div>
+
+    <div id="tab-search">
+      <div class="field">
+        <label class="field-label" for="searchInput">Title</label>
+        <input class="field-input" type="text" id="searchInput" placeholder="Type a title and press Enter">
+      </div>
+      <div class="hint" id="searchHint">Press Enter to search.</div>
+      <div class="search-results" id="searchResults" style="display:none;"></div>
+    </div>
+
+    <div id="tab-manual" style="display:none;">
+      <div class="field">
+        <label class="field-label" for="mTitle">Title</label>
+        <input class="field-input" type="text" id="mTitle">
+      </div>
+      <div class="field">
+        <label class="field-label" for="mAuthor">Author</label>
+        <input class="field-input" type="text" id="mAuthor">
+      </div>
+      <div class="field">
+        <label class="field-label" for="mCover">Cover URL (optional)</label>
+        <input class="field-input" type="text" id="mCover" placeholder="/covers/books/example.jpg or https://…">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" id="manualCancel">Cancel</button>
+        <button class="btn btn-primary" id="manualSave">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT BOOK MODAL -->
+<div class="modal-backdrop" id="editModal">
+  <div class="modal">
+    <div class="modal-title">Edit Book</div>
+    <div class="modal-subtitle">Update fields and save.</div>
+    <div class="field">
+      <label class="field-label" for="eTitle">Title</label>
+      <input class="field-input" type="text" id="eTitle">
+    </div>
+    <div class="field">
+      <label class="field-label" for="eAuthor">Author</label>
+      <input class="field-input" type="text" id="eAuthor">
+    </div>
+    <div class="field">
+      <label class="field-label" for="eCover">Cover URL</label>
+      <input class="field-input" type="text" id="eCover">
+    </div>
+    <div class="field">
+      <label class="field-label" for="eHid">Hardcover ID</label>
+      <input class="field-input" type="text" id="eHid">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="editCancel">Cancel</button>
+      <button class="btn btn-primary" id="editSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD YEAR MODAL -->
+<div class="modal-backdrop" id="yearModal">
+  <div class="modal">
+    <div class="modal-title">Add Year</div>
+    <div class="modal-subtitle">Creates a new empty year at the top.</div>
+    <div class="field">
+      <label class="field-label" for="yInput">Year</label>
+      <input class="field-input" type="text" id="yInput" placeholder="e.g. 2027">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="yearCancel">Cancel</button>
+      <button class="btn btn-primary" id="yearSave">Add</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let state = null;
+let imageMap = {};
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+async function loadImageMap() {
+  const map = {};
+  try {
+    const res = await fetch('/api/books');
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data && json.data.me && json.data.me[0]) {
+        (json.data.me[0].user_books || []).forEach(ub => {
+          if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+            map[ub.book.title] = ub.book.image.url;
+          }
+        });
+      }
+      (json.currentlyReading || []).forEach(ub => {
+        if (ub.book && ub.book.title && ub.book.image && ub.book.image.url) {
+          map[ub.book.title] = ub.book.image.url;
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Could not load covers from API:', e);
+  }
+  return map;
+}
+
+async function loadTiers() {
+  const res = await fetch('/tiers.json?t=' + Date.now());
+  return res.json();
+}
+
+function bookCoverSrc(book) {
+  return book.cover_url || imageMap[book.title] || null;
+}
+
+function render() {
+  const container = document.getElementById('tiers-content');
+  container.innerHTML = '';
+
+  const tierById = Object.fromEntries(state.tierDefinitions.map(t => [t.id, t]));
+
+  state.years.forEach((yearObj, yIdx) => {
+    const section = document.createElement('section');
+    section.className = 'year-section';
+    section.dataset.yearIndex = yIdx;
+
+    const headingRow = document.createElement('div');
+    headingRow.className = 'year-heading-row';
+    headingRow.innerHTML = `<h2 class="year-heading">${escapeHtml(yearObj.year)}</h2>`;
+    section.appendChild(headingRow);
+
+    const tierList = document.createElement('div');
+    tierList.className = 'tier-list';
+
+    yearObj.tiers.forEach((tierObj, tIdx) => {
+      const def = tierById[tierObj.id];
+      if (!def) return;
+
+      const row = document.createElement('div');
+      row.className = 'tier-row';
+      row.dataset.yearIndex = yIdx;
+      row.dataset.tierIndex = tIdx;
+
+      const countText = tierObj.books.length === 1 ? '1 book' : `${tierObj.books.length} books`;
+
+      const coversHtml = tierObj.books.map((book, bIdx) => {
+        const src = bookCoverSrc(book);
+        const authorText = book.author ? ` — ${book.author}` : '';
+        const tooltip = escapeHtml(book.title + authorText);
+        const cover = src
+          ? `<img class="cover-img" src="${escapeHtml(src)}" alt="${escapeHtml(book.title)}" loading="lazy" draggable="false">`
+          : `<div class="cover-placeholder" title="${escapeHtml(book.title)}">${escapeHtml(book.title.slice(0,24))}</div>`;
+        return `<div class="cover-wrap" draggable="true" data-year-index="${yIdx}" data-tier-index="${tIdx}" data-book-index="${bIdx}">
+          ${cover}
+          <button class="cover-remove" data-action="remove" title="Remove">×</button>
+          <div class="cover-tooltip">${tooltip}</div>
+        </div>`;
+      }).join('');
+
+      row.innerHTML = `
+        <div class="tier-left">
+          <div class="tier-color-bar" style="background:${def.color}"></div>
+          <div class="tier-label-inner">
+            <div class="tier-name" style="color:${def.color}">${escapeHtml(def.label)}</div>
+            <div class="tier-count">${countText}</div>
+            <button class="tier-add-btn" data-action="add" data-year-index="${yIdx}" data-tier-index="${tIdx}">+ Book</button>
+          </div>
+        </div>
+        <div class="tier-covers-wrap"><div class="tier-covers${tierObj.books.length === 0 ? ' empty' : ''}">${coversHtml}</div></div>
+      `;
+      tierList.appendChild(row);
+    });
+
+    section.appendChild(tierList);
+    container.appendChild(section);
+  });
+
+  wireDragAndDrop();
+}
+
+// ── DRAG AND DROP ──
+let dragData = null;
+
+function wireDragAndDrop() {
+  document.querySelectorAll('.cover-wrap').forEach(el => {
+    el.addEventListener('dragstart', onDragStart);
+    el.addEventListener('dragend', onDragEnd);
+  });
+  document.querySelectorAll('.tier-row').forEach(row => {
+    row.addEventListener('dragover', onDragOver);
+    row.addEventListener('dragleave', onDragLeave);
+    row.addEventListener('drop', onDrop);
+  });
+}
+
+function onDragStart(e) {
+  const el = e.currentTarget;
+  dragData = {
+    yearIndex: +el.dataset.yearIndex,
+    tierIndex: +el.dataset.tierIndex,
+    bookIndex: +el.dataset.bookIndex,
+  };
+  el.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+}
+
+function onDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.tier-row.drag-over').forEach(r => r.classList.remove('drag-over'));
+  document.querySelectorAll('.drop-indicator').forEach(i => i.remove());
+  dragData = null;
+}
+
+function onDragOver(e) {
+  if (!dragData) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  const row = e.currentTarget;
+  row.classList.add('drag-over');
+
+  // Compute drop position among covers
+  const coversEl = row.querySelector('.tier-covers');
+  const covers = Array.from(coversEl.querySelectorAll('.cover-wrap'));
+  let insertIdx = covers.length;
+  for (let i = 0; i < covers.length; i++) {
+    const rect = covers[i].getBoundingClientRect();
+    if (e.clientX < rect.left + rect.width / 2) { insertIdx = i; break; }
+  }
+  row.dataset.dropIndex = insertIdx;
+}
+
+function onDragLeave(e) {
+  // Only clear if leaving the row entirely (not entering a child)
+  if (e.currentTarget.contains(e.relatedTarget)) return;
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  if (!dragData) return;
+  e.preventDefault();
+  const row = e.currentTarget;
+  row.classList.remove('drag-over');
+
+  const dstYear = +row.dataset.yearIndex;
+  const dstTier = +row.dataset.tierIndex;
+  let dstIdx = +row.dataset.dropIndex || 0;
+
+  const { yearIndex: srcYear, tierIndex: srcTier, bookIndex: srcIdx } = dragData;
+
+  // Same row — adjust dst index if moving forward
+  if (srcYear === dstYear && srcTier === dstTier && dstIdx > srcIdx) dstIdx--;
+  if (srcYear === dstYear && srcTier === dstTier && dstIdx === srcIdx) return; // noop
+
+  const [book] = state.years[srcYear].tiers[srcTier].books.splice(srcIdx, 1);
+  state.years[dstYear].tiers[dstTier].books.splice(dstIdx, 0, book);
+
+  dragData = null;
+  render();
+}
+
+// ── ACTION DELEGATION (remove / add / edit) ──
+let addTargetYear = null;
+let addTargetTier = null;
+let editCtx = null;
+
+document.getElementById('tiers-content').addEventListener('click', (e) => {
+  const removeBtn = e.target.closest('[data-action="remove"]');
+  if (removeBtn) {
+    e.stopPropagation();
+    const wrap = removeBtn.closest('.cover-wrap');
+    const y = +wrap.dataset.yearIndex;
+    const t = +wrap.dataset.tierIndex;
+    const b = +wrap.dataset.bookIndex;
+    const book = state.years[y].tiers[t].books[b];
+    if (confirm(`Remove "${book.title}"?`)) {
+      state.years[y].tiers[t].books.splice(b, 1);
+      render();
+    }
+    return;
+  }
+
+  const addBtn = e.target.closest('[data-action="add"]');
+  if (addBtn) {
+    addTargetYear = +addBtn.dataset.yearIndex;
+    addTargetTier = +addBtn.dataset.tierIndex;
+    openAddModal();
+    return;
+  }
+
+  const cover = e.target.closest('.cover-wrap');
+  if (cover) {
+    editCtx = {
+      y: +cover.dataset.yearIndex,
+      t: +cover.dataset.tierIndex,
+      b: +cover.dataset.bookIndex,
+    };
+    openEditModal();
+  }
+});
+
+// ── ADD MODAL ──
+function openAddModal() {
+  const modal = document.getElementById('addModal');
+  const yObj = state.years[addTargetYear];
+  const tDef = state.tierDefinitions.find(t => t.id === yObj.tiers[addTargetTier].id);
+  document.getElementById('addModalDest').textContent = `${yObj.year} · ${tDef.label}`;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('searchHint').textContent = 'Press Enter to search.';
+  document.getElementById('mTitle').value = '';
+  document.getElementById('mAuthor').value = '';
+  document.getElementById('mCover').value = '';
+  switchTab('search');
+  modal.classList.add('open');
+  setTimeout(() => document.getElementById('searchInput').focus(), 50);
+}
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+}
+function switchTab(which) {
+  document.querySelectorAll('.modal-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === which);
+  });
+  document.getElementById('tab-search').style.display = which === 'search' ? '' : 'none';
+  document.getElementById('tab-manual').style.display = which === 'manual' ? '' : 'none';
+}
+document.querySelectorAll('.modal-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+});
+document.getElementById('addModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeAddModal();
+});
+
+document.getElementById('searchInput').addEventListener('keydown', async (e) => {
+  if (e.key !== 'Enter') return;
+  const q = e.target.value.trim();
+  if (!q) return;
+  const resultsEl = document.getElementById('searchResults');
+  const hintEl = document.getElementById('searchHint');
+  hintEl.textContent = 'Searching…';
+  resultsEl.style.display = 'none';
+  try {
+    const res = await fetch('/api/search?q=' + encodeURIComponent(q));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const books = json.books || [];
+    hintEl.textContent = books.length ? `${books.length} results` : 'No results. Try manual entry.';
+    resultsEl.innerHTML = books.map((b, i) => {
+      const cover = b.cover_url
+        ? `<img src="${escapeHtml(b.cover_url)}" alt="">`
+        : `<div class="no-cover"></div>`;
+      return `<button class="search-result" data-idx="${i}">
+        ${cover}
+        <div class="search-result-info">
+          <div class="search-result-title">${escapeHtml(b.title)}</div>
+          <div class="search-result-author">${escapeHtml(b.author || '')}</div>
+        </div>
+      </button>`;
+    }).join('');
+    resultsEl.style.display = books.length ? 'block' : 'none';
+    resultsEl.querySelectorAll('.search-result').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const b = books[+btn.dataset.idx];
+        const newBook = { title: b.title };
+        if (b.author) newBook.author = b.author;
+        if (b.hardcover_id) newBook.hardcover_id = b.hardcover_id;
+        if (b.cover_url) newBook.cover_url = b.cover_url;
+        state.years[addTargetYear].tiers[addTargetTier].books.push(newBook);
+        closeAddModal();
+        render();
+      });
+    });
+  } catch (err) {
+    hintEl.textContent = `Search failed: ${err.message}. Use manual entry.`;
+  }
+});
+
+document.getElementById('manualCancel').addEventListener('click', closeAddModal);
+document.getElementById('manualSave').addEventListener('click', () => {
+  const title = document.getElementById('mTitle').value.trim();
+  const author = document.getElementById('mAuthor').value.trim();
+  const cover = document.getElementById('mCover').value.trim();
+  if (!title) { alert('Title required'); return; }
+  const book = { title };
+  if (author) book.author = author;
+  if (cover) book.cover_url = cover;
+  state.years[addTargetYear].tiers[addTargetTier].books.push(book);
+  closeAddModal();
+  render();
+});
+
+// ── EDIT MODAL ──
+function openEditModal() {
+  const { y, t, b } = editCtx;
+  const book = state.years[y].tiers[t].books[b];
+  document.getElementById('eTitle').value = book.title || '';
+  document.getElementById('eAuthor').value = book.author || '';
+  document.getElementById('eCover').value = book.cover_url || '';
+  document.getElementById('eHid').value = book.hardcover_id || '';
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+}
+document.getElementById('editModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeEditModal();
+});
+document.getElementById('editCancel').addEventListener('click', closeEditModal);
+document.getElementById('editSave').addEventListener('click', () => {
+  const { y, t, b } = editCtx;
+  const title = document.getElementById('eTitle').value.trim();
+  if (!title) { alert('Title required'); return; }
+  const book = { title };
+  const author = document.getElementById('eAuthor').value.trim();
+  const cover = document.getElementById('eCover').value.trim();
+  const hid = document.getElementById('eHid').value.trim();
+  if (author) book.author = author;
+  if (cover) book.cover_url = cover;
+  if (hid) book.hardcover_id = hid;
+  state.years[y].tiers[t].books[b] = book;
+  closeEditModal();
+  render();
+});
+
+// ── ADD YEAR MODAL ──
+document.getElementById('addYearBtn').addEventListener('click', () => {
+  document.getElementById('yInput').value = '';
+  document.getElementById('yearModal').classList.add('open');
+  setTimeout(() => document.getElementById('yInput').focus(), 50);
+});
+document.getElementById('yearCancel').addEventListener('click', () => {
+  document.getElementById('yearModal').classList.remove('open');
+});
+document.getElementById('yearModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+document.getElementById('yearSave').addEventListener('click', () => {
+  const y = document.getElementById('yInput').value.trim();
+  if (!y) return;
+  if (state.years.some(yr => yr.year === y)) { alert('Year already exists'); return; }
+  state.years.unshift({
+    year: y,
+    tiers: state.tierDefinitions.map(def => ({ id: def.id, books: [] })),
+  });
+  document.getElementById('yearModal').classList.remove('open');
+  render();
+});
+
+// ── EXPORT ──
+document.getElementById('exportBtn').addEventListener('click', async () => {
+  const json = JSON.stringify(state, null, 2);
+  try {
+    await navigator.clipboard.writeText(json);
+    showToast('Copied JSON!');
+  } catch (e) {
+    // Fallback: open in a new window
+    const w = window.open('', '_blank');
+    w.document.body.innerText = json;
+    showToast('Opened in new tab');
+  }
+});
+
+// ── RESET ──
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  if (!confirm('Discard all unsaved changes and reload from server?')) return;
+  state = await loadTiers();
+  render();
+  showToast('Reset to saved');
+});
+
+// Close modals on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+(async () => {
+  [state, imageMap] = await Promise.all([loadTiers(), loadImageMap()]);
+  render();
+})();
+</script>
+</body>
+</html>
