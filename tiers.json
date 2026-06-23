@@ -49,6 +49,18 @@
             },
             {
               "title": "The Butcher's Masquerade"
+            },
+            {
+              "title": "James",
+              "author": "Percival Everett",
+              "hardcover_id": "1010023",
+              "cover_url": "https://assets.hardcover.app/external_data/61346674/caff7309b465f9633e166709b0215c12aa392aff.jpeg"
+            },
+            {
+              "title": "The Last Town",
+              "author": "Blake Crouch",
+              "hardcover_id": "427987",
+              "cover_url": "https://assets.hardcover.app/edition/13434364/54457c3c3120cf5414736a9cf5ea0703e7ef695f.jpeg"
             }
           ]
         },
@@ -63,12 +75,37 @@
               "author": "Christopher Buehlman",
               "hardcover_id": "482996",
               "cover_url": "https://assets.hardcover.app/editions/30423309/5478029573138530.jpg"
+            },
+            {
+              "title": "Pines",
+              "author": "Blake Crouch",
+              "hardcover_id": "250488",
+              "cover_url": "https://assets.hardcover.app/external_data/33721590/15ab710963284ef73162b8bb16ef707e2c20d522.jpeg"
+            },
+            {
+              "title": "Wayward",
+              "author": "Blake Crouch",
+              "hardcover_id": "427585",
+              "cover_url": "https://assets.hardcover.app/editions/4327569/9896909177226764.jpg"
             }
           ]
         },
         {
           "id": "worth_a_read",
-          "books": []
+          "books": [
+            {
+              "title": "The Inner Game of Tennis: The Classic Guide to the Mental Side of Peak Performance",
+              "author": "W. Timothy Gallwey",
+              "hardcover_id": "442155",
+              "cover_url": "https://assets.hardcover.app/external_data/40675138/8bdf185f2af07fdd3bfd5dcb952118524d8c2ea0.jpeg"
+            },
+            {
+              "title": "East of Eden",
+              "author": "John Steinbeck",
+              "hardcover_id": "338117",
+              "cover_url": "https://assets.hardcover.app/editions/15959731/9342576066956334-eastofeden2.jpg"
+            }
+          ]
         },
         {
           "id": "neutral",
@@ -80,6 +117,12 @@
             {
               "title": "Long Island Golf",
               "cover_url": "/covers/books/long-island-golf.jpg"
+            },
+            {
+              "title": "Tales from the Loop",
+              "author": "Simon Stålenhag",
+              "hardcover_id": "453578",
+              "cover_url": "https://assets.hardcover.app/editions/21019583/3752333610930452.jpg"
             }
           ]
         },
