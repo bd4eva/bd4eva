@@ -59,32 +59,24 @@ the other.**
 
 | Name | Location | Purpose | Rotation |
 |---|---|---|---|
-| `HARDCOVER_TOKEN` | Local: `.env` (chmod 600, gitignored). Production: Vercel project env var. | Hardcover GraphQL API auth, used by `api/_hardcover.js`, `api/books.js`, `api/search.js` — powers [reading.html](reading.html) (finished/currently-reading books) and [tiers-edit.html](tiers-edit.html) (book search/covers). | Last rotated: June 2026. See playbook in §7. |
+| `HARDCOVER_TOKEN` | Local: `.env` (chmod 600, gitignored, `HARDCOVER_TOKEN=<value>` format). Production: Vercel project env var. | Hardcover GraphQL API auth, used by `api/_hardcover.js`, `api/books.js`, `api/search.js` — powers [reading.html](reading.html) (finished/currently-reading books) and [tiers-edit.html](tiers-edit.html) (book search/covers). | Rotated June 2026 — old token revoked, new token issued. Value in old git history is inert. See playbook in §7. |
 
 No secret values are recorded in this file, ever.
 
-**⚠️ Verified mismatch:** the local `.env` file contains only the raw
-token value on a single line — it is **not** in standard `KEY=VALUE`
-dotenv format (there is no `HARDCOVER_TOKEN=` prefix). Since the API code
-reads `process.env.HARDCOVER_TOKEN`, this file as currently formatted
-will **not** populate that variable for local tooling that expects
-dotenv syntax (e.g. `vercel dev`). Production most likely works because
-the token is set directly as a Vercel project env var, independent of
-this file. Treat local `.env` as a personal copy of the value, not a
-verified local-dev dependency.
-<!-- TODO: Brendan verify — reformat .env to `HARDCOVER_TOKEN=<value>` if local dev via `vercel dev` needs it, and confirm the Vercel dashboard env var is the actual source of truth in production. -->
+Local `.env` is in standard `KEY=VALUE` dotenv format
+(`HARDCOVER_TOKEN=<value>`), which local tooling like `vercel dev` reads
+directly. **Production does not read this file** — it reads the
+`HARDCOVER_TOKEN` environment variable set in the Vercel project
+dashboard. The two are independent; updating one does not update the
+other (see §7 rotation playbook).
 
-**⚠️ Verified mismatch on rotation date:** `MAINTENANCE_REPORT.md` (dated
-2026-05-27) found the same Hardcover JWT **hardcoded** in
-`api/books.js` and `api/search.js`, with an `exp` claim it decoded as
-2027-04-29. Commit `29f3b152` ("Move Hardcover token to env var",
-2026-06-24) removed the hardcoded literals and switched the code to
-`process.env.HARDCOVER_TOKEN` — but that commit only *relocated* the
-token out of source; it's not confirmed whether the value itself was
-also regenerated at that time. If "last rotated June 2026" means a new
-token was issued (not just moved), the current `.env` value should not
-match the one previously visible in git history.
-<!-- TODO: Brendan verify — confirm whether the June 2026 change was a real rotation (new token issued in Hardcover) or just a relocation of the old hardcoded value. -->
+**Rotation confirmed (June 2026):** the Hardcover token was previously
+hardcoded in `api/books.js` and `api/search.js` (found by
+`MAINTENANCE_REPORT.md`, 2026-05-27). Commit `29f3b152` ("Move Hardcover
+token to env var", 2026-06-24) both moved the token to `process.env` and
+coincided with a genuine rotation — the old token was revoked in
+Hardcover before the new one was issued. The value visible anywhere in
+old git history is dead and cannot be used.
 
 ---
 
@@ -158,16 +150,17 @@ None.
   edit one expecting it to affect the other.
 - **Secrets must never be hardcoded in committed source.** The Hardcover
   token was previously hardcoded directly in `api/books.js` and
-  `api/search.js` (found by `MAINTENANCE_REPORT.md`, 2026-05-27) and had
-  to be moved out (commit `29f3b152`, 2026-06-24). Secrets belong in
-  `.env` (local, gitignored) and the Vercel project's environment
-  variables — never in a committed file.
+  `api/search.js` (found by `MAINTENANCE_REPORT.md`, 2026-05-27). It was
+  rotated and moved to `process.env.HARDCOVER_TOKEN` in commit
+  `29f3b152` (2026-06-24) — old token revoked in Hardcover, new token
+  issued, and the code switched to read from the environment. Secrets
+  belong in `.env` (local, gitignored) and the Vercel project's
+  environment variables — never in a committed file.
 - **`.env` was never actually committed to git history** (verified via
-  `git log --all --diff-filter=A -- .env`), so no history-scrubbing is
-  needed for that file specifically — but the token *was* exposed in
-  plaintext source for some period before the June 2026 fix, which is
-  why a genuine rotation (not just relocation) may still be warranted —
-  see §4.
+  `git log --all --diff-filter=A -- .env`), so no history-scrubbing was
+  needed for that file. The token that *was* briefly exposed in
+  plaintext source is dead — it was revoked as part of the June 2026
+  rotation, so its presence in old commits is no longer a live risk.
 
 ---
 
