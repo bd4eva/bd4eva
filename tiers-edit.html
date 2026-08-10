@@ -192,11 +192,14 @@
   .tier-add-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── TIER COVERS ── */
+  /* No overflow declaration: .tier-covers wraps rather than scrolling, and
+     declaring overflow-x would force overflow-y off `visible`, turning the row
+     into a vertical scroller and clipping the remove buttons and tooltips
+     that sit outside the tiles. */
   .tier-covers-wrap {
     position: relative;
-    overflow-x: auto;
-    overflow-y: visible;
     flex: 1;
+    min-width: 0;
     min-height: 94px;
   }
   .tier-covers {

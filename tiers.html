@@ -290,11 +290,13 @@
   }
 
   /* ── TIER COVERS ── */
+  /* Not a scroll container itself — .tier-covers below does the scrolling.
+     Declaring overflow-x here would force overflow-y off `visible` too, which
+     turns the row into a vertical scroller. */
   .tier-covers-wrap {
     position: relative;
-    overflow-x: auto;
-    overflow-y: visible;
     flex: 1;
+    min-width: 0;
   }
   .tier-covers-wrap::after {
     content: '';
@@ -308,8 +310,13 @@
     z-index: 2;
   }
 
+  /* Horizontal scroller only. overflow-y must be stated explicitly: with just
+     overflow-x: auto the used value of overflow-y becomes auto, so anything
+     taller than a tile makes the row scroll vertically and drags the covers
+     out of frame. */
   .tier-covers {
     overflow-x: auto;
+    overflow-y: hidden;
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
@@ -317,6 +324,7 @@
     padding: 8px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
   .tier-covers::-webkit-scrollbar { display: none; }
 
@@ -337,8 +345,11 @@
     width: var(--cover-w);
     height: var(--cover-h);
   }
-  .cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; border-radius: 2px; pointer-events: none; }
-  .cover-overlay-text { font-family: 'DM Mono', monospace; font-size: 9px; color: #f0ede6; text-align: center; padding: 4px; line-height: 1.4; word-break: break-word; }
+  /* overflow: hidden keeps a long title inside the tile. Without it the text
+     grows past the tile and, because the covers strip is a scroll container,
+     makes the whole row scrollable vertically. */
+  .cover-overlay { position: absolute; inset: 0; overflow: hidden; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; border-radius: 2px; pointer-events: none; }
+  .cover-overlay-text { font-family: 'DM Mono', monospace; font-size: 9px; color: #f0ede6; text-align: center; padding: 4px; line-height: 1.3; word-break: break-word; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5; overflow: hidden; }
   .cover-wrap.active .cover-overlay { opacity: 1; }
 
   .cover-img,
