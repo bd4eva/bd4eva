@@ -16,6 +16,10 @@
     --muted: #aaa;
     --border: #1c1c1c;
     --danger: #f87171;
+    /* Cover tile width. Height is derived from --cover-ratio, never set directly.
+       Keep in sync with tiers.html so the editor matches the live page. */
+    --cover-w: 52px;
+    --cover-ratio: 2 / 3;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -196,7 +200,7 @@
   .tier-covers {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
     padding: 8px;
     min-height: 94px;
@@ -211,23 +215,31 @@
     align-self: center;
   }
 
+  /* Every tile is the same box regardless of the source image's ratio. */
   .cover-wrap {
     position: relative;
     flex-shrink: 0;
     cursor: grab;
-    width: 52px;
-    height: 78px;
+    width: var(--cover-w);
+    aspect-ratio: var(--cover-ratio);
   }
   .cover-wrap:active { cursor: grabbing; }
   .cover-wrap.dragging { opacity: 0.35; }
 
   .cover-img, .cover-placeholder {
-    width: 52px;
-    height: 78px;
-    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--cover-ratio);
     border-radius: 2px;
     display: block;
     background: #1c1c1c;
+  }
+  .cover-img {
+    /* Anchor to the top so a taller-than-2:3 source loses its bottom edge,
+       not its title. */
+    object-fit: cover;
+    object-position: top center;
+    background: var(--black);
   }
   .cover-placeholder {
     display: flex;
@@ -290,7 +302,7 @@
   /* drop indicator between covers */
   .drop-indicator {
     width: 3px;
-    height: 78px;
+    height: calc(var(--cover-w) * 3 / 2);
     background: var(--accent);
     flex-shrink: 0;
     border-radius: 2px;

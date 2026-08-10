@@ -17,6 +17,9 @@
     --accent-dark: #009e96;
     --muted: #aaa;
     --border: #1c1c1c;
+    /* Cover tile width. Height is derived from --cover-ratio, never set directly. */
+    --cover-w: 52px;
+    --cover-ratio: 2 / 3;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -307,7 +310,7 @@
     overflow-x: auto;
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
     padding: 8px;
     scrollbar-width: none;
@@ -324,25 +327,37 @@
   }
 
   /* ── COVER CARDS ── */
-  .cover-wrap { position: relative; flex-shrink: 0; cursor: pointer; }
+  /* Every tile is the same box regardless of the source image's ratio. */
+  .cover-wrap {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+    width: var(--cover-w);
+    aspect-ratio: var(--cover-ratio);
+  }
   .cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; border-radius: 2px; pointer-events: none; }
   .cover-overlay-text { font-family: 'DM Mono', monospace; font-size: 9px; color: #f0ede6; text-align: center; padding: 4px; line-height: 1.4; word-break: break-word; }
   .cover-wrap.active .cover-overlay { opacity: 1; }
 
-  .cover-img {
-    width: 52px;
-    height: 78px;
-    object-fit: cover;
+  .cover-img,
+  .cover-placeholder {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--cover-ratio);
     border-radius: 2px;
     display: block;
   }
 
+  .cover-img {
+    /* Anchor to the top so a taller-than-2:3 source loses its bottom edge,
+       not its title. */
+    object-fit: cover;
+    object-position: top center;
+    background: var(--black);
+  }
+
   .cover-placeholder {
-    width: 52px;
-    height: 78px;
     background: #1c1c1c;
-    border-radius: 2px;
-    display: block;
   }
 
 
