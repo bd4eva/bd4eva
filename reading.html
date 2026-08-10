@@ -548,9 +548,12 @@ function ratingBorderColor(rating) {
   return RATING_COLORS[Math.round(rating)] || '#1c1c1c';
 }
 
+// Keys must match the title Hardcover returns, exactly. "Still Life with"
+// really does come back with two spaces before "Woodpecker".
 const BOOK_COVER_OVERRIDES = {
   "Long Island Golf": "/covers/books/long-island-golf.jpg",
-  "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg"
+  "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg",
+  "Still Life with  Woodpecker": "/covers/books/still-life-with-woodpecker.jpg"
 };
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
