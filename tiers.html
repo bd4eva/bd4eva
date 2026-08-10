@@ -17,9 +17,11 @@
     --accent-dark: #009e96;
     --muted: #aaa;
     --border: #1c1c1c;
-    /* Cover tile width. Height is derived from --cover-ratio, never set directly. */
+    /* Cover tile box: standard book cover 2:3. Both dimensions are set
+       explicitly (rather than leaning on aspect-ratio + percentage heights,
+       which older WebKit resolves inconsistently). */
     --cover-w: 52px;
-    --cover-ratio: 2 / 3;
+    --cover-h: 78px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -333,7 +335,7 @@
     flex-shrink: 0;
     cursor: pointer;
     width: var(--cover-w);
-    aspect-ratio: var(--cover-ratio);
+    height: var(--cover-h);
   }
   .cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; border-radius: 2px; pointer-events: none; }
   .cover-overlay-text { font-family: 'DM Mono', monospace; font-size: 9px; color: #f0ede6; text-align: center; padding: 4px; line-height: 1.4; word-break: break-word; }
@@ -341,9 +343,8 @@
 
   .cover-img,
   .cover-placeholder {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: var(--cover-ratio);
+    width: var(--cover-w);
+    height: var(--cover-h);
     border-radius: 2px;
     display: block;
   }

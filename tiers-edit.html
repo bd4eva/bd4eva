@@ -16,10 +16,12 @@
     --muted: #aaa;
     --border: #1c1c1c;
     --danger: #f87171;
-    /* Cover tile width. Height is derived from --cover-ratio, never set directly.
+    /* Cover tile box: standard book cover 2:3. Both dimensions are set
+       explicitly (rather than leaning on aspect-ratio + percentage heights,
+       which older WebKit resolves inconsistently).
        Keep in sync with tiers.html so the editor matches the live page. */
     --cover-w: 52px;
-    --cover-ratio: 2 / 3;
+    --cover-h: 78px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -221,15 +223,14 @@
     flex-shrink: 0;
     cursor: grab;
     width: var(--cover-w);
-    aspect-ratio: var(--cover-ratio);
+    height: var(--cover-h);
   }
   .cover-wrap:active { cursor: grabbing; }
   .cover-wrap.dragging { opacity: 0.35; }
 
   .cover-img, .cover-placeholder {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: var(--cover-ratio);
+    width: var(--cover-w);
+    height: var(--cover-h);
     border-radius: 2px;
     display: block;
     background: #1c1c1c;
@@ -302,7 +303,7 @@
   /* drop indicator between covers */
   .drop-indicator {
     width: 3px;
-    height: calc(var(--cover-w) * 3 / 2);
+    height: var(--cover-h);
     background: var(--accent);
     flex-shrink: 0;
     border-radius: 2px;
