@@ -574,11 +574,12 @@ function renderStars(rating) {
 }
 
 // Hardcover lists illustrators, narrators, etc. alongside the author, in no
-// guaranteed order, so pick the contributor whose role is Author.
+// guaranteed order, so pick the contributor whose role is Author. Some names
+// carry a role suffix in Hardcover's data ("Michael Lewis - editor"); drop it.
 function primaryAuthor(book) {
   const c = book.contributions || [];
   const pick = c.find(x => (x.contribution || '').toLowerCase() === 'author') || c[0];
-  return pick ? pick.author.name : null;
+  return pick ? pick.author.name.replace(/\s+-\s+editor$/i, '') : null;
 }
 
 function finishedAt(ub) {
