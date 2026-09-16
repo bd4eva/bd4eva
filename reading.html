@@ -573,6 +573,14 @@ function renderStars(rating) {
   return out;
 }
 
+// Hardcover lists illustrators, narrators, etc. alongside the author, in no
+// guaranteed order, so pick the contributor whose role is Author.
+function primaryAuthor(book) {
+  const c = book.contributions || [];
+  const pick = c.find(x => (x.contribution || '').toLowerCase() === 'author') || c[0];
+  return pick ? pick.author.name : null;
+}
+
 function finishedAt(ub) {
   return ub.user_book_reads && ub.user_book_reads.length
     ? ub.user_book_reads[0].finished_at : null;
@@ -593,8 +601,7 @@ function buildCurrentlyReadingSection(books) {
   const list = section.querySelector('.book-list');
   books.forEach(ub => {
     const b = ub.book;
-    const author = b.contributions && b.contributions.length
-      ? b.contributions[0].author.name : '';
+    const author = primaryAuthor(b) || '';
     const imgUrl = BOOK_COVER_OVERRIDES[b.title] || (b.image && b.image.url);
 
     const card = document.createElement('div');
@@ -631,11 +638,10 @@ function buildYearSection(year, books) {
     : null;
 
   // Most read author (overrides resolve ties)
-  const AUTHOR_OVERRIDES = { '2024': 'BROM', '2025': 'Nat Cassidy' };
+  const AUTHOR_OVERRIDES = { '2024': 'Brom', '2025': 'Nat Cassidy' };
   const authorCount = {};
   books.forEach(ub => {
-    const name = ub.book.contributions && ub.book.contributions.length
-      ? ub.book.contributions[0].author.name : null;
+    const name = primaryAuthor(ub.book);
     if (name) authorCount[name] = (authorCount[name] || 0) + 1;
   });
   const override = AUTHOR_OVERRIDES[year];
@@ -683,8 +689,7 @@ function buildYearSection(year, books) {
   const list = section.querySelector('.book-list');
   books.forEach(ub => {
     const b = ub.book;
-    const author = b.contributions && b.contributions.length
-      ? b.contributions[0].author.name : '';
+    const author = primaryAuthor(b) || '';
     const finished = finishedAt(ub);
     const imgUrl = BOOK_COVER_OVERRIDES[b.title] || (b.image && b.image.url);
 

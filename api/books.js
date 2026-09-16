@@ -7,7 +7,7 @@ const QUERY = `query MyBooks {
       user_book_reads { finished_at }
       book {
         title
-        contributions { author { name } }
+        contributions { contribution author { name } }
         image { url }
         pages
       }
@@ -25,7 +25,7 @@ const QUERY_CURRENT = `query CurrentlyReading {
         title
         pages
         image { url }
-        contributions { author { name } }
+        contributions { contribution author { name } }
       }
     }
   }
