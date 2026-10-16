@@ -549,7 +549,8 @@ function ratingBorderColor(rating) {
 }
 
 // Keys must match the title Hardcover returns, exactly. "Still Life with"
-// really does come back with two spaces before "Woodpecker".
+// really does come back with two spaces before "Woodpecker" — deliberate,
+// not a typo. Normalizing it breaks the override silently. See RUNBOOK §8.
 const BOOK_COVER_OVERRIDES = {
   "Long Island Golf": "/covers/books/long-island-golf.jpg",
   "The Worst Kind of Monsters": "/covers/books/the-worst-kind-of-monsters.jpg",

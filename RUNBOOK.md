@@ -183,6 +183,23 @@ explicitly asks for a refresh.
   repo is a separate Next.js app, tracked in `bd4eva`'s own git history.
   It is not the same thing as BD Command Center's dedicated repo. Do not
   edit one expecting it to affect the other.
+- **Book cover overrides are keyed on the exact Hardcover title —
+  including odd whitespace.** `BOOK_COVER_OVERRIDES` in
+  [`reading.html`](reading.html) (~line 553) maps a book title to a
+  local file in [`covers/books/`](covers/books/), overriding the cover
+  the Hardcover API returns. Lookup is an exact string match
+  (`BOOK_COVER_OVERRIDES[b.title]`), so the key must reproduce
+  Hardcover's title *character for character*. `"Still Life with
+  Woodpecker"` is stored with **two spaces** before "Woodpecker"
+  because that is how Hardcover returns it. This is deliberate, not a
+  typo — do not "fix" the spacing, or the override silently stops
+  matching and the book falls back to the API cover. The same applies
+  if Hardcover ever corrects a title upstream: the override will fail
+  quietly, with no error, so check here first when a book shows the
+  wrong cover. Note this is a *separate* mechanism from the
+  `cover_url` field in [`tiers.json`](tiers.json), which the tiers page
+  carries on each book itself and which uses the normal single-space
+  title.
 - **Secrets must never be hardcoded in committed source.** The Hardcover
   token was previously hardcoded directly in `api/books.js` and
   `api/search.js` (found by `MAINTENANCE_REPORT.md`, 2026-05-27). It was
