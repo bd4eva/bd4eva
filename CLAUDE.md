@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 Agent context for bd4eva.com. See [RUNBOOK.md](RUNBOOK.md) for ops detail
-(secrets rotation, backups, troubleshooting).
+(publishing a new mix, secrets rotation, backups, troubleshooting).
 
 - Stack: vanilla HTML/CSS/JS, no framework, no build step — never introduce one.
 - Mobile-first. Verify changes at 375px width.
@@ -13,5 +13,13 @@ Agent context for bd4eva.com. See [RUNBOOK.md](RUNBOOK.md) for ops detail
 - Secrets live in `.env` only — never commit secret values to source.
 - Never print secret file contents to the terminal — verify existence/format with ls, wc, or grep -c, not cat.
 - Deploy: push to `main` when done; Vercel auto-builds, no manual step.
-- See [RUNBOOK.md](RUNBOOK.md) for ops detail (secrets rotation, backups,
-  troubleshooting).
+  "Done" means a finished product — never push a half-landed change that
+  renders broken on live. Updates are ad hoc; there is no reason to post
+  until it's complete.
+- Adding a seasonal mix: follow the playbook in [RUNBOOK.md](RUNBOOK.md)
+  §7. `git pull` **first** — Brendan often uploads the cover to GitHub
+  before asking, so it may already be on `main`. No cover, no push.
+  Bumping a mix also means bumping the hardcoded mix/song counts in
+  `music.html` and `index.html`.
+- See [RUNBOOK.md](RUNBOOK.md) for ops detail (publishing a new mix,
+  secrets rotation, backups, troubleshooting).

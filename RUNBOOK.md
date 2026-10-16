@@ -103,11 +103,20 @@ None.
 
 ### Publish a new seasonal mix
 
-1. Add the mix's cover image to [`covers/`](covers/) as
-   `<season>-<yy>.jpg` (e.g. `spring-26.jpg`), matching the naming
-   convention of the existing 50+ cover files.
+**Cover first.** Brendan often uploads the cover to GitHub ("Add files
+via upload") *before* asking for the site change, so always `git fetch` /
+`git pull` at the start — the file you need may already be waiting on
+`main`. Grid tiles have no `onerror` fallback, so a missing cover renders
+as a broken image. Do not push until the cover is in place: a mix is only
+done when the tile renders. Pushing code ahead of the cover publishes a
+visibly broken tile.
+
+1. Make sure the cover exists at `covers/<season>-<yy>.jpg` (e.g.
+   `spring-26.jpg`), matching the naming convention of the existing 50+
+   cover files. Pull first; if it is not on `main`, ask Brendan for it
+   rather than pushing without it.
 2. Open [`music.html`](music.html) and find the `const playlists = [...]`
-   array (~line 445 as of this writing). Append a new entry in
+   array (~line 1008 as of Oct 2026). Append a new entry in
    chronological order, matching the existing object shape:
    ```js
    { season: "Spring", year: 2026, label: "Spring 26",
@@ -115,11 +124,29 @@ None.
      img: "spring-26.jpg", tracks: 49,
      spotify: "https://open.spotify.com/playlist/..." }
    ```
+   Recent mixes are Apple-only — omit `spotify` when there is no
+   Spotify link.
 3. Get the Apple Music and Spotify playlist share links from their
    respective apps after publishing the playlist there.
 4. Set `tracks` to the actual track count in the playlist.
-5. Save, commit, and push to `main` (see §3 Deploy Flow).
-6. Verify on the live site: the new mix card appears on
+5. Bump the three hardcoded counts, which must stay in sync with the
+   array:
+   - `music.html` stats row — **Mixes** (count of entries) and **Songs**
+     (sum of every `tracks` value).
+   - `index.html` Music card — the `N MIXES` in `card-meta`.
+
+   Verify with:
+   ```sh
+   grep -o 'tracks: [0-9]*' music.html | grep -o '[0-9]*' \
+     | awk '{s+=$1} END {print "mixes:", NR, "songs:", s}'
+   ```
+6. Verify locally at 375px before pushing: the new tile renders with its
+   cover and the counts read correctly. Covers are `loading="lazy"`, so
+   scroll the tile into view or force-load before judging it — and a 404
+   cached from a page load made *before* the cover landed will persist
+   until a hard reload.
+7. Save, commit, and push to `main` (see §3 Deploy Flow).
+8. Verify on the live site: the new mix card appears on
    [bd4eva.com/music.html](https://bd4eva.com/music.html) with the
    correct cover, and both streaming links work.
 <!-- TODO: Brendan verify — confirm whether Top 50 tracks (`topTracks[]` in music.html) or insights.html data also needs manual updates when a new mix is published, and whether there's a source-of-truth spreadsheet/CSV this should be kept in sync with. -->
