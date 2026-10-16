@@ -74,16 +74,28 @@
           "id": "really_liked",
           "books": [
             {
+              "title": "Between Two Fires",
+              "author": "Christopher Buehlman",
+              "hardcover_id": "482996",
+              "cover_url": "https://assets.hardcover.app/editions/30423309/5478029573138530.jpg"
+            },
+            {
               "title": "Thrilling Tales of Modern Men: Stories",
               "author": "Danny McBride",
               "hardcover_id": "2582169",
               "cover_url": "https://assets.hardcover.app/book/2582169/021e9249-9a44-4ed7-8949-13bbcba0d062.jpeg"
             },
             {
-              "title": "Between Two Fires",
-              "author": "Christopher Buehlman",
-              "hardcover_id": "482996",
-              "cover_url": "https://assets.hardcover.app/editions/30423309/5478029573138530.jpg"
+              "title": "Incidents Around the House",
+              "author": "Josh Malerman",
+              "hardcover_id": "1176534",
+              "cover_url": "https://assets.hardcover.app/edition/31201084/17ca48e9-36d0-46f9-aa96-26f8710cba1f.jpg"
+            },
+            {
+              "title": "Red Rabbit",
+              "author": "Alex Grecian",
+              "hardcover_id": "881155",
+              "cover_url": "https://assets.hardcover.app/edition/30899997/3be1574c63c4e0bf326afcb69416a0a6f58e2fc1.jpeg"
             },
             {
               "title": "Mother Night"
@@ -99,6 +111,24 @@
               "author": "Blake Crouch",
               "hardcover_id": "427585",
               "cover_url": "https://assets.hardcover.app/editions/4327569/9896909177226764.jpg"
+            },
+            {
+              "title": "11/22/63",
+              "author": "Stephen King",
+              "hardcover_id": "383587",
+              "cover_url": "https://assets.hardcover.app/edition/23959086/a129e91093231fcfa21c51c2195fcae2e4a56969.jpeg"
+            },
+            {
+              "title": "The September House",
+              "author": "Carissa Orlando",
+              "hardcover_id": "746653",
+              "cover_url": "https://assets.hardcover.app/editions/30744297/5245728604377031.jpg"
+            },
+            {
+              "title": "Father",
+              "author": "Douglass Hoover",
+              "hardcover_id": "3008819",
+              "cover_url": "https://assets.hardcover.app/external_data/4405653/41662d099a091a056d9261dde5950bc9b9d799e9.jpeg"
             }
           ]
         },
