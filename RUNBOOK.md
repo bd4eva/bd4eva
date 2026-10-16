@@ -149,7 +149,15 @@ visibly broken tile.
 8. Verify on the live site: the new mix card appears on
    [bd4eva.com/music.html](https://bd4eva.com/music.html) with the
    correct cover, and both streaming links work.
-<!-- TODO: Brendan verify — confirm whether Top 50 tracks (`topTracks[]` in music.html) or insights.html data also needs manual updates when a new mix is published, and whether there's a source-of-truth spreadsheet/CSV this should be kept in sync with. -->
+
+**Do not touch the Top 50 when adding a mix.** `topTracks[]` in
+[`music.html`](music.html) (~line 874) and the "Decade — Best Of Mix"
+block above it are a fixed retrospective of the first 10 years
+(2016–2026), not a rolling chart. They are intentionally static and do
+not drift as new mixes are added — leave them alone unless Brendan
+explicitly asks for a refresh.
+
+<!-- TODO: Brendan verify — confirm whether insights.html data needs manual updates when a new mix is published, and whether there's a source-of-truth spreadsheet/CSV it should be kept in sync with. (Top 50 / topTracks[] resolved Oct 2026: intentionally static for the first 10 years.) -->
 
 ### Rotate the Hardcover token
 
